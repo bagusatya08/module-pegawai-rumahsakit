@@ -1,0 +1,86 @@
+body{
+    min-height: 100vh;
+}
+
+.judul{
+    padding-top: 12vh;
+}
+
+.form{
+    height: 360px;
+    width: 380px;
+    margin-top: 35px;
+    padding-left: 34px;
+    padding-right: 26px;
+    background-color: #F0E5BA;
+    border-radius: 18px;
+}
+
+.input{
+    height: 120px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+p{
+    font-family: "poppins";
+}
+
+input{
+    border-radius: 8px;
+    border: 0px;
+    height: 40px;
+    padding-left: 16px;
+}
+
+button{
+    height : 55px;
+    border: 0px;
+}
+
+.footer{
+    position: sticky;
+    top: 100%;
+    background-color: #ffff;
+    padding-left: 16vw;
+    padding-right: 16vw;
+    padding-top: 5vh;
+    padding-bottom: 3vh;
+    margin-top: 10vh;
+}
+
+.desc{
+    margin-right: 10vw;
+    margin-left: 1vw;
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.kontak{
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.nomor{
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.informasi{
+    /* background-color: aqua; */
+    width: 250px;
+}
+
+@media(max-width:1000px){
+    .desc{
+        margin-top: 5vh;
+        margin-left: 0vh;
+    }
+    .desc{
+        font-size: 12px;
+    }
+    .nomor{
+        margin-top: 9vw;
+        font-size: 10px;
+    }
+}
