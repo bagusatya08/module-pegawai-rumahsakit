@@ -10,7 +10,7 @@ CREATE TABLE tb_pegawai(
 	id_pegawai INT AUTO_INCREMENT,
 	id_jabatan INT,
 	username_pegawai VARCHAR(30),
-	password_pegawai VARCHAR(30),
+	password_pegawai VARCHAR(255),
 	nip_pegawai VARCHAR(18),
 	nama_pegawai VARCHAR(30),
 	no_hp_pegawai VARCHAR(15),
@@ -32,7 +32,8 @@ CREATE TABLE tb_pegawai(
 	bidang_pegawai VARCHAR(30),
 	ruangan_pegawai VARCHAR(30),
 	PRIMARY KEY(id_pegawai),
-	FOREIGN KEY(id_jabatan) REFERENCES tb_jabatan(id_jabatan)
+	FOREIGN KEY(id_jabatan) REFERENCES tb_jabatan(id_jabatan),
+	UNIQUE (username_pegawai)
 );
 
 CREATE TABLE tb_jadwal(

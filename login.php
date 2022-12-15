@@ -1,42 +1,40 @@
 <?php
-require "dbConnection.php";
 
-// Press Login
-if(isset($_POST["submit"])) {
+$is_invalid = false;
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    $mysqli = require __DIR__ . "/dbConnection.php";
+
     // Pindahkan data dari form ke variabel
     $username = $_POST["username"];
     $password = $_POST["password"];
+    
+    $sql = "SELECT * FROM tb_pegawai 
+            WHERE username_pegawai = '$username'";
+    
+    $result = mysqli_query($conn, $sql);
+    
+    $user = mysqli_fetch_array($result);
+    
+    if ($user) {
 
-    // Query update data
-    $sqlSelect = "SELECT * FROM tb_pegawai WHERE username_pegawai = '$username' and password_pegawai = '$password'";
-    $data = mysqli_query($conn, $sqlSelect);
-    
-    // menghitung jumlah data yang ditemukan
-    $cek = mysqli_num_rows($data);
-    
-    if($cek > 0){
-        $_SESSION['username'] = $username;
-        $_SESSION['status'] = "login";
-        header("location:beranda.php");
-    }else{
-        header("location:login.php?pesan=gagal");
+        if (password_verify($password, $user["password_pegawai"])) {
+            session_start();
+            
+            session_regenerate_id();
+            
+            $_SESSION["id_pegawai"] = $user["id_pegawai"];
+            $_SESSION['EXPIRES'] = time() + 1800; //second
+            
+            header("Location: beranda-after.php");
+            exit;
+        }
     }
 
-    // Cek keberhasilan proses
-    if($cek > 0) {
-        echo "
-            <script>
-                alert ('Berhasil Login');
-            </script>
-        ";
-    } else {
-        echo "
-            <script>
-                alert ('Gagal Login');
-            </script>
-        ";
-    }
+    $is_invalid = true;    
 }
+
 ?>
 
 <!doctype html>
@@ -61,7 +59,7 @@ if(isset($_POST["submit"])) {
             <form class="form" id="form" method="POST">
                     <div class="d-flex flex-column justify-content-center input">    
                         <p>username</p>
-                        <input type="text" name="username" id="username" placeholder="Masukan Username">
+                        <input type="text" name="username" id="username" placeholder="Masukan Username" value="<?= htmlspecialchars($_POST["username"] ?? "") ?>">
                     </div>
                     <div class="d-flex flex-column justify-content-center input">    
                         <p>password</p>

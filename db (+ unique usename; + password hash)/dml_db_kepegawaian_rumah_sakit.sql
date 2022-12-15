@@ -10,4 +10,8 @@ alamat_pegawai, kecamatan_pegawai, kabupaten_pegawai, negara_pegawai, agama_pega
 tempat_lahir_pegawai, tgl_lahir_pegawai, status_kawin_pegawai, no_ktp_pegawai, file_ktp_pegawai, tahun_masuk_pegawai, jenis_kontrak_pegawai,
 bidang_pegawai, ruangan_pegawai) VALUES 
 ("1", "admin", "admin", "1", "Test", "081", "test@gmail.com", "Jl. Test", "Kec. Test", "Kab. Test", 
+"Neg. Test", "Agama", "L", "A", "Test", "2012-12-12", "Kawin", "5555", "", "2012", "Test", "Bd. Test", "R. Test"),
+("1", "admin2", "admin", "1", "Test", "081", "test@gmail.com", "Jl. Test", "Kec. Test", "Kab. Test", 
 "Neg. Test", "Agama", "L", "A", "Test", "2012-12-12", "Kawin", "5555", "", "2012", "Test", "Bd. Test", "R. Test");
+
+SELECT username_pegawai, password_pegawai FROM tb_pegawai WHERE username_pegawai = "admin";
