@@ -5,4 +5,4 @@ penamaan lain juga akan dilanjutkan..
 tiap ada ngubah sesuatu taruh di readme ya supaya jelas
 
 
-[15 Desember] - Bagus - Update frontend login and backend connect (yet session)
+[15 Desember] - Bagus - frontend login with session, beranda pages
