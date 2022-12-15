@@ -41,6 +41,42 @@
                 </div>
             </div>
         </div>
+        <div class="container" style="padding-top:5vh;">
+        <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel">
+            <div class="carousel-indicators">
+                <button
+                type="button"
+                data-mdb-target="#carouselExampleIndicators"
+                data-mdb-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+                ></button>
+                <button
+                type="button"
+                data-mdb-target="#carouselExampleIndicators"
+                data-mdb-slide-to="1"
+                aria-label="Slide 2"
+                ></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                <img src="img/rs-1.png" class="d-block w-100" alt="Landspace ICU"/>
+                </div>
+                <div class="carousel-item">
+                <img src="img/rs-2.png" class="d-block w-100" alt="Landspace Bangunan"/>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+        </div>
         <div class="d-flex flex-row-lg justify-content-evenly footer">
             <div class="d-lg-flex flex-row justify-content-between">
                 <img src="img/title-logo-black-2.png" alt="logo pegawai" height="70" style="padding-right: 80px">

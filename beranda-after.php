@@ -1,13 +1,19 @@
 <?php
-    session_start();
+session_start();
+if (isset($_SESSION["id_pegawai"])) { 
+
     $mysqli = require __DIR__ . "/dbConnection.php";
-    $profile_image = "SELECT * FROM tb_pegawai WHERE username_pegawai = 'admin2'";
-    
-    // $mq = mysql_query($profile_image) or die ("not working query");
-    // $row = mysql_fetch_array($mq) or die("line 44 not working");
-    $s=$row['foto_profile'];
-    echo $row['foto_profile'];
-    echo '<img src="'.$s.'" alt="HTML5 Icon" style="width:128px;height:128px">';
+
+    $sql = "SELECT * FROM tb_pegawai
+            WHERE id_pegawai = {$_SESSION["id_pegawai"]}";
+
+    $result = mysqli_query($conn, $sql);
+
+    $user = mysqli_fetch_array($result);
+}
+
+$user["foto_profile"];
+
 ?>
 
 <!doctype html>
@@ -17,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>beranda</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="beranda-after.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
     <body class="d-flex flex-column min-vh-100" style="background-color: #F8F2DE;">
@@ -45,9 +51,7 @@
                                     </li>
                                     <li class="nav-item login">
                                     <a class="nav-link" href="profile.php">
-                                        <!-- <?php while($rows = mysql_fetch_assoc($profile_image)){       
-                                        $image = $rows['foto_profile'];    
-                                        print $image; }?> -->
+                                        <img src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" /> 
                                     </a>
                                     </li>
                                 </ul>
