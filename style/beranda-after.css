@@ -50,6 +50,10 @@ body{
     width: 250px;
 }
 
+.foto-profile{
+
+}
+
 @media(max-width:1000px){
     .desc{
         margin-top: 5vh;
@@ -64,5 +68,8 @@ body{
     }
     .login{
         padding-left: 0vw;
+    }
+    .logo-kiri{
+        padding-right: 20px;
     }
 }

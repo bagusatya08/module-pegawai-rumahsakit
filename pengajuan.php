@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>beranda</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="beranda-after.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
     <body class="d-flex flex-column min-vh-100" style="background-color: #F8F2DE;">
         <div class="d-flex flex-column justify-content-start header fixed-top">
                     <nav class="navbar navbar-expand-sm">
                         <div class="container-fluid">
-                            <img src="img/char-logo.png" alt="logo-rumah-sakit" height="60" class="kiri" style="padding-right: 8vw; margin-left: 16vw;">
+                                <img src="img/char-logo.png" alt="logo-rumah-sakit" height="60" style="padding-right: 8vw ;margin-left: 16vw;";>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -27,68 +27,86 @@
                                     <li class="nav-item">
                                     <a class="nav-link" href="pengajuan.php">Pengajuan</a>
                                     </li>
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="login.php">Login</a>
-                                    </li>  
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="login.php">
+                                        <!-- <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/>  -->
+                                    Login
+                                    </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </nav>
-        </div>
-        <div class="container" style="padding-top:20vh;">
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                <img src="img/rs-1.png" class="d-block w-100" alt="Gambar Carousel 1">
-                </div>
-                <div class="carousel-item">
-                <img src="img/rs-2.png" class="d-block w-100" alt="Gambar Carousel 2">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-            </div>
         </div>
-        <div class="container" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
+        <div class="container" style="background-color: #ffff; margin-top: 20vh; border-radius: 26px;">
             <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
-                <h2>Pengumuman</h2>
+                <h2>Pengajuan Cuti Tahunan</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
                         <tr>
-                        <th>12/12/2020</th>
-                        <td><a href="pengumuman.php" style="text-decoration:none; color: black">Pengumuman Panitia Aniversary Rumah Sakit</a></td>
+                        <td>Pesyaratan</td>
                         </tr>
                         <tr>
-                        <th>12/12/2020</th>
-                        <td>Pembaruan Ketentuan Cuti Persalinan dan Cuti Tahunan</td>
+                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
+verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
+                        </td>
                         </tr>
                         <tr>
-                        <th>12/12/2020</th>
-                        <td>Pemberitahuan Ketentuan Baru Penanganan Pasien BPJS</td>
+                        <td>Isian Formulir</td>
+                        </tr>
+                        <tr>
+                        <td>Status Pengujian</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="container panduan" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
+        <div class="container" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
             <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
-                <h2>Panduan</h2>
+                <h2>Pengajuan Cuti Melahirkan</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
                         <tr>
-                        <td>Melengkapi Data Diri</td>
+                        <td>Pesyaratan</td>
                         </tr>
                         <tr>
-                        <td>Pengajuan Cuti Tahunan</td>
+                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
+verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
+                        </td>
                         </tr>
                         <tr>
-                        <td>Pengajuan Pengunduran Diri</td>
+                        <td>Isian Formulir</td>
+                        </tr>
+                        <tr>
+                        <td>Status Pengujian</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
+            <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
+                <h2>Pengajuan Naik Tingkat</h2>
+                <table class="table table-bordered" style="margin-top: 2vh;">
+                    <tbody>
+                        <tr>
+                        <td>Pesyaratan</td>
+                        </tr>
+                        <tr>
+                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
+verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Isian Formulir</td>
+                        </tr>
+                        <tr>
+                        <td>Status Pengujian</td>
                         </tr>
                     </tbody>
                 </table>

@@ -6,15 +6,11 @@ body{
     background-color: #ffff;
     padding-top: 2vh;
     padding-bottom: 2vh;
-}
-
-.header_konten{
     padding-left: 16vw;
-    /* background-color: aqua; */
 }
 
-.login{
-    padding-left: 36vw;
+.tabel_link{
+    text-decoration: none;
 }
 
 .footer{
@@ -50,6 +46,11 @@ body{
     width: 250px;
 }
 
+/* .foto-profile{
+    margin-right: 3vw; 
+    margin-left: 5vw;
+} */
+
 @media(max-width:1000px){
     .desc{
         margin-top: 5vh;
@@ -64,5 +65,8 @@ body{
     }
     .login{
         padding-left: 0vw;
+    }
+    .kiri{
+        margin-left: 0vw;
     }
 }

@@ -1,0 +1,73 @@
+body{
+    min-height: 100vh;
+}
+
+.header{
+    background-color: #ffff;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    /* padding-left: 16vw; */
+}
+
+.footer{
+    position: sticky;
+    top: 100%;
+    background-color: #ffff;
+    padding-left: 16vw;
+    padding-right: 16vw;    
+    padding-top: 5vh;
+    padding-bottom: 3vh;
+    margin-top: 10vh;
+}
+
+.desc{
+    margin-right: 10vw;
+    margin-left: 1vw;
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.kontak{
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.nomor{
+    font-size: 14px;
+    font-family: "poppins";
+}
+
+.informasi{
+    /* background-color: aqua; */
+    width: 250px;
+}
+
+.content{
+    padding-top: 5vh;
+    padding-left: 10vw;
+}
+
+.main-content{
+    padding-right: 10vw;
+    margin-bottom: 5vh;
+}
+
+@media(max-width:1000px){
+    .desc{
+        margin-top: 5vh;
+        margin-left: 0vh;
+    }
+    .desc{
+        font-size: 12px;
+    }
+    .nomor{
+        margin-top: 9vw;
+        font-size: 10px;
+    }
+    .login{
+        padding-left: 0vw;
+    }
+    .kiri{
+        margin-left: 0vw;
+    }
+}
