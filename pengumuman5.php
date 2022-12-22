@@ -41,7 +41,7 @@
             <div class="d-lg-flex flex-row justify-content-start">
                 <div class="d-flex flex-column justify-content-start content">
                     <div class="d-flex flex-row justify-content-start">
-                        <h4>Pembaruan Ketentuan Cuti<br>Persalinan & Cuti Bersama</h4>
+                        <h4>Pembaruan Ketentuan Cuti Bersama</h4>
                     </div>
                     <div class="d-flex flex-row justify-content-start">
                         <p style="padding-right:30px;">Pengumuman</p>
