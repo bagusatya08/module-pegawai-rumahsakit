@@ -41,7 +41,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="beranda.php">Beranda</a>
+                                    <a class="nav-link" aria-current="page" href="beranda-after.php">Beranda</a>
                                     </li>
                                     <li class="nav-item">
                                     <a class="nav-link" href="jadwal.php">Jadwal</a>
@@ -52,7 +52,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     <li class="nav-item">
                                     <a class="nav-link" href="profile.php">
                                         <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/>
-                                    Profile
+                                        <!-- Profile -->
                                     </a>
                                     </li>
                                 </ul>
