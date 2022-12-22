@@ -101,6 +101,12 @@ CREATE TABLE tb_pengajuan(
 	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
 );
 
+CREATE TABLE project_pdf(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	project_name TEXT,
+	pdf_doc MEDIUMBLOB
+);
+
 
 -- dml
 INSERT INTO tb_jabatan (nama_jabatan) VALUES 
