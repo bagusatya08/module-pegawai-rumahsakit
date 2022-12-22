@@ -51,7 +51,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     </li>
                                     <li class="nav-item">
                                     <a class="nav-link" href="profile.php">
-                                        <!-- <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/>  -->
+                                        <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/>
                                     Profile
                                     </a>
                                     </li>

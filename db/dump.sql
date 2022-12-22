@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.5.1 (64 bit)
-MySQL - 10.4.24-MariaDB : Database - db_kepegawaian_rumah_sakit
+MySQL - 10.4.24-MariaDB : Database - db_penyewaan_kamera
 *********************************************************************
 */
 
@@ -12,71 +12,785 @@ MySQL - 10.4.24-MariaDB : Database - db_kepegawaian_rumah_sakit
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_kepegawaian_rumah_sakit` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_penyewaan_kamera` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
-USE `db_kepegawaian_rumah_sakit`;
+USE `db_penyewaan_kamera`;
+
+/*Table structure for table `tb_alat` */
+
+DROP TABLE IF EXISTS `tb_alat`;
+
+CREATE TABLE `tb_alat` (
+  `kode_alat` char(3) NOT NULL,
+  `kode_merk` char(3) NOT NULL,
+  `kode_jenis_alat` char(3) NOT NULL,
+  `nama_alat` varchar(50) DEFAULT NULL,
+  `harga_sewa_alat` bigint(20) DEFAULT NULL,
+  `stok_alat` int(11) DEFAULT NULL,
+  PRIMARY KEY (`kode_alat`),
+  KEY `kode_merk` (`kode_merk`),
+  KEY `kode_jenis_alat` (`kode_jenis_alat`),
+  CONSTRAINT `tb_alat_ibfk_1` FOREIGN KEY (`kode_merk`) REFERENCES `tb_merk` (`kode_merk`),
+  CONSTRAINT `tb_alat_ibfk_2` FOREIGN KEY (`kode_jenis_alat`) REFERENCES `tb_jenis_alat` (`kode_jenis_alat`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_alat` */
+
+insert  into `tb_alat`(`kode_alat`,`kode_merk`,`kode_jenis_alat`,`nama_alat`,`harga_sewa_alat`,`stok_alat`) values 
+('A01','M01','J01','Canon EOS Rebel SL2',300000,40),
+('A02','M01','J01','Canon EOS 90D',250000,87),
+('A03','M01','J02','Canon M50 Mark  II',200000,0),
+('A04','M02','J09','Tripod Sony Kaiser 234',50000,36),
+('A05','M01','J10','',100000,130),
+('A06','M03','J02','FujiFilm X-S10 Mirrorless',250000,41),
+('A07','M02','J02','Sony Alpha A6000',350000,9),
+('A08','M07','J03','GoPro Hero 9',150000,184),
+('A09','M06','J05','Leica M10 Black',400000,42),
+('A10','M05','J05','Olympus OM-D E-M10 Mark III',500000,90);
+
+/*Table structure for table `tb_denda` */
+
+DROP TABLE IF EXISTS `tb_denda`;
+
+CREATE TABLE `tb_denda` (
+  `kode_sewa` char(3) NOT NULL,
+  `kode_denda` char(3) DEFAULT NULL,
+  `biaya_denda` bigint(20) DEFAULT NULL,
+  `keterangan_denda` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`kode_sewa`),
+  CONSTRAINT `tb_denda_ibfk_1` FOREIGN KEY (`kode_sewa`) REFERENCES `tb_penyewaan` (`kode_sewa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_denda` */
+
+insert  into `tb_denda`(`kode_sewa`,`kode_denda`,`biaya_denda`,`keterangan_denda`) values 
+('R01','L01',1000000,'Pengembalian tidak lengkap'),
+('R03','L02',50000,'Terlambat pengembalian'),
+('R04','L03',50000,'Terlambat pengembalian'),
+('R05','L04',1000000,'Pengembalian tidak lengkap'),
+('R09','L05',50000,'Terlambat pengembalian'),
+('R10','L06',50000,'Terlambat pengembalian'),
+('R11','L07',50000,'Terlambat pengembalian'),
+('R12','L08',50000,'Terlambat pengembalian'),
+('R13','L09',50000,'Terlambat pengembalian'),
+('R14','L10',50000,'Terlambat pengembalian'),
+('R15','L11',50000,'Terlambat pengembalian'),
+('R16','L12',50000,'Terlambat pengembalian');
+
+/*Table structure for table `tb_detail_pemasokan` */
+
+DROP TABLE IF EXISTS `tb_detail_pemasokan`;
+
+CREATE TABLE `tb_detail_pemasokan` (
+  `kode_pasok` char(3) NOT NULL,
+  `kode_alat` char(3) NOT NULL,
+  `jumlah_pasok` int(11) DEFAULT NULL,
+  `harga_beli` bigint(20) DEFAULT NULL,
+  KEY `kode_pasok` (`kode_pasok`),
+  KEY `kode_alat` (`kode_alat`),
+  CONSTRAINT `tb_detail_pemasokan_ibfk_1` FOREIGN KEY (`kode_pasok`) REFERENCES `tb_pemasokan` (`kode_pasok`),
+  CONSTRAINT `tb_detail_pemasokan_ibfk_2` FOREIGN KEY (`kode_alat`) REFERENCES `tb_alat` (`kode_alat`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_detail_pemasokan` */
+
+insert  into `tb_detail_pemasokan`(`kode_pasok`,`kode_alat`,`jumlah_pasok`,`harga_beli`) values 
+('D01','A01',5,7500000),
+('D01','A02',5,20000000),
+('D02','A01',5,7500000),
+('D02','A02',15,20000000),
+('D03','A03',5,15000000),
+('D03','A04',5,1000000),
+('D04','A04',5,1000000),
+('D04','A05',15,29000000),
+('D05','A05',15,29000000),
+('D05','A06',5,22000000),
+('D06','A06',10,22000000),
+('D07','A07',10,8000000),
+('D08','A08',40,7000000),
+('D09','A09',10,30000000),
+('D10','A10',20,10000000),
+('D11','A01',5,7500000),
+('D11','A02',5,20000000),
+('D12','A01',5,7500000),
+('D12','A02',15,20000000),
+('D13','A03',5,15000000),
+('D13','A04',5,1000000),
+('D14','A04',5,1000000),
+('D14','A05',15,29000000),
+('D15','A05',15,29000000),
+('D15','A06',5,22000000),
+('D16','A06',10,22000000),
+('D17','A07',10,8000000),
+('D18','A08',40,7000000),
+('D19','A09',10,30000000),
+('D20','A10',20,10000000),
+('D21','A01',5,7500000),
+('D21','A02',5,20000000),
+('D22','A01',5,7500000),
+('D22','A02',15,20000000),
+('D23','A03',5,15000000),
+('D23','A04',5,1000000),
+('D24','A04',5,1000000),
+('D24','A05',15,29000000),
+('D25','A05',15,29000000),
+('D25','A06',5,22000000),
+('D26','A06',10,22000000),
+('D27','A07',10,8000000),
+('D28','A08',40,7000000),
+('D29','A09',10,30000000),
+('D30','A10',20,10000000),
+('D31','A01',5,7500000),
+('D31','A02',5,20000000),
+('D32','A01',5,7500000),
+('D32','A02',15,20000000),
+('D33','A03',5,15000000),
+('D33','A04',5,1000000),
+('D34','A04',5,1000000),
+('D34','A05',15,29000000),
+('D35','A05',15,29000000),
+('D35','A06',5,22000000),
+('D36','A06',10,22000000),
+('D37','A07',10,8000000),
+('D38','A08',40,7000000),
+('D39','A09',10,30000000),
+('D40','A10',20,10000000),
+('D41','A01',5,7500000),
+('D41','A02',5,20000000),
+('D42','A01',5,7500000),
+('D42','A02',15,20000000),
+('D43','A03',5,15000000),
+('D43','A04',5,1000000),
+('D44','A04',5,1000000),
+('D44','A05',15,29000000),
+('D45','A05',15,29000000),
+('D45','A06',5,22000000),
+('D46','A06',10,22000000),
+('D47','A07',10,8000000),
+('D48','A08',40,7000000),
+('D49','A09',10,30000000),
+('D50','A10',20,10000000);
+
+/*Table structure for table `tb_detail_penyewaan` */
+
+DROP TABLE IF EXISTS `tb_detail_penyewaan`;
+
+CREATE TABLE `tb_detail_penyewaan` (
+  `kode_sewa` char(3) NOT NULL,
+  `kode_alat` char(3) NOT NULL,
+  `jumlah_sewa` int(11) DEFAULT NULL,
+  `harga_sewa` bigint(20) DEFAULT NULL,
+  KEY `kode_sewa` (`kode_sewa`),
+  KEY `kode_alat` (`kode_alat`),
+  CONSTRAINT `tb_detail_penyewaan_ibfk_1` FOREIGN KEY (`kode_sewa`) REFERENCES `tb_penyewaan` (`kode_sewa`),
+  CONSTRAINT `tb_detail_penyewaan_ibfk_2` FOREIGN KEY (`kode_alat`) REFERENCES `tb_alat` (`kode_alat`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_detail_penyewaan` */
+
+insert  into `tb_detail_penyewaan`(`kode_sewa`,`kode_alat`,`jumlah_sewa`,`harga_sewa`) values 
+('R01','A01',2,300000),
+('R01','A02',2,250000),
+('R02','A02',3,250000),
+('R02','A03',2,200000),
+('R03','A03',3,200000),
+('R03','A04',1,50000),
+('R04','A04',3,50000),
+('R04','A05',3,100000),
+('R05','A05',1,100000),
+('R06','A06',5,250000),
+('R06','A07',5,350000),
+('R07','A07',8,350000),
+('R08','A08',5,150000),
+('R09','A09',1,400000),
+('R10','A10',2,500000),
+('R11','A01',2,300000),
+('R12','A02',1,250000),
+('R13','A03',5,200000),
+('R14','A04',2,50000),
+('R15','A05',4,100000),
+('R16','A06',8,250000),
+('R17','A07',5,350000),
+('R18','A08',2,150000),
+('R19','A09',2,400000),
+('R20','A10',2,500000),
+('R21','A01',2,300000),
+('R21','A02',2,250000),
+('R22','A02',3,250000),
+('R22','A03',2,200000),
+('R23','A03',3,200000),
+('R23','A04',1,50000),
+('R24','A04',3,50000),
+('R24','A05',3,100000),
+('R25','A05',1,100000),
+('R26','A06',5,250000),
+('R26','A07',5,350000),
+('R27','A07',8,350000),
+('R28','A08',5,150000),
+('R29','A09',1,400000),
+('R30','A10',2,500000),
+('R31','A01',2,300000),
+('R32','A02',1,250000),
+('R33','A03',5,200000),
+('R34','A04',2,50000),
+('R35','A05',4,100000),
+('R36','A06',8,250000),
+('R37','A07',5,350000),
+('R38','A08',2,150000),
+('R39','A09',2,400000),
+('R40','A10',2,500000),
+('R41','A01',2,300000),
+('R42','A02',1,250000),
+('R43','A03',5,200000),
+('R44','A04',2,50000),
+('R45','A05',4,100000),
+('R46','A06',8,250000),
+('R47','A07',5,350000),
+('R48','A08',2,150000),
+('R49','A09',2,400000),
+('R50','A10',2,500000);
 
 /*Table structure for table `tb_jabatan` */
 
 DROP TABLE IF EXISTS `tb_jabatan`;
 
 CREATE TABLE `tb_jabatan` (
-  `id_jabatan` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_jabatan` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_jabatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `kode_jabatan` char(3) NOT NULL,
+  `nama_jabatan` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`kode_jabatan`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tb_jabatan` */
 
-insert  into `tb_jabatan`(`id_jabatan`,`nama_jabatan`) values 
-(1,'Admin'),
-(2,'Direktur'),
-(3,'Kepala Bidang'),
-(4,'Kepala Ruangan'),
-(5,'Pegawai');
+insert  into `tb_jabatan`(`kode_jabatan`,`nama_jabatan`) values 
+('B01','Manager'),
+('B02','Kasir'),
+('B03','Teknisi'),
+('B04','IT Support'),
+('B05','Operasional Staff'),
+('B06','Supply Chain Staff'),
+('B07','IT Senior'),
+('B08','Security'),
+('B09','Accounting Staff'),
+('B10','Office Boy');
+
+/*Table structure for table `tb_jenis_alat` */
+
+DROP TABLE IF EXISTS `tb_jenis_alat`;
+
+CREATE TABLE `tb_jenis_alat` (
+  `kode_jenis_alat` char(3) NOT NULL,
+  `nama_jenis_alat` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`kode_jenis_alat`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_jenis_alat` */
+
+insert  into `tb_jenis_alat`(`kode_jenis_alat`,`nama_jenis_alat`) values 
+('J01','Kamera DSLR'),
+('J02','Kamera Mirrorless'),
+('J03','Action Camera'),
+('J04','360 degree Camera'),
+('J05','Digital Cinema Camera'),
+('J06','Webcam'),
+('J07','Drone'),
+('J08','Baterai'),
+('J09','Stand'),
+('J10','Lensa');
+
+/*Table structure for table `tb_kota` */
+
+DROP TABLE IF EXISTS `tb_kota`;
+
+CREATE TABLE `tb_kota` (
+  `kode_kota` char(3) NOT NULL,
+  `kode_provinsi` char(3) NOT NULL,
+  `nama_kota` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`kode_kota`),
+  KEY `kode_provinsi` (`kode_provinsi`),
+  CONSTRAINT `tb_kota_ibfk_1` FOREIGN KEY (`kode_provinsi`) REFERENCES `tb_provinsi` (`kode_provinsi`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_kota` */
+
+insert  into `tb_kota`(`kode_kota`,`kode_provinsi`,`nama_kota`) values 
+('T01','N01','Denpasar'),
+('T02','N01','Badung'),
+('T03','N01','Tabanan'),
+('T04','N01','Buleleng'),
+('T05','N01','Bangli'),
+('T06','N01','Gianyar'),
+('T07','N01','Klungkung'),
+('T08','N01','Denpasar'),
+('T09','N02','Surabaya'),
+('T10','N03','Klaten');
+
+/*Table structure for table `tb_merk` */
+
+DROP TABLE IF EXISTS `tb_merk`;
+
+CREATE TABLE `tb_merk` (
+  `kode_merk` char(3) NOT NULL,
+  `nama_merk` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`kode_merk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_merk` */
+
+insert  into `tb_merk`(`kode_merk`,`nama_merk`) values 
+('M01','Canon'),
+('M02','Sony'),
+('M03','FujiFilm'),
+('M04','Panasonic'),
+('M05','Olympus'),
+('M06','Leica'),
+('M07','GoPro'),
+('M08','Pentax'),
+('M09','Kodak'),
+('M10','Ricoh');
 
 /*Table structure for table `tb_pegawai` */
 
 DROP TABLE IF EXISTS `tb_pegawai`;
 
 CREATE TABLE `tb_pegawai` (
-  `id_pegawai` int(11) NOT NULL AUTO_INCREMENT,
-  `id_jabatan` int(11) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password_pg` varchar(255) DEFAULT NULL,
-  `nip` varchar(18) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `no_hp` varchar(15) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `foto_profile` mediumblob DEFAULT NULL,
-  `kecamatan` varchar(255) DEFAULT NULL,
-  `kabupaten` varchar(255) DEFAULT NULL,
-  `negara` varchar(255) DEFAULT NULL,
-  `agama` varchar(255) DEFAULT NULL,
+  `kode_pegawai` char(3) NOT NULL,
+  `kode_kota` char(3) NOT NULL,
+  `kode_jabatan` char(3) NOT NULL,
+  `nama_pegawai` varchar(30) DEFAULT NULL,
+  `no_tlp_pegawai` varchar(15) DEFAULT NULL,
   `jenis_kelamin` enum('L','P') DEFAULT NULL,
-  `golongan_darah` char(3) DEFAULT NULL,
-  `tempat_lahir` varchar(255) DEFAULT NULL,
-  `tgl_lahir` date DEFAULT NULL,
-  `status_kawin` varchar(255) DEFAULT NULL,
-  `no_ktp` varchar(16) DEFAULT NULL,
-  `file_ktp` blob DEFAULT NULL,
-  `tahun_masuk` year(4) DEFAULT NULL,
-  `jenis_kontrak` varchar(255) DEFAULT NULL,
-  `bidang` varchar(255) DEFAULT NULL,
-  `ruangan` varchar(255) DEFAULT NULL,
-  `tgl_buat` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id_pegawai`),
-  UNIQUE KEY `username` (`username`),
-  KEY `id_jabatan` (`id_jabatan`),
-  CONSTRAINT `tb_pegawai_ibfk_1` FOREIGN KEY (`id_jabatan`) REFERENCES `tb_jabatan` (`id_jabatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  `alamat_pegawai` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`kode_pegawai`),
+  KEY `kode_kota` (`kode_kota`),
+  KEY `kode_jabatan` (`kode_jabatan`),
+  CONSTRAINT `tb_pegawai_ibfk_1` FOREIGN KEY (`kode_kota`) REFERENCES `tb_kota` (`kode_kota`),
+  CONSTRAINT `tb_pegawai_ibfk_2` FOREIGN KEY (`kode_jabatan`) REFERENCES `tb_jabatan` (`kode_jabatan`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tb_pegawai` */
 
-insert  into `tb_pegawai`(`id_pegawai`,`id_jabatan`,`username`,`email`,`password_pg`,`nip`,`nama`,`no_hp`,`alamat`,`foto_profile`,`kecamatan`,`kabupaten`,`negara`,`agama`,`jenis_kelamin`,`golongan_darah`,`tempat_lahir`,`tgl_lahir`,`status_kawin`,`no_ktp`,`file_ktp`,`tahun_masuk`,`jenis_kontrak`,`bidang`,`ruangan`,`tgl_buat`) values 
-(1,1,'admin','test@gmail.com','$2y$10$muK9xltRI5MxRJwcfozGjepKNMElNZLoArpDumW9tjyv3NeAyEdUy','1','Test','081','Jl. Test','‰PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0d\0\0\0d\0\0\0pâ•T\0\0\0	pHYs\0\0\0\0\0šœ\0\0\0sRGB\0®Îé\0\0\0gAMA\0\0±üa\0\0O\\IDATxÍ½y¤÷yö~GßwOÏ=»;³÷.]€I€\"¹)†4Ë\"˜’ŠvŠG•È‰S\0*©”X•À)U©”XI¤DI™P¥\\RE±	Ú‘i]Ü•“ 	 €={vç¾ú¾¿#Ïóş¾E“@ğhp¹³3=İß÷{¯ç}÷÷kK~ÁgÏ.9—H¸‹bË¡Ğ÷‡£p1“tŠ¡H1´¥háyaŠeYâûAıú·¿U÷ü°ê¸qIÄÂKƒQlyáèÒ¥êNÿuù~XòöøøÙE,øè¡TÌ>„Ş97W^ÌÍP|Øƒ—kákÁ×¬`‹jˆÿÙø–ïûríùo‰mÛKÆñ\r<Û·eú®“’ÊæÄ‚jè—zıŞ—“Éä¥?ù“¿¸$¿@W~ç~é½çv×V?e‡ÁCa8\\L¹fÙm{L(æ;øWê?+ú¾5şËÒïâ_ü~×5Úp4«ï ’¬Eüp1îÆ\nF#ùÕO~¨ê‹\\tzø—Ÿ¿(?çÇÏ-BÎŸ¨Øíz¤Ò‰‡:­æÙ×/½,)Û’‰´-Nta>¢ Q¨HzvN,¬6Ökªyø3üÓUÈï[ˆ›ÁPª/½$–ïI,“ĞïãK©_’D2£Æ£a-5¤y-Ñ(³ÅÂªí„OŠ8Ÿ}öbU~Ÿy„œ;÷ÀÙÅCSŸ“Ğ9ŸJ¡„¾ .hÚ±™zB“’Œ‹Ãëñ/8ı¾çğç¾ç!\r°øÃ‘MdØb\"(B¨À\n\\õ`D›izN!_54F	ğ|Kğåñœ/†/ï“yÆ‰YOş¬\ró3‹Ï|æã‹ş(üb\"î‹Å2ôGX ,ŒH«Ù”ê•«’À‚N&âp…,_9Qš’ÄôŒ.Şk<ø2Ò`ëÎğe„ítºj·•‰;âzüBS\\D@ùèQq)M|\r`™ô§†1ÉP¡Å¯Õ²bãg#oøL,™ü™Æ‘ŸòãÜ¹sÅ÷½ïÄoû¾õÇpÕEú€Cjñéå¾ş=B.oîì‰WNÇŒ—X6kÒW*+’ÎI£9V{ >\ràwñû^ #†ãÂòïá ZâK»İ×‚\Z(]*#HS‚\"#0éVT,{\\{\\&’otÖ\r-§c‹¹rê¥öO¥ÙòS|<ôĞ¯<29¾¥}ToV¿”dú5“¬•m“eB,(.ÀïøšÛ] \'BZ\ZÆ@T4[méöb\n‹­¿‹æ2\nì˜Ä³Z1xxLúmŒF‘@Cù&²$J_š}“¸ˆèD„¹b\"µÀ?ŸÃ\'g2çå§øø©Ô‡>prÑ­L~Ñ‰9ç4·«7Zê„=,Â¬6®–ç@‰…[ÿÃs¸~\"\'#‚TÚfÑYsÚ¦\Z¬‡úséº€¼(ò¶£¯Å(±Gâñ$Po\nß“\"+s5M²^™ÿø@´¾~5N[ÚÏ°¶©A¬¨æğ\ZeÑ	Ã/¾g¡ğ¹˜k=ü\\µ^•wùñ®§¬_yÏ±Gb1ëc‰ôI¬ˆŞc£ØHEë\Zd˜H¢87jMI8¶$c„ªI$\'d×wµào{¨ı~_ÿ0Jø²ÍnK†½„0Ì\0÷{]<oˆ?=¼Q@8Œ…á˜]¼·E«‚]lsí\ZZCÂÛHL£#@\nlKˆéáZH½¸öó¥t|°İ=\'ïâã]‹‡Î-æly¼==Jo\n-sÓ&g›;l³ŸºLzM;ŸÇe\'¤Ä¥ƒÂ‚*y¤Ç‰I½İ@ `Ñû=ÄÓúÃ7åë4„æM|F‹åÂ0y9ë»mIv<©³RÌ%$sa‰\"»P¯ÇŠ¾¦\rìı–‡PL¥YH¥Ê1º­\"¢ò©{g³‡^Xo?&ïÒã]1Èù`1ôû_BJ:ëh¸[ÚØZ!°8ğJßóLÁdñ\r£¶oQ(ËÿÚn8™.M	éwz\nmÛ5¯áañŒ¶¢ĞÅâ:’€!|\0G¬xíX,.v<¦UËƒq‡=O¶‘¾ˆÎf+Y,:bFë¯ÉŠ\nªmjŒ¢¬PëN ã¨1ÿö#2ÙÆCëÑ3Sé‡RéøƒïF\nû‰\ròqÔøç×–EOk€iØbq¼tÒE£æ¡{Ú|±š8–m?ÜÙ±Dr®ÂxQ¬l^òù‚şÛ÷×ö¹0;piy\\*¹˜R	)ä22Q*H)—ÖªPëvec·)mDGÏÕ·¦c;qíMÃ¡lmuôµg\'³âF\0‚æĞuÖ„¦?1Zïx­V„¾ô9¶¾0˜¾èÈèÂ¹“Å/¾ş“å\'2ÒÔYÜØ…Ğ÷Šäà‡û¥’ÄC?øá£¦zWŒÍeÒ¹qx:ú©ù,œ‹BmšC½ŠÇÃÂ[=í¾Sq[f§\'äÄ\\IL–¥”ÍJ=VÌÃë¶‘ã¯—šòÊÊ¦¬\"Mõ#5ú¿‡éï}øííšÄ@¦*9…×†eJ\Z5Aƒ}ı£X,‚ƒQ¿Ÿ†Yğıÿâ‹™¿^í¼c~ìõ¿ÿ+÷ÅR^\0XL#\ZÔƒ‚Pû½æTF æñÀ7† ÇD°¹QwíékyX´zl¾(©TRÏÁ[í–ó€Fv%i\råîù¢|øô!9s`FÎTd*›”<HÄV&‹È xOf’2…ZÁUê´Ú]éõúxÏ‘är\\Œ„”×Á÷RéR›#ãşv«lkch\"}v» ÀPÙ˜m«y‰ÑŸà÷’HŸYšOÿYu»¿!ïàñòĞ¹ûÎâB. ŠôúTÜÒæ‹_Ú+ˆ/Bo·`—éKÛcC‘»±k\nsD”H¶0Á6Páe<–Q a¾\0k\'“–<plF@†\\šœ”É|06†ÅqîZdwimÍ8òbÓùŒa\Zb¯Õ“{ğU00Ğ˜ïébYCİŒaFÔ8j$¾\Z°ßå}0eÒÙ÷c°M„ò5ß?3—OıÙ­úÛ7ÊÛNY¡€Ë`t‹PÓ@±ĞiA\r^·€HX€]Üü`HHéµé\nBÙo™˜yƒ„¦ì	|,ÖFH!uYı®œœÎÈ™C3rd¦,HQ	7&Œá\0Iñ{x¾íÄÔ!B{`ú¼NéíğdˆÊV\'yşú\Z:ş†ä2qD¨ûRºÿ`s*îìûZ¾÷‘¡é‘$*êaD·D‡³\"ÌŠò—Ö= ëÂ¹œ¼çâs¯Wåm<ŞV„ĞöÈ¿€K˜{;m’™¦MSV vAÊJ©‚¡F{SŞµÑôisè›İq“øÛÕ{zRÇ¢õ;mÉÂ“ùô‚¼ïÈ¼›Ÿ”©|V2é¤$“)qa\0È0¤aœ˜)´pÏƒ¯kLqĞ`7·öĞ»ô‘zH¹à©xn‘˜A¥Sqs“\rÌ¥(‘4èô5¹®mës	]sëøÛP/ŠÒlEšÉÔDù¡c\'ùêÕ•·L·¼-ê\rØ ‹E³Â¦i„Z\0ÇÏ²ÙšA:‹§‹Æ§*çd¬cE—¾\n´?À[[Ònµ\0i0²+w/LÊı§«1&‹9 ¯¼$Si 0W(SP\rÄŞo=-Ói³Œ–Æ³aÌ„Áë0%xl=rbL?ÔêÜF¥;Ã£	Qex2¢^»¾İ6µ#Ó÷lU¬è:,mRs­ü~÷Kç z¾Õ5~ËùŸøàS‰Xl‘ØŞaÊ`ŞfŞµ-][;)z—gşL1÷PT™†Æ4ÅXc¢ıÅXAT¸á¶Y¤¤$Ş#ƒºsæø!™*å%¥/•L«aÕs\rNÕºaÃE¹àÚÔéb~ŒO±Ûdv’F)¤¥œOéu°/òü>;<)¯‹ª‘OhÒP0fƒC#+„×ŞxahE=Šoœ”Æ\ZÓ3X–³©Jåñ·ºÎoÉ ŸıìCØ±Bd8wÂ…IÄ¢|\Z½¹:ş¶]Óıê?Í\"±ù2ğ1§ã¨ù2íÕ5F‹<ş‰¸PÎLÈ¡©’$Ùø9NT`]H?2 A‹²\nLL(¾(@Êw1½~‘Ñû•ÓLäÆ¯gä‡k¬LäÕ¡hŒˆ41B˜	k‰ØĞıÅ6Xï˜´\"Àr;7G†\nÂÈĞş£¼ÿÔ£oe­¬A>sş¡E®\'âé„¸hô\0+„PÂx«•dLAD)ˆğÖaŞ¶ÇhØŒ¡¥¹q†}dáÔõÕ@,°w.TĞü¥`{¼ŞhËDg¨ö1>ƒ\'³–¸@fI@ç$èú8:ıX,	D•ÅÙ¤üñ¼é|ZVòÃk&‰ñ”3IÃ¹L\Zµ5#ßÙ§R45…¦;4·êD1ci3¾g“®BMYÊHˆÉÀ&’J¸üãgÜzÿX”•Še¾8\nûÅ€^NCğ‚áúK=ß+ú?¼g¡KÇÁK!ŠàÉªÙ©¥Ì{@Mö˜Ó\nÍx€’\\Ç«·-Nå½Ç`˜˜ŞÑ„!;ëX\"‰…Ï0¶’’IÀ9PÜQÈözà³&(êÇ‡\nQ}©KgP“!”´Ê‘©²¼±ÒÍà5ÀD6›2µÈŠh‰Ro´äÑzğ¾ÕÁè“¡i\"Õx†ÄÖÅw¬è÷#uÒ’q‘¢xÎñÍß±AÎÿãÏ‡ƒs\0G™\r,­¸+®Æ¢>„ê5¶8QÕ|:ú\\Íbxd:+§î¾[ƒ·Q«ÉÍå›²¹±eî$Z€(ó4r|ÚJH-i¨fo\0r0&]xİ¨À›ÑÕ»,´QŠZZú0ÚĞĞ+7×e¯Ù3)îjƒ‚	ÎÀ¾™dLNÍdçò6¨K&\'Kz¯†–·’¸ßDÑŒåd[ÁŠ„Q4Ínı†E­ş÷o[og´b:æ¹şò½şåW_xúmäüùÏ,&bîã.¼Ôƒùiyİuı®=\n;t>ƒhƒ,tı£ÔåÀh“ù	…¸}\ZF‹”b±¬J_½ÑP^‰9šã;ìè‰ò€Ÿó¥œÂå=¨~a¨h¨\rM¤ÕB”\Z¢®Äd®œ“	¤Ğ„Éfª­ïõ†²	ÄTÆ¢Ï£SO@*V*Æîs²¾µ¥ £ÄæÊ†Ä!O&ã·—Àhù3N¿c ÂNgèËÀ]Õ‹#’tL\ZE©ËøbhÏ21âÛŸ=»øÌ¥KÕúÛ2H:“|k²È0wİPíA¯©0ÑÂÕô»è\"ÈÜE/cI40€ËP:\regk7áËr5†8ƒäÁ%\rU­Y”CBå@1NÆÈcÅª\\½™nf±Æ\"öav.\0\Z„]vQÂ·eB0¼#íÈ‹ItÏY^h*x.R$\rŸ€×TŠ©5êZCx_ŞË¢Ãôu·™^C,ŠõZÜ‘%B“¦	xOúˆúF¦¨Ğ1}‹Ço8AšL[ ´}õ¿ùØ[6È£şæ\"8ªó=xs7•>!ÏÇù<	iÔ0é´¯+DFA\ZK¡ÿ¨5Z2€a Xê)ŸT¯·\03cêÕlUQÄ×Ré¶!ôèí|iR\Z†Âï}mÖQƒğz6®+9ˆ¦	p` ’FA†n+µŞÄk]zõ–ÜBZœR‹#½ÍO”\'cS™ø’KÒAòŞ™\"k$ÕÖ@{ß³Âñ½™â=îoJ,W±Š±¦¶ê:øFè2†µ£ß·¢ô¦Íå£gOÎ|áÒëÕ·d\0ÂÇYy]\"%D€‡\"Iş†O€ÁÅáq=1z‚A&AÔİ\Zu±ø=,‹ß‹³¸²âfšÃ–~Í× “Ëbü÷ß{R8zP¾»º+ÏİÚC0F”\'IZ5¹qsK†Å¹ğú†T¯_“ßsJfØàÔsã&ñhEL<¿P7ÃÔº#‡—Iíæ5éÁh)\"1ü‰¹=)q}Mçd\nÎƒHİÄ\ZwUôu1ÑDF	\"ZÔ†wÛŞ×uh,’ ®«}GE&}«ƒF\rk•\'C ûÿÁÿùÍßDtXÁy½mMIäö6» â\0…<“N1Õ#jŒÛ#®â¨²ÇH¡‰P]@ËRS”Òğ:q‚\"ä=Ó9É!ì=\'áÁ7x±ú»\"0_õ¨í½Kór$Ÿ”¹©)qG]0¬¶¦³b©Ó¸ )‹ˆ‘Ü7_‘3ÓR€R›ÒæpİA=Am”	DÖÒ§<¥5\'Q.QªK»fAmÙ\'äD­bºq‘}#X?oPU±V$3øã¾xÌ˜qöÊêö¥iÔy<DñÕN—Ş7j‚Ò Òê\"§‚:à™ìˆP4XİH¶¶ş	µ®ô:- \næiÆ`Ä¢N;bÄµZ\0Ç’6´ô˜ê!ÔºO“Á%–ÌOLH÷Òn5åH‘çæµ!Ë”Š’M\0É(¡ékÔ%©›³aK¤ğoWra‚ñ-~*©M ÓmˆZÃú‹Û\nsø=]½×2Qnxª@û\r#«ûû0XEÛú¾âoúÛ*¨j–é[4ZƒÌŸ)ÃÆHÄWålì<ùè÷g§7=ı­Ga¢óôkFG^Ô–ÏdÒ:;UÌåÔËs™Œd39ï˜µ7‰ºS^–#Ê\rQóàµáÁ‚9”È‡LpTvAµ8Àçã9Ãfİ 1<ÇøÉDæÿt–R1%Óe_ëÔ_ˆı#\Z_& Ä®²ÇlãxÏ$Š|\"µ´ ß«©».w‡¾Â÷1%Bè®•Q4hŞ¦}Æœ\\ERTÿ#”ÕÉ†\n£ôÁ¢OéÑPGşçş6Ïõ}±ıá¹qÒ7¸È$Ò“\\RéJ¹+üŒQ£L¢\ZP¢Ç›r˜4ítFf\n—faœ˜£‚¼™6ÒÄ7ªkh™m©¯m¢`SŒ›Å§uù¢([HÁ!’:ş‹Gš\'Û©AE#\ZÆÕ´Æ3æ\ZÉÕäŒP\n™œ*«v{8nÏ£Åc¤Y¶ºt4Îjà¹BW±¢•»m3X\'·©š¨AÔõ±Ş´Ì¡¹ÆĞ0Ån·ÿÃ#Çíˆ>ˆ	å³i¤0@ÆdR_›´sÑÒ…jÆ™\'õËä×¨w2âT¶;z6møAFà÷F@Kd[YG`o ´¿É @1«P™\"Í ‰Ò|±È8»¸Ë¾Ã“sZ:HÀàP/wŒ¼DêV	O²Ín¤úä¿†Z»èéT9Du=`¼	\riê!\ZÊ!Ó±²ûQÇnKDï«3F)lŒÒBYKõïÀLaê9K™ÃQ§Àt.ÁğSÿAƒüÆo|æœÍQÏ1%?\r`ÿ‘gdÙ&hqz\\£Ñ”d\"¦k8†‚¡y)sÆ;8Åù]+*xÔÇ{€ÎC¤¯ÑÈ‚Y³ïvú²İhK¦\\¿c¤ÒŠ¯\Zƒ	Úÿê4„¡Ã=¼dÎH)íÍRÈ4h¹:ñBÍÂ¢úfˆFo4R\n†*!g¶Xë8ˆÁ×!\ZŒÂ{ŸN7·aGY Ê¯ûOØïå\ry‹tNÅ™|ß`­AÔ(™aGkáÃøàì3Ùs?`l¾ü9Û$½.¾&ô¥gU\nyeY9wğZ¤Ù¶ö¢Ëcšr5WùÚüqáƒÀôÚ\0â\n†Qï!ÑX§Qã7k-]Ü\\¥¨76Ä¢@¨\nÈˆR×‹\Z0–…ëhZQ‰Bæñu#:j™ÎG:D\rd@~1],(jäÌ×D+“…¢º}G/¢µÿïPÆ¸£@!2…NÓè+ÚÍ*Ïá^óºVÔrqİœ¬	FXøĞ6?§)ÈqLHé:€»ÜhLúğ0Î×2İ´àÅn,ºyÖm’*\nMªÕŒ¹ HÀÑ»2°0ˆ4ÅçøÉ…K¯I ÁAŸsãêƒ\\t2À4†Ñ[¢\\hq1.{;Û²µ¾\"Û[«²º±\ny=Gz¡\r@À/‚‘èF†ŠRL]¬1He¬U-8ÈV·»ÏV’1Z=MéÂCÓÑïS(b¨ûĞô€ê84¾=–~±F+rL:´]M—&Å›0á¸ğÛö§¾Ï >ú_M$ã‹&Ó¹\rmŠ·©\Z¨ÏO¡Ğ³Ëv\"¨»_?‚ ¢lş)ü0ºBG#k<˜fÚ>_u\r²¯ÜÜ¯^ú´@&¾øÚe ¡FƒÎtÙúÖÊ6³Ÿ‰¡ÆìllÀ[²¼±#{\râ†khş†>ÉG[ğzƒªÎ˜ÚÅ÷D<ÈÅë+ò——oÈŸ¿vUk™!#Û Õ(gEp5Ïşšú\ZŠÑD¹mŠÚ:‘®cÉ(©¦ÆÓÄ#Ø1ÒäåM)à#.;Y\\äo*¦ìô»gS™¢yaxÓÇu°)â¸šº²@%Ô‘RiB‹UÓ¯OŠŞĞ€\nÓ*ZQ1e7‹îéÅŠ†00k‰ÉZşœ7=D­úâÿ{Q*é˜zò1]ÌÎkz¡ŞÁ~†¬Á˜ŒH ©Ë\'2ât‡d`XBtFå@¥YK‰Ä?T:…£ELü]i·°r­f\'bÆóa¶i -3æc¢&\Zk²nÍi¡Lo´“	lóíıM@Œ_S¡5Ï–™zÃtØfb“oàÙL[O«Ar¹ô§tĞÍ7²%;ŠıOey½—Õª·¶ÕÉQ`úN¡íEmï\":ò {}n®êEöz…¼Tì\"¬´¿H4\n$\Z}Îd¡¦ÀûÌOëì–m0´ŒB3\"ÊEêD	OùŸÑÈ‰F[ğ¼®j3§´4©‚«I|D¨mE”Ï¸R¯órQA\' $ÊÁíçÑpöXjˆ˜\n‘}~ÏŠšGòÖâŸò6‚HìÒò`ïƒ;áœÙJ±t–<sÍ­Èecº€)P>y\'¦(HFM‹vD×(ÚÒ·­}Œ¯å5dæø’4k{0àØ_ãE,\"\r¯ÎÑÓĞ\0ÂÀŠÄ¸–¬îÔáÕ¾\n~Çh¬­&ÈCÏ–r„\"¾î#Eù¨3,Ô¤åûd¤ñîC5ØğÙhó\n˜\Z95Â[}o¿|î7uÑµ›8‰$Üh©Ãq½Ğûµ¢^%¸ÖÆ$c«ÜC·¸‘˜g™á»1êÒ”gÈÊ95ÈC+â	‹:(ÀÕëItBP”Ô¶‡ÚÁÆ0—+KÆà™’œÑ=*ß¦BWæ—- §eÉ•’¦F]ª˜¹wz\\j›(Í‰ ¥åæêú¦´Á»è…8Š=ÄB¶÷ê²±…T9Q‘$R©ÛëpFƒ…¦•Qb5µÀú:É¸¤f	Õ©Ó“6a47~{~p[»1Êµö¿\Z?¢µUTD·gôÇ\0û69ÅTæ¸Ö~o[ã`ï¿tE‰v÷œÈtÆ3_jØE<ŠîûßÑ1”ÒKÔx<®¼9Şj½H*•–ÎÎÖ>ôta½È;4J¢ĞãÆÒ\\Ev\Z»R¯A˜Š•¤İáÈ,Ó,E=éÏæŞŒGÖáık;5í¨DZxQTÏLÏH\n¹Ôéz¨eéA!ì\rLtÔºmÙ†şQÉÒÂ‰˜£Ğ™µ…Ãpb­ŞCêû[f°Æ¨iŸùHa×dBZ3Ú44k€^4Ã¥¸ÈÓu°Äâ8YfÛ…Å†7ÔÌx³iDãÏlQÎ¹¡íŸ%¹Gº\\Q¢¢‡&ÍÎÙWvé~Z8à/Š+‹%éæè!á\'V5ã.¦ B!E¬\\[EƒüDär–DÓföÀw£Ûiİµòàrßxù\r9<7©\rb&\rêœ„\"Ş£ƒZ¶º]“œ¨54Š¯nsªD§YÌ&ŸĞMy£;º½šÑEã	jk¼øv¬\nŞ,˜I3–.¶¥¥qº2\rà¸Óôçû›”¢ÉzC:†ªŒrî€”o\rtMIÿs™E»2Y^$¤UÿtcÑæt µŠ$‰@×ĞærX¾†iH‰ÇV˜­_ãAJ—‘ì¯ÊâÜÔ\"V ÍfKÆ¾ ) j¨tİµÒşÏ$ºşÿëĞÆomìšIırtnW1,|µ$3Y–âä„ä+øƒf/›I˜)D…á0ÈˆÓó0 Œ¶Zïj\'/ãšOˆ°U65”MÛx;Â¸g0tÊ›Û~4…ßWLM°£>Äºı¼¨À›,aGfQ\\ÔY…l!¿ènmÕÏ0/&€ï{ÒëFÒ´õšh¶8\'Ó‰“@ÙÒT\n:;7ÍDuwdĞYğ¦â–/O©|\Z‚æváR–gßvJO=ŠÙhùã~o?Bh4\Z{„š¨£ëHP4ÅÔJ68“AÙFÊb40u¡®`Úº×ó¥ƒï‘{ës;„ŒQRÔ‘Gvã)J;úÚ‰ÿh’Ah¸:kŒÆ¢>%Œ†äìııîÆ \\+^cİ‹™]–H´\nM‡NZŞkõaDµpƒQlÑ%<cz\"ŠŠï‹iôÒ ;yÁHŒÑù\" /;è± „‘bò\'/¨ÓŞƒ:ÒÅı}\"\"ø¶¡³E¯Z;y;2FM——VT2ôŞD<ZP/‡Crtÿ	y2ö ¬¹ì=º¬ˆô!Äá;ËêGş1Jñ›1W/¢×|“—;V4fÆJ­0ˆP—±Šº =æµÆœVTd”ës\"R\nuŒ~Ã\ZÍk£Ğ¤î8dOTÊ‹ìhÉŞ&êäRĞA¨S„ÚÀXŠ¹(Œn%oFœ‚GÛ‰ò\'=oœßÚèÉ”;…ÆoÔ‰6ò„<ß”Â£ÃcÜĞtÂ¡È~H»¸&›’kÌÕŞ Ôòâ¼‰EÊÀ}N”àï6\"£?êéh÷±·{C©Ã¡83Ìiy{¼70ê©‘ÑvU3‰«Î\"c&Ğôì˜a¿q$›ÙH³¸väD2N³ã£=Ä~“m-ä,ö¦dEYA_À|ŒNM„ØR,¦‹.ğy‘u‚\r[}¯£©`04»]-‰æ­tç,B\npØ…Q\0\"ëƒo°Z½H)4°ÏŠ:[öÔ™LL\ZĞLbn\n´yF÷|pÇ†–ÕkK\rÈvíÍÔo¦2}@î}ß‡$™és]ş\0Ä·³½+ñ¤©mŒ‚Š4SÒĞ3š={Ò/ÍnG7¦A ²î\rátÉTQ’A×:Ò73ÁfĞÌ/ë¯oDšèMä Ú2–©íPb\"H3Z\\+êôÇPWkI¤éèî_Û¼F¨F©“ª“è´XÑEê)&“¤+½I›³LQÆ¢Ë?6rUÊMê,—µõ[\n3ÆÎü‰FFÉ^âæ88=ğûºÑe¢Q)›Î­ôuË|%¢*¢Ñ…ÃÇå½ïÿˆ|ãÂ_ÊÜûB¯-hLÂlV›ˆ2¾lòØãQ\"`jbº\Zz#İ/ÂHÏ&“*L1ër6rkõ–d*sè* Mö E–Ûf~Š,o›Á;²ÄcŒ%ÑÉ\niµÉ3ïÈxøû6£z(£\nC©˜hS/Ô¨´í¸¾g×1ã§¡şUtiá~o$%†ÔµÙõ¢×¡åˆ6Ød)ºq<YÙ½&NFÛóşãĞµ÷#ÄV$F\"²+GòÿåÇ5Œ¸ş½` ŠÜøßšG#$R(”ä¾{ß/W^yQö çúQQµí@¯%E…¿höÚ€åºwÆçVivãÅ\\x?!:IFí1\"­¼^LF*;0û~Ğûxi°ßÔYÚ¨\Z8FŠc¨;æ¡L}ˆÆi%ˆjh¸Ï‡¹vÄm1ÒÑ+qK·§ê ìëGJYfÇÀ~*µÆy¡¡N´ÅV§LjÒ\\¨Fáß³ı¾t‘\"lî×K™a9íqv%ïLpè\\ÇïI]r)™;oIÉY­fmG‡â8tĞóa ¡£¡ıÑ_ı4syáåW@tòpLuq>§F˜nõ´.®ÔG€”\"7ê%ÓAÊ8AêN(xçêvSîD”Í8,+«WUZ ‡¢Á=±ÆÓ—VÄôšÂ­´Šex´è‰zA#yÛc¦WÄÙ4ƒ´°rÜÀÄ^‰:­OUÓµÕP±ë¶áÚQbjI_‘nÿ¶t8\0¿ˆ_ö†]‰ùˆ­ƒÅ( ”{2ènG°õ6RPš×ãÃÌaÆÒ‰†=Gˆ2nN`vı¾Ÿ–*93¤Ã¾?Gg€§–ä«öï¤\r„txfBÃ\\y61Es<I«“#hmRWRİÍQLÜ{Ó‰\rü`ÿÄÁYi/ïÊÆöLÎ/êï¾kDãZ†kË”¢©Ê5©›5T1s¡2†º:M ©{`¢n\\\"P¢ÈÎ5½ÇÓš¼^¤ª°TTñå`gÌÆŠ™q¸±ê@TÅŞÌÍ ¯¥q£ À[{-0Â¶Î¦öH7€\"†¨àxÌ„%ã]Da4déÆhİ\"\0ì 3v¡w[.ç:š3©e°˜†§–ñşB¢ÙùCR˜˜‘ƒ‹Çdmùº=8¡d$E&×vöåxŠ;ÖíÍ4\\\0ÛÄMèÎ`[Sêˆ£Ap¶™‰œEY˜Ÿ[\0’ÌÕÌJ£¶f6Òq³4²™iDr¡µ×°íˆa°tøÁLÅ‹ÙSb†^‰ »Ù½;&#³$NtÊív2r)İ˜Äûß¸zSúÜãb3Zœ:–Ê¯Û1§˜Ì&¥Õvtš\"Hbõ%àÅAûèŞ9ãÄmË:DìG“|¦á6õ$THÚ®$–ÃëY	äÊ4PWäd[\Zõ6ú„6qœç‚²ë>¸xT>şé_×áçr®(ºÿğgËxmè1p€TÒô0a„HTsá—C³O…Ğ˜rhÌK¸3}Oê]e7+Ppôğ¢ã×Ô÷B•}w6«ªÿÇBÇE }ÇxÎŠg«Í±\ZÁş\"[‘î3ÖM”ŸÅõü75|İ–c¸vRd0´tš3ƒPçq(7÷\"`duwg{§NmÙÔ3@`r3ÔBúİ¡æp¯ÎÈğØê4ŠMâ…‘Œ´ú¦®Œ\ZŞH»³)É)PÅ”qÔ @_öĞW	Æ=vú.yÿû\0›…ƒÒZ½©´|<YB®İVÏíöıˆÒ0^©“äÑŞ\"¢-Î¨xC/ê²ÍV7ÃSÙŠœØ…‚˜Ì¹C·>ÔWW\0RâH“s2w°\0®®.İÚ¦‰üÇ6 0ƒ1Õímƒ®Ä\0`da0.ÄQSiØ P×À& wC5¯)\rÇpÛŸÃ1%[¡?S+{¢^§Wu“ÉT7p6Ô­aá›¦!Ì‹M’9›…Ô‹Ø¢Ü‘wH´ùÆ6OˆÊ½ë`G0TŠ\rßŞ˜ÂËås%¹û?¹K‚‹Êæ’?|\n:KKQFfş€ä®L…Ywú2ÚYA\Z\n\0y\r;çDt\\5Ø¨tëx…ó_T×¢ÃT”‚ãfOÀP0cÜÀ üÄÒ1ASo¯V¥gçÄCS¼··!İÖ†Ù¯h™æX\"êğUê&êãõD÷oú<U L­SÊÖf›3\nC¶hRIÑóü¦W‚ÕÒ#ââi”¨Q–µA	¢sµIsÂÃBZ(Dš -xø!¦R4Á˜XCqÒê¦[ô%í®,LÎÈtqB-’Êä¼›]%&Kå¢juäOO²hâ\\n÷Ê-mV«RÍ‘M¤ÛT>‹½Z » \"£„Õ©ğÄé*‹ŠÀb&\rDê¢AXpÒ¬œDoÓ­ïÊåê\Z\ZÎ‚4WW¥îQZ†şä•AıJä¡ÔõÒá6¾DnNön^‘fkW3ãÃÍ$j\0m3¬tK`Ö b¸&…ß!?HÀDš‡GQñH/\r)4Î¨Áºr»D!—}ÉmµÚÕ‰d9òtÓCè´c´¡!ˆ”BÂá~ohtà!‰EO›3¦$lCy‰´‰bIf’{ÏÜ\'ó¸ályBbù¼Ô,è*±ôú‚®,9 ¾·µ#“só²»¶)V&+…™EIŠ@>@\'µM~T¬h¨NŸpˆİ¾E°à›ÑÖh2İó\rù^PÀÛ×/£wéIce¹ ¥ãwH{·!“KGeï\r_^¿|MÓ>g²”E­9(‡fg¥53+ ²ÍMyí;ÏIk{ÍÔÖˆhñ÷\'Ş¹†QaÕ 	9ÕÕç®k´t	\n“q#d©C;rky­êzıaU&\'–ÑX¦~¢ã“ÃZ[­¯ÃÜSµŒ—»Sşn*–{ïû°>uèY-à½šçg”Ö˜›Aœ’›—oˆ…‹b³»[“Fk %,êüÑ£bİÚD­Aiµ%=wZ:Í-3ª’¶9†‰8‘I,¦)ÂÕôa¨F6UBN4&çOJij	Ş•öæ-q\'¦¥(Êµ¡¥ÔëM½qEGfÁ3K(øÈù6~\"Õ÷6eá®{$Ôš¾r¿€Ê¥oı|÷…o+˜±Ç;ÌX+G7qŸ4¾î#	¢\"OˆM=)×úÂáüóÍŒ\0˜†Kî¥ï¼rñ\0.Bs¿å(Z!¤¥tDşÊrL«O‚ãØ¥B\\3+KNÈÖ¡…@æg¦äÃŸş‡ràÈiÖ!÷ÚÔ××¥½¶\né´¡ƒt](‰êU¼nBwJQñÛÛ­K~¢¨0ùó`ãº´Œô×¶ÄÍ¦r¾¾Ùtª\'7¸éD\'qÛÓ®¡¼czŠœU˜”Òá÷Ih)#:DÏèŞCŠ²ÁqMÏÏCÜ2GÒQ&ËeÙ½vYZo|U÷‹ÈKxp¦+Û›;2—Êè‰wù¹Y)U\nò|D¾öoşDşâ_ÿ+åÆòé˜¦MNøSŒ‘·Íà¹©o2êfN)<}Âté^h(™å×7.¹/^¬?ô>UEZŒS\ZõÍÆGs÷q˜¨uO¸§“~|!d_£%ˆÒĞ;|è_’ø£îËĞ?†’X<Æ2+‰éEÉ:¨2l*GT€ ,çµ9â9V$ô¦f§ÄioIwk½PN–œ”­uI•g¥†ë®o^‘ÒÇ\0\ZíZy0u•%õo+\'?\'Ù™S\"÷ï òn¼ğÿ¡°Â³†±pIğXA»)î tuP\nÙ¼ì¬¯J†ĞtqI\rëíaAÓ\ZİëÏ¿¦4zé03èBÇ¯Ii¡\"»×¯Éİˆæé‡ÏË¿}ö_!Õ4M›°ÎÒûû¨M3ÖB\"Ú€@Ã7Óœ:sFÌV/U«uEl(&º°ÓñFÃÕ\'@8²)Ó7ˆF~XĞÙó¼)o!|ƒ§.;-¿ò©_CÁDG~ø¤P%ÁjEßMÈ^·!1È­Ô¹H!ĞSšõ ¿î5ÅßŞA­jIòÀ¼OŞ-Õu8¯áæK’.WdesSnmõä¾»HĞQ£%‘†P„‘ìtIÿøÑ¹Ø\rüÚó215ãd¸»&±Ò$HFğGˆØîÖºø¦¦;wÅ½/éb×’…éIqÀ($Æ&NQo~é |´ûÆÆ†T’;NŸ•éÃ\'ä~ïwekkÓ°ÙX“Œí(çyó$»œEŠ¦*g<Bd™ÚK–\0€á%ÚB\r‚´q	œÕçˆ³Û4Ba$ÀØ™óÖá†˜²æ‚¾ÂÜÓwÜ+ş½_?è¹²µÛ”&R@ ’l[É¼-H±=È¸sÓâ€›¢ğE*lòøaÙé/#zJ’E„`õvuEn¾ñ†l\"Ïs0šCò`ˆ¸òÑ;¥=sL\n‡ND©Dú‰a¼±n¯ûµUÒbM@XíjrùÆkråÊ\rIç+R8pDGIs³@~<§+™–8Äò+/Ëµ×®H\nhË\ZÜÈ¨àÚÒ0bsí¦,İu·ä,\0ª&t® Õh€‘ğåW?ûŸË?ÿŸ[/‚kD‚‘“ø>ëoF‘èì)r„¶m4=1	¿õì¾ARÉÌ³£Qï)ı eu-¥¨\'Xº-T¹TtÈÙÓ´–j¶ÜÿàGdêèa¹öêüJ9q^›¼,5sP¦ñú€ş€~i ®)IŒºZtwÛ©u¸Y“D$¢¨¾£†üîÏËs_ÿeşÑçş3ÉO-\0u¥5222÷¨7vÖ%71©r¦ï±#Á³µ¯­àc¶x÷{/Àè#\rùê_}U®-¯É:uşN\r1·lsË_?¾»¤7-^3.s‡Éëß½*æ3§¥­@¿ï\"òvVwÖ7å®÷Ş#‡B$¾&µ½=¹ÿÜGåù¯ı•¢Æj#IÏXÒÓş«i,ÔŠºƒW˜¤u-}zttk›–œ/ÿË/×ÿÎÇ>rp±¨|\nû èÊ 3ÒÓŞ,ğP<›Ä 9Ù\'Ğ}\'î<#gïÿ¨Ô6‘sÓIğ^q™F·]šœ¸?4ªˆÈİ›ËJT–Q8øFêt=Ù\\¹…÷è©R··¶\"·ÖnQX–Ìä¬€fÔš~¯…¨©Ç‘3]Ú Íw/¿	`Bk\r#x,¾Y¸¹õïü…WWo®J˜HÉéû?(!\nô\n(\'U‚B#Á}Ô·‘¶\ZÛ\n÷¨5€	6”TgÊYÔÄM‹“\0*\'N•<œ¦\\ÊÉ‘»ïD½\08è²OŠ«#P“€Ğ8.ÿş«®(PPÓò““`’êĞƒÑ@Æºg–Í™)¬Q¶:ƒê×_]ùü~„ğ´ÿe/=’S0Â€{)QGâBV˜f:•ŞE¯\n\ZjÈâ±³Ú°%Ñ@e\n¨Ë7QĞ¯HÀú³µ¬S†™bY@HË¯KOƒ‚_XP¶x\0ä•Iã=zÛğš¦ö*,â‰ i½È¤„}cıªäps¡4g3J“·7¯+KçòZÏ¨İ÷\Z›²»¹&[ß½$-4•<Šã›ßøš47V$¿p´	êLf\nŒòŒ2Å[W¿Ê¤”alĞŠKñè’ì^}YÒ£¦l^]‘\"\ZØ|\0sĞ…Î.ÌëY,gï»GfĞ4nnHqjZëÂäDEŞÿ÷É_ıõEÔ7Kw-søB\'t¢óYÈ|pHn$Ø&ÅÄ”æ…ÇvØ7ÈÖææ³•éÊ#<¤…!ç÷-^Oà‚!ŸöÚ\nyD= XBÎ]Ò°œš*£Áá½Cx`\"™•ÔAô ãÔ”d‹ÛâMTœ€Ç€-NÄ‘î1U)&MLM\n÷æt¡½·›èPèw×·\rG†ÆpÔ¢µ	Ê±õš¼ã‰MLÉ:èâÂ	u¼ W_“›Í|ç{W¥ÆàÎ;ïD¯ƒH/Ö\0ÒAjiH¾P(Èääœäg‰ˆĞêk—¡Ñ7¤ßX—X&\rÇ˜Bop\nã4 î¼8@WÍõ-YûŞ+²òÒ«r÷ï×c£²pF.ôÖå×díÚyàïüGò×Ï}jTÂİÍfC	[Şùœ¤dÍÓ!ğ€ˆşğò»O<}ñé?xê’òYóBs m0´İµ\ràf³xæH×˜œ¹ïığÚ	ÙÛiÊúå+RN€&@gŞ\0ûŠ†ZÈá]ô\nzRğfÂ¼Vº¶Ã÷@6Ö8™’•Q‡¹\r_ÖÕ\rşŒNjç	t=Ø’ÇÅno5ä{ß}Î[JJ]o&?!/íÒ¦+k›\r±‘šT¦š2`ƒ{bg¹—Š!ÄVKY®\'híH­k)3¼³±+å‰¼$Q¯È[Ñ‘rKrf^¦‘îÆMÉ%ò’K<Æ6@÷İ^~ÃˆLHy(€RBgŸBTO¢»¿qkMØ4C!FËá¬›NĞ{A´ÅAç«¯¬ìü`„ğQßn|yr¶r60‡éjJ®E2IÉÇ3†¼\"ÅÜzdiI;Íéé’\\~µ›TºzôŠuØo)²ŠåëÒŞÙµß.G¿€›œ¢qcuàõSH	¼6O\nt\0M÷Ğ?dòaÃZ(¥ˆ\Z²~ g(OÍÈ6ê\rGâàßGˆœ›[+P\'“2ø]YìÉÆ­U™G-+W&d´·8œ7UÔ\Z8\ZöeÖG¤wvĞáƒgëÀ{¹c¬íê7Å\0ğ[(Ül\Z‰ÖZ¬oÉò¿¥ésöØQ ÀÒ¸vdiJfî¾O†¨\'İH	Gds{Km×1‡¡‘oãkiy€XeÁ ı2…Ü“o¶Á÷¤0Wx:sáAd)ÉË„#ˆVğX9”p„š™Yé‰İ\r)°{]YÛ‘B)ÔşK‘ªæÎYûÒì¤¤aànÄBj+%EJ€m¤Øùƒóàû#¦,t‹fwÑŸ4÷$ WÀ¸<-ÏJ¹“a« [ÂÙVM\"É«,I\ZšN09ÆqMp\"¸«D®¬0ÓFÎãû•‰<E7É{^DoTSoÍ£¡ßİ\Z¢È×Õ 	ôN5 ¿›W«\0%©^»%w¿÷.\\—­Óq¦´ƒ3âdò²ùú«š†Ÿ:-ßùÎ7uN¬Ã3_PCT‹¶‰sìŠ\'<a%“™‹?Ô =üXıŸÿ‹ÿíÑc>FR)%LP“»`IYÄ†§î¿_€Áæ¶ŒÖWdvöˆBÄ]ÀÁÇ\0%áÑõk»’ŸÕ‚¡ŒÂı\"q¤¤t0€w%·ÄıU-0»İÚŠïšoĞêÊÎUp];2(—dØ®ëM$Ae4Pì7ª·ÄŸô-ÊñûïÖ-	ßü‹çdÛsdûÖ²ËØ ªÃÀƒÅĞ‰“mİ¾q]²H9»Ğ>¬ĞœÕº÷¹2/%¤-/×‘§ö0”;ï½[ÍUPŸv³²qó&TÆ†¼øõo©Ü}Ï	è®%]PöMDö¡“Gå#÷ò§ÿæKzPç¸S˜#ºÜˆÄ”Í‘$d\naÏüÛ¯¾Xı¡áãùo¿üÌ½ï¹óŠÿÜÍÊCíù¡)<mš+‰‚=UYy³tæ=2@³®]—2x¨½®m\ZHšÅ«ï¡[Gµ²¬»kuoô!]€ƒD¡ à)šñ‘\nRó‡%^–44uúô\'¯Èòñôì´ôáÁ!jA¢<#ÉméºP”§çæ&Ay€Ê>ñK’õ=ËÜ´í¤”a—ulW Õ[¨­TARÎ\"ºz›h8‘>»»[€íRß\0ÇÖâª ÛÇ÷+`€ÓÜ	ÀÏ²Â§…ÔÌé™²òfß†Aîº÷ŒŞ\'ÏQÙ¼~CæÃ{%=LÊ4²Á?fÃ2‡$ğàn© üKç!pÙiÿÉ¿½ş?`ß{ú÷.ıîÿò;ÀmÖ9jÙ=°®ızG?bqš8µˆ\0†È˜üMÌÌI®$¸tY&“şî\0Øu±ÔßÙ©¦ğ¼$úú‰TeRÊKH™UüØ£ƒùeˆS\r¤.Îq¤aÏìäq\\?sèe<BôçgÁÆnoíÁ³Sh<3â¡VÑyÚœhÌô;É>—Ó”ÜÅ¶GÔ‘ød·Ÿ.•$,ƒN/£ñ[\0;zÑ¬^F„¾.[²&(ş+Y@dôRğîï¹÷t^İm¹j›“­ùÁÂcC ·Ê¦§‘7%ÄÆF8›ÍÈn­®×Ã´zş3_¿x¹úc\rÂG»Õ}8™ˆß`ñ¡uyˆ™ë™óïEº* &ÔP¤û×«ğš‚ŒàáÉƒGLDJ‚8¤Ø»Û@)¥ß¬)‡“B‘¥GÇxN;n¢GmÆfZì6`È½]‰í‘uä<®U«Iöq!\"Ï-Ô¥Óª[†°T,h$u¶6$GBtyyCVĞÚ±¤Ù÷‡ÚãƒwŠo7ô½6ĞˆvÛ\rİÚà[X,ğL@bÜmÅ½•©(œ|Z?úBÏqôâ2yênI¢INl·”é¾ùÒ%‰OÏ#ãäÖµeôl]¹÷ûÄ[¯Êò7¿!Gârˆ®{>òQùæå?\0Pªé6\nOOAõÌ.2Â}ùÁèø¡yâóOTç¿ó4\\ğ€aÜÈ³Ì‡‡ÀÜ\"tIdp—c>N&¥„_b\"%íí\r) /éÁ˜<šÃç<.äÙ\"Œ;¢ê`p¹g$(ºví¦N—‡ôøş@?˜ÅÖúhü¤^mq°Îs ->{%ˆrUá´eŒ„#‡ûÈ·Å£Ô#T¹óu}İ[ß¥±ƒ¨²ÉèÆöĞ—Ôµöqû7¼7Ôˆ$j\rG9*„T“CÏUA÷Ş¸yC^úÚ7N\0¤”¥\ZŸh®Ñ®ÉäÙ{$cXèkOœVÆcÈ£¬<W7Cüh–Ívyî…kÕ·l>Ön¬=‘-Æ?‡)šm–Lã\"=è}4ŠšSÑ©¶±P7@S€ÕsbuÍ†±ïM”»`¾[à\\)è9XP6‘w¤<VPyúĞ‚†û¨UCG}bUK·ÅM£p³3Õ·u‹„[šÂâíè´Ha¢,Kà‘\Zëi=³¤\0V—[ÕB›ıKL>\Z1Ğú“™šÕsä—yhˆÄ\nK6š|½…¨±z]åî¶aœº}ªâVÆM‚HuÑŸ$ÑT¦§!PİÚKq©»+I ÃšMd|ßL·P¿³ \\·ñõQ[:õè/Up€Oş°uÿ¡yúé§ëş·ÿÕ“èµbú!5áke\nÒ7•Bó3ƒ$ \n7vt˜lûÖ-IFG2‘ëçN\\¢2BÍ<ĞÕÂÒ 2¨0«Y@ÏP\r©5ğl^îg§æç@<ÙáÖfÀT¿ø‹ö<s<¬\Z\"§İ²ÂÚuî´UÉ\rè[„)Ö,\0ÏdäÑCnàÇğÁ{s’]¢ÔtQòh óèav·÷´?aã¶zÙ’Üq­Z˜0G ó4¢£‡èHQõ¦ú­oH¼½#Swœ•êë`’³	)æş\0@&\'+rkÅZå…æÌS İ\'_øçÁÿÈSIŸşİÿõéúOÿÓO%mçˆ,İy¯ÄA}û æH‹ÇQÈü9¤Ÿ‰©Šß¬\\~CîûåIù½»‰b;{\0¶òíğD7=³*àG¡¸­î@JW‹èC@[ ïhŞša\r“ZõºÄvgÄƒ6Ï&“hÆÍMè©¦+×Å†aİºe7ÎéÎÊª´·jĞª¡ƒ	† H[uIİ¬ê9]Íeü^NÔÜ×ïJÎ? iÊ\rèyâÜ´ÄÔ¢N!ˆ}äe$ã\"?¾î‚‹Óó¾Ğ¥ï]yÑ49#zn]»´.å™#ĞGæáˆE9qú”|ıùÌ\\—è9ø_øÆKÏü¨5ÿ±çö¶Û­‡+x±˜Í-;%Û JÒXXÊ[ıêÙ­÷‘–¦ kNhGêaá­06<6àgn ÷àY­•RÄ\"ÕWoâ]SÒËå N!% ·ˆƒ¦pÂ	Éç$}`Qb¨95Ğy€3€¶}ô\0<„€S€”’‘z¦*øù4$—\Zê	P%X@òa¾©Rpéàô¦ÁTeVwó¼d	©éN@Û4@·»ˆ¢Ú` ­g„Æ c\0ƒ“³‡”©p(_£æ+e¨‹PW·•ŠŸ¹ã„ÌÜõ€äPo¸±trC¯]ÂóXk¤À£ĞZ¬èSá€[ê™Dêá·Ş?Ö Ï<ólõüüËO<~×Sm,òÖÖ-™,&¡ -‚¶èJõ9q€4z%À;¨N`l»+k¸hÌ:,@DÅ¹¤8h<\np\Zü˜ºé‚âDÊÜ¢\0Ïm¡/‘8X$¢’èÇ£şÌ9(uÂ®—ü¢Ò•¢Á\"!:ÔMöIxf jŸ›J«æ/AV¡¯›+I\nŒl©vX‹KĞôøñ£LNËt’ü4¨ÑF\ri._-rKn­´&ÙOàn£†ÕåôûNËäÒaĞEpB8Õz¢âÄhø¶ÊÃİõ]\0_¦Y„¤ˆè\r¼\'/şûª?±AÔ(ÿê«Oÿ7¿õ?,¦\'§i¯ğÓÒ\ZRktu(yø˜ä§;€”mPrgõe”/‹Å/{à°Œ}È¬.¢Áâ)Ö@OÜdÃíü˜	¹ ‰kÁû@Ô&T¸5tã-H¬,²4˜rÈnÖdr/á&§‡X\0|şkS:øŠ|§CÈÛÒS¯{E};kë:0­{qq{(ˆ\'» >Èê²»çî•…gm¦b¯ÅÍB»P\r§—,˜ˆM%2wnUåÔÒHUôL©†\0§N@–¤ÇšM\'°¾ğÂó/?ıVÖú- ËÕÕúï=tâ#`6Î¶6{²ÎvssW*ˆŒ™;OúfÌQâ KòDO„¡Í¤.ÇG;¨ëĞÊÛH.Š¹zùšîŒâ±ådeGX@ÎÀö\0h\n;H3ñ4¿æÀ ù@[SÏ\'ôåÎŞø\\\r89‚;áæ ¢8²Ñü®‡ß³\0zv2+‡b³ 7Ú@Ë÷ÙY_ÓÖˆ¤Ip€rNÒ\\xy\ZÅ¹€¯w¹ù¼‰´}ó{/‰+Êl!)Ë/|ÜÜ\"$êY¤º9HÓú1¯dÇ‹Åbõÿú£/½¥ƒøß–A>ıéOÃ¡kŸövW.àF\'VäFuU^³:f•g¼çŸV½vcmWš¸Á‹¬·b”?° Ül3ŸsÌ)Ä$ŒV@ƒGtC¯Ñç¡˜@=<ğ’$\\‘6;g¨é‡ÚEïGÂnbfVæægÅk¤uºÒKA=Lº\nŠ¨ge¤!Ÿh·0…t(î|rzFŠÈõuG¤i#\"è4{¨!!à{\0MÇG­‹åk²½]—½mÈÑ<Ìpz¯Ö–3ÒZ	ÊÁÓg¤ôØÛ\\—©Óg5âHã­½ÙZÛ0(UÿîÇ>ö òV—ùí}äQ©Tª~ñ·Ÿzp4ì¾XÎÜ_<|ò°\\ş^(ËWo¢ˆwdºç˜v6øQ§<õÇ‘}o#—OÎ@v@Ï€…í@ÇíñS×`¬™ù	ñp“<H9Y*èĞ‡’sh8Ğ´ã$â8Æ×áô=y¶|\\\ZÈÅ‘54“Š0H¯×\\_†‘¹rHêFŠá59jÃÍ¬\\Ü)Ô¬hj;yç	¹öÊ«JZÎ.-BJ^—=\0S@:ãÙ’ŒümÀàu8Ã1ÜseHlÑ…Ôjç&¥ÙJÙ@W^Ù:	õ´U¯×;ùà¯?üOªogßögP=üùÇªO=ñÄƒ½Qp!ò‹$àl<ZWVÀıô(\'÷/˜—&š˜ô†pÿîÚšLĞÓ8xéƒzñ‘vü8\ZH,Â°±+ímMiáéU—‘–¶%¶s^ßÚñe°¹…Ü\rVÊ\\;\0í2DŠ$üegŸÊJ¿ßAAí¢±n}Kû¡KQØctÅĞòÜ6ƒÂôÔQcå@íó`şV¤¶×CSç€‚i¡¢ĞÄÔß…€¶j€(H!\"zˆŞµjUF [=èì“SE™XZªïu_|ğÔ=÷Tåm>ŞÑç>öÄ—^}õÕ7¯]¹Ğ»ñZq(Ksge¤ãŞú†zrûëxw!\'²:Ëà—\0‹‡Á5m¨# ^B{İ¤ä‘~=v‚§Êé°7x~BÏFAHı¼ÖÂÏSºW‹s³1DOsxv?¯\0!q¹Å¢7\'j“X™€æ:Û›Ò\\«â÷ââ5vÀøf\0›kHiüÈ%²\ri ²l†ä<\"\ZJ?É00‡ªu!´İyîœÒöW¯Ü’\'\Z`r 	\nõx¡òà=üä;ú,ÃwüÁ’wÜqÇ¥?ı¿ÿÅƒ™ù…}?,r_HeùŸº;roÊa½ŒåËwÊ­„ù\\‘Š^\"Ş%–Ñ´S9uTy[l ¨$¨	¬Š¤F$#Ñk,¯µ<©uÁ…|\ZßëIşèQÒplMÕŞû#4uÀKéÈIöİ×jqöÛ’Aßœ\0Etè WIæKR*¢İpµó°Oâ t‘XMÃZf#u…ñ”¤°ğõ•P/“ª£sèáÀ±%™Ê8rğ¹×j×·Vn>89yà°äOôIŸŸüÿğÒ}é+÷¤r¹Ínc1´êÒÚÙ“‰tÂìÇF/š@³m`X,Kziº4 ª|ŞÂÛÛz/GLÉÜ\"í¢›Ï‚ÿ…ÂİA]ÙEd9<¢llì/?¹™=AMY:céY}·¥şt\nt*ëk!÷|Ô—xW5}îØ%}íëp9Ø\\¤9hÅbO€:0‡\ZW‘?Nƒ y¹æ½ªµmgi.ß\nvT	¹{¶z\ZĞÌ4ô°í£U+Óù\'g>X•Ÿàñî¯úÕ¯|ãÅoŞ¬^h-Wk+b^’ƒ÷€úWQÀĞãî+‹áÂ¥ÏÚZYAãµ‰ÅÜÚØÓ¦jPÛ–ÔTO?Iaoi$ízĞ/ Ç&j²zsMU»4ˆÌ¨\n—£1ÔF~6\0«à¤bnB§ZÚ;›X|D(Øİ=hÜ¤ó}İ¦³vvQ·—•>êIš\nƒºÕ\"ÙØ•ø<ˆĞ,Ä4¼61é¢¶KUDwo,‹ Gj÷ê—–_|áÓŸø\'Uå\'|¼+Ÿı‰ûµx-ı³ÿşÉ§\'}„ln“Ó*ğÖ­µš~Fí<lou]>è—6¼ êµœøàxIDz=à(‡òÚ8ÍÊc¡|KkÁ©ŸgË1Ïx&!	n„iöAøA•$z>•Ë@{Oëö‚!š?¬ºI¼÷ClX1nItpm…ònJ£ª+[Š°Êó€áˆœm°½èôP=]<§ß©ÉÉ3wÊ4JÜë_ÿ/Ô˜`âË+O<2VŞ…Ç»ú÷ı7ÿİ]gî…û\0¨‚d]6…!6HlÌ8Á’à‘³¤€n:@\\Y °?E›„2â¸or#ÎÒÈ‘‡¥œƒ\nş)êÅÌÇZrréAô/_%paetÙœæ`ôñ;ƒ¶ŸÓ}}<ºij~N?Á\'™MËahş“€½i¿<3£Cå)Hsfôl° ,Ï‚çÆuˆ]l6w‘†×ªĞÒÑ‰™Ÿ‘‰|ŒL±~}{÷óÿİO>qñ¹çúò.=Şµ¸?~çügO?õÔï?[¬d¾è§ìs:N¡€–‹q°¹Mı `rS¤$846ø LË¢¦_•\0:Öº<€KQK6hâÌV¯ÛÕ¼.üP~F\"¾r?¢Èç‡R¢Éò ş+İîG‡üaQB á¹=;Dt¥€ğ˜ÚÒĞGŞû¾3:’z-e£KŸônêvĞïdñŞ¨QĞò+`·-DÉÔ{_<ø{şìÃÿ¸*ïòã]7=¦ÍĞƒÿúO¿r¾X*=^œÈ/–&rÊÕ\0[ıtI‡F£[z f€Eî‚¾Ñ¬m¢cA‡ú0€ßY²B}á6m+!µÕ\r ¶UÙuÁqnl¯‘+D°I™tÉvˆèƒa÷ÀmBƒˆš\Zêçp7@å\'‡x½i” «Ï J	4’…¥+`\"\"rTÁ´0Ï“õr.ıä©»?ğ–x©wòø©düøÕO~â™¯\\¸p1ÙM<ıœ‹üÎ}ê$÷|¤«ö5h\nË®òiİ{—@nOV—96Å>=-•¥:Øç~uü‰X0íIM0¾ƒ½M%] MvÿH[…cÇôñ!êÊ`¤£2’à7‘zçvµ}<õM6B¹¶õs®j€Ş354¯D[@}}¤KNM¦RÉ/\\~õå\'ğxWjÅ{üT\rÂÇ\'|°Š¿Îß¸qã‰[—/?Qı•Ïy6©…ˆE”0HªE°£Ü=s[œ?€BìËîëW‚&Aq{\nŒ“ ÷ÁÃr?ëJÏ€’É(”¥¦ÂNİ2bt¸É‡Çıñ šQtÜ64mN¦”––t+]™”ÜêÌÆšš)É=gï‚l}MâW¯‚üµ¥vıŠ4–ß€wó¢†şé§«ò3xüÔ\r2~,--Uñ×ùßÿ­ßz\"q0÷DéÌ™ÏuÁqÜÇCNçæd„­\\SOm!’BZÂ»Ğ*İ .MÀå[ëzº\\ˆ3ÃCĞ%> 4Ïf©íì ©ÉÊ²&Ñ¤r–PÛCÃÈÙİQbT±¡Ûí”ŠÁ{“Xä”Š‹ŸºIyé(œ`ª:ÔüÃ¯^zå™ÿãê7yïäaÉÏéñÅ/}eô÷¹íÕ­Ç¡½/òé¤7\\¹¢Çº®ŞZCÏËÁƒĞV\0O;¨5@âåêšnË>}×i=ZƒTLÀ.F©^_–6ˆÍcÇ•”ìC-äy„«WªJoLƒ=Iz¢ALá½Úšís\nÈ¬[«]\Z{_>~úôÓ÷ÜsÏO55ı°ÇÏÍ o~üÚg~ãÜâ‘Ãçs1ë#•Ùih¸I@ÎH¢e9th^Z«º…¬ÈXƒ¡8åzìÔIĞ`d7VÄ“8À®¼öºÍrôä¢”`68«ú$.¹‰×+¡~”ÀKyš zãGûmnTg&Ë_.•òÏ>öØ}Q~ÎŸYÊúQÿçÿÏ‹ø‹äKşçg¡Ÿ\rFSŸš˜š:{ğÈÅm{\ZJ\nq—‡à¿Ùƒó€°1ná‘xi\n²oB6Ö7càš¦d\ZÚv7Óéy¢\"ÙÄ£ù¹™*ô•‹İ—v‡­gÿà÷ÿ§ªü=~!òæÇ§?ö1ælşy†ÿ~ôÑG‹gÎœ9xt6p­ÅæŞîîwµÛ‹£¾S6šÅÀŠ›P#ƒv·ŞŞ,3wë	[ª£Q°ÜzÕN­Vı³ï~óâÅgŸı¹¤¢·úøÿñ¨…oOÈ\0\0\0\0IEND®B`‚','Kec. Test','Kab. Test','Neg. Test','Agama','L','A','Test','2012-12-12','Kawin','5555','',2012,'Test','Bd. Test','R. Test','2022-12-21 22:34:04'),
-(2,1,'admin2','test@gmail.com','$2y$10$muK9xltRI5MxRJwcfozGjepKNMElNZLoArpDumW9tjyv3NeAyEdUy','1','Test','081','Jl. Test',NULL,'Kec. Test','Kab. Test','Neg. Test','Agama','L','A','Test','2012-12-12','Kawin','5555','',2012,'Test','Bd. Test','R. Test','2022-12-21 22:34:04');
+insert  into `tb_pegawai`(`kode_pegawai`,`kode_kota`,`kode_jabatan`,`nama_pegawai`,`no_tlp_pegawai`,`jenis_kelamin`,`alamat_pegawai`) values 
+('P01','T01','B01','Selamet','081188997766','L','Denpasar'),
+('P02','T02','B02','Budi Santo','081188997711','L','Badung'),
+('P03','T06','B02','Wira','081188992222','L','Gianyar'),
+('P04','T02','B03','hfhfghgh','081188994433','L','Badung'),
+('P05','T01','B05','Wahyu','081188667777','L','Denpasar'),
+('P06','T06','B06','Mahesa','081188998888','L','Gianyar'),
+('P07','T01','B06','Agung','081188990000','L','Denpasar'),
+('P08','T01','B07','Sekar','081188123465','P','Denpasar'),
+('P09','T03','B07','Putri','081188994478','P','Tabanan'),
+('P10','T02','B09','Nonik','081188991100','P','Badung');
+
+/*Table structure for table `tb_pelanggan` */
+
+DROP TABLE IF EXISTS `tb_pelanggan`;
+
+CREATE TABLE `tb_pelanggan` (
+  `kode_pelanggan` char(3) NOT NULL,
+  `kode_kota` char(3) NOT NULL,
+  `nama_pelanggan` varchar(30) DEFAULT NULL,
+  `no_tlp_pelanggan` varchar(15) DEFAULT NULL,
+  `jenis_kelamin` enum('L','P') DEFAULT NULL,
+  `alamat_pelanggan` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`kode_pelanggan`),
+  KEY `kode_kota` (`kode_kota`),
+  CONSTRAINT `tb_pelanggan_ibfk_1` FOREIGN KEY (`kode_kota`) REFERENCES `tb_kota` (`kode_kota`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_pelanggan` */
+
+insert  into `tb_pelanggan`(`kode_pelanggan`,`kode_kota`,`nama_pelanggan`,`no_tlp_pelanggan`,`jenis_kelamin`,`alamat_pelanggan`) values 
+('K01','T01','Agung Wahyu','081188991111','L','Denpasar'),
+('K02','T01','Ananda Pannadhika','081188992222','L','Denpasar'),
+('K03','T06','Rai Pramana','081188993333','L','Gianyar'),
+('K04','T06','Karcana Putra','081188994444','L','Gianyar'),
+('K05','T02','Ade Wirajaya','081188665555','L','Badung'),
+('K06','T02','Alex Bramartha','081188996666','L','Badung'),
+('K07','T03','Krishna Mahardika','08118897777','L','Tabanan'),
+('K08','T03','','081188128888','L','Tabanan'),
+('K09','T07','Della Ariani','081188999999','P','Klungkung'),
+('K10','T07','Nadia Maharani','081188990000','P','Klungkung');
+
+/*Table structure for table `tb_pemasokan` */
+
+DROP TABLE IF EXISTS `tb_pemasokan`;
+
+CREATE TABLE `tb_pemasokan` (
+  `kode_pasok` char(3) NOT NULL,
+  `kode_pegawai` char(3) NOT NULL,
+  `kode_supplier` char(3) NOT NULL,
+  `tgl_pasok` date DEFAULT NULL,
+  `total_pasok` int(11) DEFAULT NULL,
+  `total_biaya_pasok` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`kode_pasok`),
+  KEY `kode_pegawai` (`kode_pegawai`),
+  KEY `kode_supplier` (`kode_supplier`),
+  CONSTRAINT `tb_pemasokan_ibfk_1` FOREIGN KEY (`kode_pegawai`) REFERENCES `tb_pegawai` (`kode_pegawai`),
+  CONSTRAINT `tb_pemasokan_ibfk_2` FOREIGN KEY (`kode_supplier`) REFERENCES `tb_supplier` (`kode_supplier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_pemasokan` */
+
+insert  into `tb_pemasokan`(`kode_pasok`,`kode_pegawai`,`kode_supplier`,`tgl_pasok`,`total_pasok`,`total_biaya_pasok`) values 
+('D01','P06','S01','2021-01-10',10,137500000),
+('D02','P07','S02','2021-01-15',20,337500000),
+('D03','P06','S03','2021-01-20',10,80000000),
+('D04','P07','S04','2021-01-25',20,440000000),
+('D05','P06','S05','2021-01-30',20,545000000),
+('D06','P07','S06','2021-02-05',10,220000000),
+('D07','P06','S07','2021-02-10',10,80000000),
+('D08','P07','S08','2021-03-10',40,280000000),
+('D09','P06','S09','2021-03-20',10,300000000),
+('D10','P06','S01','2021-03-30',20,200000000),
+('D11','P06','S01','2021-04-10',10,137500000),
+('D12','P07','S02','2021-04-15',20,337500000),
+('D13','P06','S03','2021-04-20',10,80000000),
+('D14','P07','S04','2021-04-25',20,440000000),
+('D15','P06','S05','2021-04-30',20,545000000),
+('D16','P07','S06','2021-05-05',10,220000000),
+('D17','P06','S07','2021-05-10',10,80000000),
+('D18','P07','S08','2021-05-10',40,280000000),
+('D19','P06','S09','2021-05-20',10,300000000),
+('D20','P06','S01','2021-06-10',20,200000000),
+('D21','P07','S02','2021-06-15',10,137500000),
+('D22','P06','S03','2021-06-20',20,337500000),
+('D23','P07','S04','2021-06-25',10,80000000),
+('D24','P06','S05','2021-06-30',20,440000000),
+('D25','P07','S06','2021-07-05',20,545000000),
+('D26','P06','S07','2021-07-10',10,220000000),
+('D27','P07','S08','2021-07-10',10,80000000),
+('D28','P06','S09','2021-07-20',40,280000000),
+('D29','P06','S01','2021-08-10',10,300000000),
+('D30','P07','S02','2021-08-15',20,200000000),
+('D31','P06','S03','2021-08-20',10,137500000),
+('D32','P07','S04','2021-08-25',20,337500000),
+('D33','P06','S05','2021-08-30',10,80000000),
+('D34','P07','S06','2021-09-05',20,440000000),
+('D35','P06','S07','2021-09-10',20,545000000),
+('D36','P07','S08','2021-09-10',10,220000000),
+('D37','P06','S09','2021-09-20',10,80000000),
+('D38','P06','S01','2021-10-10',40,280000000),
+('D39','P07','S02','2021-10-15',10,300000000),
+('D40','P06','S03','2021-10-20',20,200000000),
+('D41','P07','S04','2021-10-25',10,137500000),
+('D42','P06','S05','2021-10-30',20,337500000),
+('D43','P07','S06','2021-11-05',10,80000000),
+('D44','P06','S07','2021-11-10',20,440000000),
+('D45','P07','S08','2021-11-10',20,545000000),
+('D46','P06','S09','2021-11-20',10,220000000),
+('D47','P06','S01','2021-12-10',10,80000000),
+('D48','P07','S02','2021-12-15',40,280000000),
+('D49','P06','S03','2021-12-20',10,300000000),
+('D50','P07','S04','2021-12-25',20,200000000);
+
+/*Table structure for table `tb_penyewaan` */
+
+DROP TABLE IF EXISTS `tb_penyewaan`;
+
+CREATE TABLE `tb_penyewaan` (
+  `kode_sewa` char(3) NOT NULL,
+  `kode_pegawai` char(3) NOT NULL,
+  `kode_pelanggan` char(3) NOT NULL,
+  `tgl_sewa` date DEFAULT NULL,
+  `tgl_jatuh_tempo` date DEFAULT NULL,
+  `total_sewa` int(11) DEFAULT NULL,
+  `total_biaya_sewa` bigint(20) DEFAULT NULL,
+  `tgl_pengembalian` date DEFAULT NULL,
+  `status_sewa` enum('Selesai','Belum Selesai') DEFAULT NULL,
+  PRIMARY KEY (`kode_sewa`),
+  KEY `kode_pegawai` (`kode_pegawai`),
+  KEY `kode_pelanggan` (`kode_pelanggan`),
+  CONSTRAINT `tb_penyewaan_ibfk_1` FOREIGN KEY (`kode_pegawai`) REFERENCES `tb_pegawai` (`kode_pegawai`),
+  CONSTRAINT `tb_penyewaan_ibfk_2` FOREIGN KEY (`kode_pelanggan`) REFERENCES `tb_pelanggan` (`kode_pelanggan`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_penyewaan` */
+
+insert  into `tb_penyewaan`(`kode_sewa`,`kode_pegawai`,`kode_pelanggan`,`tgl_sewa`,`tgl_jatuh_tempo`,`total_sewa`,`total_biaya_sewa`,`tgl_pengembalian`,`status_sewa`) values 
+('R01','P02','K01','2021-05-01','2021-05-10',4,2100000,'2021-05-09','Selesai'),
+('R02','P03','K02','2021-05-05','2021-05-15',5,1150000,'2021-05-14','Selesai'),
+('R03','P02','K03','2021-05-08','2021-05-18',4,700000,'2021-05-19','Selesai'),
+('R04','P03','K04','2021-05-10','2021-05-20',6,500000,'2021-05-21','Selesai'),
+('R05','P02','K05','2021-05-12','2021-05-22',1,1100000,'2021-05-21','Selesai'),
+('R06','P03','K06','2021-05-18','2021-05-28',10,3000000,'2021-05-27','Selesai'),
+('R07','P02','K07','2021-05-25','2021-06-05',8,2800000,'2021-06-03','Selesai'),
+('R08','P03','K08','2021-06-01','2021-06-10',5,750000,'2021-06-09','Selesai'),
+('R09','P02','K09','2021-06-12','2021-06-22',1,450000,'2021-06-23','Selesai'),
+('R10','P03','K10','2021-06-12','2021-06-23',2,1050000,'2021-06-24','Selesai'),
+('R11','P02','K01','2021-06-13','2021-06-23',2,650000,'2021-06-24','Selesai'),
+('R12','P03','K02','2021-06-13','2021-06-23',1,300000,'2021-06-24','Selesai'),
+('R13','P02','K03','2021-06-14','2021-06-24',5,1050000,'2021-06-25','Selesai'),
+('R14','P03','K04','2021-06-14','2021-06-24',2,150000,'2021-06-25','Selesai'),
+('R15','P02','K05','2021-06-14','2021-06-24',4,450000,'2021-06-25','Selesai'),
+('R16','P03','K06','2021-06-15','2021-06-25',8,2050000,'2021-06-26','Selesai'),
+('R17','P02','K07','2021-06-15','2021-06-28',5,1750000,'2021-06-26','Selesai'),
+('R18','P03','K08','2021-06-15','2021-06-28',2,300000,'2021-06-26','Selesai'),
+('R19','P03','K08','2021-06-15','2021-06-28',2,800000,'2021-06-28','Selesai'),
+('R20','P03','K08','2021-06-15','2021-06-28',2,1000000,'2021-06-28','Selesai'),
+('R21','P02','K01','2021-07-01','2021-07-10',4,1100000,'2021-07-09','Selesai'),
+('R22','P03','K02','2021-07-05','2021-07-15',5,1150000,'2021-07-14','Selesai'),
+('R23','P02','K03','2021-07-08','2021-07-19',4,650000,'2021-07-19','Selesai'),
+('R24','P03','K04','2021-07-10','2021-07-26',6,450000,'2021-07-21','Selesai'),
+('R25','P02','K05','2021-07-12','2021-07-22',1,100000,'2021-07-21','Selesai'),
+('R26','P03','K06','2021-07-18','2021-07-28',10,3000000,'2021-07-27','Selesai'),
+('R27','P02','K07','2021-07-25','2021-08-05',8,2800000,'2021-08-03','Selesai'),
+('R28','P03','K08','2021-08-01','2021-08-15',5,750000,'2021-08-09','Selesai'),
+('R29','P02','K09','2021-08-12','2021-08-25',1,400000,'2021-08-23','Selesai'),
+('R30','P03','K10','2021-08-12','2021-08-28',2,1000000,'2021-08-24','Selesai'),
+('R31','P02','K01','2021-08-13','2021-08-28',2,600000,'2021-08-24','Selesai'),
+('R32','P03','K02','2021-08-13','2021-08-28',1,250000,'2021-08-24','Selesai'),
+('R33','P02','K03','2021-08-14','2021-08-28',5,1000000,'2021-08-25','Selesai'),
+('R34','P03','K04','2021-08-14','2021-08-28',2,100000,'2021-08-25','Selesai'),
+('R35','P02','K05','2021-08-14','2021-08-28',4,400000,'2021-08-25','Selesai'),
+('R36','P03','K06','2021-08-15','2021-08-28',8,2000000,'2021-08-26','Selesai'),
+('R37','P02','K07','2021-08-15','2021-08-28',5,1750000,'2021-08-26','Selesai'),
+('R38','P03','K08','2021-08-15','2021-08-28',2,300000,'2021-08-26','Selesai'),
+('R39','P03','K08','2021-08-15','2021-08-28',2,800000,'2021-08-28','Selesai'),
+('R40','P03','K08','2021-08-15','2021-08-28',2,1000000,'2021-08-28','Selesai'),
+('R41','P02','K01','2021-09-13','2021-09-26',2,600000,'2021-09-24','Selesai'),
+('R42','P03','K02','2021-09-13','2021-09-26',1,250000,'2021-09-24','Selesai'),
+('R43','P02','K03','2021-09-14','2021-09-26',5,1000000,'2021-09-25','Selesai'),
+('R44','P03','K04','2021-09-14','2021-09-26',2,100000,'2021-09-25','Selesai'),
+('R45','P02','K05','2021-09-14','2021-09-27',4,400000,'2021-09-25','Selesai'),
+('R46','P03','K06','2021-09-15','2021-09-27',8,2000000,'2021-09-26','Selesai'),
+('R47','P02','K07','2021-09-15','2021-09-27',5,1750000,'2021-09-26','Selesai'),
+('R48','P03','K08','2021-09-15','2021-09-28',2,300000,'2021-09-26','Selesai'),
+('R49','P03','K08','2021-09-15','2021-09-28',2,800000,'2021-09-28','Selesai'),
+('R50','P03','K08','2021-09-15','2021-09-28',2,1000000,'2021-09-28','Selesai');
+
+/*Table structure for table `tb_provinsi` */
+
+DROP TABLE IF EXISTS `tb_provinsi`;
+
+CREATE TABLE `tb_provinsi` (
+  `kode_provinsi` char(3) NOT NULL,
+  `nama_provinsi` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`kode_provinsi`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_provinsi` */
+
+insert  into `tb_provinsi`(`kode_provinsi`,`nama_provinsi`) values 
+('N01','Bali'),
+('N02','Jawa Timur'),
+('N03','Jawa Tengah'),
+('N04','Yogyakarta'),
+('N05','Jawa Barat'),
+('N06','Aceh'),
+('N07','Kalimantan Timur'),
+('N08','Kalimantan Barat');
+
+/*Table structure for table `tb_supplier` */
+
+DROP TABLE IF EXISTS `tb_supplier`;
+
+CREATE TABLE `tb_supplier` (
+  `kode_supplier` char(3) NOT NULL,
+  `kode_kota` char(3) NOT NULL,
+  `nama_supplier` varchar(30) DEFAULT NULL,
+  `no_tlp_supplier` varchar(15) DEFAULT NULL,
+  `alamat_supplier` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`kode_supplier`),
+  KEY `kode_kota` (`kode_kota`),
+  CONSTRAINT `tb_supplier_ibfk_1` FOREIGN KEY (`kode_kota`) REFERENCES `tb_kota` (`kode_kota`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `tb_supplier` */
+
+insert  into `tb_supplier`(`kode_supplier`,`kode_kota`,`nama_supplier`,`no_tlp_supplier`,`alamat_supplier`) values 
+('S01','T01','PT. Wira Niaga Graha','0213924667','Denpasar'),
+('S02','T01','PT. Panca Bakti Persada','061547370','Denpasar'),
+('S03','T02','PT. Indah Anugrah Abadi','0215684735','Badung'),
+('S04','T02','PT. Tiga Ombak','0217229045','Badung'),
+('S05','T03','PT. Robina Anugerah Abadi','02145850647','Tabanan'),
+('S06','T03','PT. Nindia Kasih Bersaudara','02175817966','Tabanan'),
+('S07','T04','PT. Dwiguna Intijati','0217817290','Buleleng'),
+('S08','T05','PT. Multi Indosaintifik','02145857848','Bangli'),
+('S09','T06','test','0217355092','Gianyar'),
+('S10','T07','PT. Disindo Utama','0222034400','Klungkung');
+
+/* Trigger structure for table `tb_denda` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_denda` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_denda` AFTER INSERT ON `tb_denda` FOR EACH ROW BEGIN	
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_biaya_sewa = total_biaya_sewa + (new.biaya_denda)
+	WHERE kode_sewa = new.kode_sewa;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_denda` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_denda_rubah` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_denda_rubah` AFTER UPDATE ON `tb_denda` FOR EACH ROW BEGIN
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_biaya_sewa = total_biaya_sewa + (new.biaya_denda)
+	WHERE kode_sewa = new.kode_sewa;
+
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_biaya_sewa = total_biaya_sewa - (old.biaya_denda)
+	WHERE kode_sewa = old.kode_sewa;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_denda` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_denda_kembalikan` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_denda_kembalikan` BEFORE DELETE ON `tb_denda` FOR EACH ROW BEGIN
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_biaya_sewa = total_biaya_sewa - (old.biaya_denda)
+	WHERE kode_sewa = old.kode_sewa;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_detail_pemasokan` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_pasok` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_pasok` AFTER INSERT ON `tb_detail_pemasokan` FOR EACH ROW BEGIN
+	UPDATE 	db_penyewaan_kamera.tb_alat
+	SET stok_alat = stok_alat + new.jumlah_pasok
+	WHERE kode_alat = new.kode_alat;
+
+	UPDATE db_penyewaan_kamera.tb_pemasokan
+	SET total_pasok = total_pasok + new.jumlah_pasok,
+	total_biaya_pasok = total_biaya_pasok + (new.jumlah_pasok * new.harga_beli)
+	WHERE kode_pasok = new.kode_pasok;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_detail_pemasokan` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_pasok_rubah` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_pasok_rubah` AFTER UPDATE ON `tb_detail_pemasokan` FOR EACH ROW BEGIN	
+	UPDATE 	db_penyewaan_kamera.tb_alat
+	SET stok_alat = stok_alat + new.jumlah_pasok
+	WHERE kode_alat = new.kode_alat;
+
+	UPDATE db_penyewaan_kamera.tb_pemasokan
+	SET total_pasok = total_pasok + new.jumlah_pasok,
+	total_biaya_pasok = total_biaya_pasok + (new.jumlah_pasok * new.harga_beli)
+	WHERE kode_pasok = new.kode_pasok;
+
+
+	UPDATE 	db_penyewaan_kamera.tb_alat
+	SET stok_alat = stok_alat - old.jumlah_pasok
+	WHERE kode_alat = old.kode_alat;
+
+	UPDATE db_penyewaan_kamera.tb_pemasokan
+	SET total_pasok = total_pasok - old.jumlah_pasok,
+	total_biaya_pasok = total_biaya_pasok - (old.jumlah_pasok * old.harga_beli)
+	WHERE kode_pasok = old.kode_pasok;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_detail_pemasokan` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_pasok_kembalikan` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_pasok_kembalikan` BEFORE DELETE ON `tb_detail_pemasokan` FOR EACH ROW BEGIN
+	UPDATE 	db_penyewaan_kamera.tb_alat
+	SET stok_alat = stok_alat - old.jumlah_pasok
+	WHERE kode_alat = old.kode_alat;
+
+	UPDATE db_penyewaan_kamera.tb_pemasokan
+	SET total_pasok = total_pasok - old.jumlah_pasok,
+	total_biaya_pasok = total_biaya_pasok - (old.jumlah_pasok * old.harga_beli)
+	WHERE kode_pasok = old.kode_pasok;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_detail_penyewaan` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_sewa` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_sewa` AFTER INSERT ON `tb_detail_penyewaan` FOR EACH ROW BEGIN
+	DECLARE v_harga INT DEFAULT 0;
+	SELECT harga_sewa_alat INTO v_harga FROM tb_alat
+	WHERE kode_alat = new.kode_alat;
+	
+	UPDATE 	db_penyewaan_kamera.tb_alat 
+	SET stok_alat = stok_alat - new.jumlah_sewa
+	WHERE kode_alat = new.kode_alat;
+	
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_sewa = total_sewa + new.jumlah_sewa,
+	total_biaya_sewa = total_biaya_sewa + (new.jumlah_sewa * v_harga)
+	WHERE kode_sewa = new.kode_sewa;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tb_detail_penyewaan` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `tg_sewa_kembalikan` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `tg_sewa_kembalikan` BEFORE DELETE ON `tb_detail_penyewaan` FOR EACH ROW BEGIN
+    DECLARE v_harga INT DEFAULT 0;
+	SELECT harga_sewa_alat INTO v_harga FROM tb_alat
+	WHERE kode_alat = old.kode_alat;
+
+	UPDATE 	db_penyewaan_kamera.tb_alat
+	SET stok_alat = stok_alat + old.jumlah_sewa
+	WHERE kode_alat = old.kode_alat;
+
+	UPDATE db_penyewaan_kamera.tb_penyewaan
+	SET total_sewa = total_sewa - old.jumlah_sewa,
+	total_biaya_sewa = total_biaya_sewa - (old.jumlah_sewa * v_harga)
+	WHERE kode_sewa = old.kode_sewa;
+    END */$$
+
+
+DELIMITER ;
+
+/* Procedure structure for procedure `procs_harga_barang` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `procs_harga_barang` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `procs_harga_barang`()
+BEGIN
+		UPDATE db_penyewaan_kamera.tb_detail_penyewaan AS sewd,
+			db_penyewaan_kamera.tb_alat AS a
+		SET sewd.harga_sewa = a.harga_sewa_alat
+		WHERE sewd.kode_alat = a.kode_alat;
+	END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

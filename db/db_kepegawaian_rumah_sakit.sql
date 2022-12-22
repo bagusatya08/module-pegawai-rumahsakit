@@ -17,9 +17,9 @@ CREATE TABLE tb_pegawai(
 	password_pg VARCHAR(255),
 	nip VARCHAR(18),
 	nama VARCHAR(255),
+	foto_profile MEDIUMBLOB,
 	no_hp VARCHAR(15),
 	alamat VARCHAR(255),
-	foto_profile MEDIUMBLOB,
 	kecamatan VARCHAR(255),
 	kabupaten VARCHAR(255),
 	negara VARCHAR(255),
@@ -30,7 +30,7 @@ CREATE TABLE tb_pegawai(
 	tgl_lahir DATE,
 	status_kawin VARCHAR(255),
 	no_ktp VARCHAR(16),
-	file_ktp BLOB,
+	file_ktp MEDIUMBLOB,
 	tahun_masuk YEAR,
 	jenis_kontrak VARCHAR(255),
 	bidang VARCHAR(255),
@@ -61,7 +61,7 @@ CREATE TABLE tb_pengumuman(
 	judul VARCHAR(255),
 	tgl DATE,
 	konten TEXT,
-	media BLOB,
+	media MEDIUMBLOB,
 	PRIMARY KEY(id_pengumuman)
 );
 
@@ -77,7 +77,7 @@ CREATE TABLE tb_panduan(
 	judul VARCHAR(255),
 	tgl DATE,
 	konten TEXT,
-	media BLOB,
+	media MEDIUMBLOB,
 	PRIMARY KEY(id_panduan)
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE tb_pengajuan(
 	tgl_konfirmasi DATE,
 	STATUS VARCHAR(255),
 	konten TEXT,
-	media BLOB,
+	media MEDIUMBLOB,
 	PRIMARY KEY(id_pengajuan),
 	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
 );
@@ -110,12 +110,54 @@ INSERT INTO tb_jabatan (nama_jabatan) VALUES
 ("Kepala Ruangan"),
 ("Pegawai");
 
-INSERT INTO tb_pegawai (id_jabatan, username, password_pg, nip, nama, no_hp, email,
-alamat, kecamatan, kabupaten, negara, agama, jenis_kelamin, golongan_darah, 
-tempat_lahir, tgl_lahir, status_kawin, no_ktp, file_ktp, tahun_masuk, jenis_kontrak,
-bidang, ruangan) VALUES 
-("1", "admin", "admin", "1", "Test", "081", "test@gmail.com", "Jl. Test", "Kec. Test", "Kab. Test", 
-"Neg. Test", "Agama", "L", "A", "Test", "2012-12-12", "Kawin", "5555", "", "2012", "Test", "Bd. Test", "R. Test"),
-("1", "admin2", "admin", "1", "Test", "081", "test@gmail.com", "Jl. Test", "Kec. Test", "Kab. Test", 
-"Neg. Test", "Agama", "L", "A", "Test", "2012-12-12", "Kawin", "5555", "", "2012", "Test", "Bd. Test", "R. Test");
-
+INSERT INTO tb_pegawai (
+	id_jabatan,
+	username,
+	email,
+	password_pg,
+	nip,
+	nama,
+	foto_profile,
+	no_hp,
+	alamat,
+	kecamatan,
+	kabupaten,
+	negara,
+	agama,
+	jenis_kelamin,
+	golongan_darah,
+	tempat_lahir,
+	tgl_lahir,
+	status_kawin,
+	no_ktp,
+	file_ktp,
+	tahun_masuk,
+	jenis_kontrak,
+	bidang,
+	ruangan
+) VALUES (
+	"1", 
+	"admin", 
+	"test@gmail.com", 
+	"$2y$10$muK9xltRI5MxRJwcfozGjepKNMElNZLoArpDumW9tjyv3NeAyEdUy", 
+	"123",
+	"Test",
+	"", 
+	"081", 
+	"Jl. Test", 
+	"Kec. Test", 
+	"Kab. Test", 
+	"Neg. Test", 
+	"Agama", 
+	"L", 
+	"A", 
+	"Test", 
+	"2012-12-12", 
+	"Kawin", 
+	"5555", 
+	"", 
+	"2012", 
+	"Pegawai Tetap", 
+	"Bd. Test", 
+	"R. Test"
+);
