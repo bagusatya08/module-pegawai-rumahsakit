@@ -48,7 +48,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     <a class="nav-link" href="pengajuan.php">Pengajuan</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="login.php">Login</a>
+                                        <a class="nav-link" href="profile.php">Profile</a>
                                     </li>  
                                 </ul>
                             </div>

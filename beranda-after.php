@@ -59,8 +59,8 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     </li>
                                     <li class="nav-item">
                                     <a class="nav-link" href="profile.php">
-                                        <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/>
-                                        <!-- Profile -->
+                                        <!-- <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/> -->
+                                        Profile
                                     </a>
                                     </li>
                                 </ul>
@@ -101,7 +101,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                         </tr>
                         <tr>
                         <th>12/12/2020</th>
-                        <td>Pembaruan Ketentuan Cuti Persalinan dan Cuti Tahunan</td>
+                        <td><a href="pengumuman.php" style="text-decoration:none; color: black">Pembaruan Ketentuan Cuti Persalinan dan Cuti Tahunan</a></td>
                         </tr>
                         <tr>
                         <th>12/12/2020</th>
