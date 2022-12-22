@@ -39,6 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             session_regenerate_id();
             
             $_SESSION["id_pegawai"] = $user["id_pegawai"];
+
+            // session expired
             $_SESSION['EXPIRES'] = time() + 1800; //second
             
             header("Location: beranda-after.php");
