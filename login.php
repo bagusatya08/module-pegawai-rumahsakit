@@ -1,5 +1,11 @@
 <?php
 
+if (isset($_SESSION["id_pegawai"])) { 
+
+    header("location:beranda-after.php");
+
+}
+
 $is_invalid = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
