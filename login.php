@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"];
     
     $sql = "SELECT * FROM tb_pegawai 
-            WHERE username_pegawai = '$username'";
+            WHERE username = '$username'";
     
     $result = mysqli_query($conn, $sql);
     
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     if ($user) {
 
-        if (password_verify($password, $user["password_pegawai"])) {
+        if (password_verify($password, $user["password_pg"])) {
             session_start();
             
             session_regenerate_id();
