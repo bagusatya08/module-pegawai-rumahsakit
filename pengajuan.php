@@ -1,3 +1,13 @@
+<?php 
+
+if (!isset($_SESSION["id_pegawai"])) { 
+
+    header("location:login.php");
+
+} 
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

@@ -1,6 +1,10 @@
 <?php
 session_start();
-if (isset($_SESSION["id_pegawai"])) { 
+if (!isset($_SESSION["id_pegawai"])) { 
+
+    header("location:login.php");
+
+} else { 
 
     $mysqli = require __DIR__ . "/dbConnection.php";
 
@@ -12,7 +16,7 @@ if (isset($_SESSION["id_pegawai"])) {
     $user = mysqli_fetch_array($result);
 }
 
-$user["foto_profile"];
+// $user["foto_profile"];
 // $nip["username_pegawai"];
 
 ?>
