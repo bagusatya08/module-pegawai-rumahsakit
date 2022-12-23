@@ -4,8 +4,10 @@ session_start();
 
 // jika waktu session habis (tak set 30m)
 if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+
     session_destroy();
     $_SESSION = array();
+    
 }
 
 if (isset($_SESSION["id_pegawai"])) { 
@@ -18,21 +20,37 @@ $is_invalid = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
-    $mysqli = require __DIR__ . "/dbConnection.php";
+    // $mysqli = require __DIR__ . "/dbConnection.php";
+
+    // // connect to the database and select the publisher
+    require './dbConnection.php';
 
     // Pindahkan data dari form ke variabel
     $username = $_POST["username"];
     $password = $_POST["password"];
     
-    $sql = "SELECT * FROM tb_pegawai 
-            WHERE username = '$username'";
+    // $sql = "SELECT * FROM tb_pegawai 
+    //         WHERE username = '$username'";
     
-    $result = mysqli_query($conn, $sql);
+    // $result = mysqli_query($conn, $sql);
     
-    $user = mysqli_fetch_array($result);
+    // $user = mysqli_fetch_array($result);
+
+
+    $sql = 'SELECT *
+            FROM tb_pegawai
+            WHERE username = :username';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':username', $username, PDO::PARAM_STR);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    // echo $username;
+    // echo $password;
+    // echo password_verify($password, $user["password_pg"]);
     
     if ($user) {
-
         if (password_verify($password, $user["password_pg"])) {
             session_start();
             

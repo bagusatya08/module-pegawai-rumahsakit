@@ -14,18 +14,26 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 } else { 
 
-    $mysqli = require __DIR__ . "/dbConnection.php";
+    require "./dbConnection.php";
 
-    $sql = "SELECT * FROM tb_pegawai
-            WHERE id_pegawai = {$_SESSION["id_pegawai"]}";
+    // $sql = "SELECT * FROM tb_pegawai
+    //         WHERE id_pegawai = {$_SESSION["id_pegawai"]}";
 
-    $result = mysqli_query($conn, $sql);
+    // $result = mysqli_query($conn, $sql);
 
-    $user = mysqli_fetch_array($result);
+    // $user = mysqli_fetch_array($result);
+
+    $sql = 'SELECT *
+            FROM tb_pegawai
+            WHERE id_pegawai = :id_pegawai';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
 }
 
-// $user["foto_profile"];
-// $nip["username_pegawai"];
 
 ?>
 
