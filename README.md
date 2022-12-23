@@ -9,5 +9,5 @@ tiap ada ngubah sesuatu taruh di readme ya supaya jelas
 * [22 Desembber]  - Rai   - backend session (redirect and expires)
                           - backend db
 * [23 Desembber]  - Rai   - migration db ekstension, from mysqli to pdo
-                          - add inputakun 
+                          - add inputakun & profile_edit
                           - modify db (tb_pegawai)
