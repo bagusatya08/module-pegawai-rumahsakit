@@ -10,3 +10,4 @@ tiap ada ngubah sesuatu taruh di readme ya supaya jelas
                           - backend db
 * [23 Desembber]  - Rai   - migration db ekstension, from mysqli to pdo
                           - add inputakun 
+                          - modify db (tb_pegawai)
