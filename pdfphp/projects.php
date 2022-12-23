@@ -1,6 +1,6 @@
 <?php
 try {
- include "DatabaseConnection.php";
+ include "../dbConnection.php";
  $sql = "SELECT id, project_name
  FROM project_pdf
  ORDER BY project_name ASC;";

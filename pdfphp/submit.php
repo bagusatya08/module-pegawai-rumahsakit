@@ -11,7 +11,7 @@ if (isset($_POST['submit']) && !empty($_FILES['pdf_file']['name'])) {
         $file_tmp = $_FILES['pdf_file']['tmp_name'];
         if ($pdf_blob = fopen($file_tmp, "rb")) {
             try {
-                include "DatabaseConnection.php";
+                include "../dbConnection.php";
                 $insert_sql = "INSERT INTO `project_pdf` (`project_name`, `pdf_doc`)
                 VALUES(:project_name, :pdf_doc);";
                 $stmt = $pdo->prepare($insert_sql);
