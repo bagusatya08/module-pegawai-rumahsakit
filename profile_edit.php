@@ -307,10 +307,10 @@ if (!isset($_SESSION["id_pegawai"])) {
         
         <!-- Button Div -->
         <div class="container d-lg-flex flex-row justify-content-between" style="margin-top: 5vh;">  
-            <a href="logout.php">
-                <button type="button" class="btn btn-primary btn-lg">Logout</button>
+            <a href="profile.php">
+                <button type="button" class="btn btn-danger btn-lg">Cancel</button>
             </a>
-            <input type="submit" name="submit" class="btn btn-primary btn-lg"></input>
+            <input type="submit" name="submit" class="btn btn-success btn-lg"></input>
         </div>
         <!-- END Button Div -->
     </form>
