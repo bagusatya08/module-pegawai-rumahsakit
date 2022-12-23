@@ -150,7 +150,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                     </tr>
                     <tr>
                     <td>Nomor KTP<br><?= $user['no_ktp']; ?></td>
-                    <td>File KTP<br><?= $user['file_ktp']; ?></td>
+                    <td>File KTP<br><a download="file_ktp.PDF" href="data:application/pdf;base64, <?php echo base64_encode($user['file_ktp']) ?>">Download</a></td>
                     </tr>
                     <tr>
                     <td colspan="2">Nomor Telepon<br><?= $user['no_hp']; ?></td>
