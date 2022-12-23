@@ -120,7 +120,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                     </tr>
                     <tr>
                     <td>Jenis Kelamin<br><?= $user['jenis_kelamin']; ?></td>
-                    <td>Agama<br>Hindu</td>
+                    <td>Agama<br><?= $user['agama']; ?></td>
                     </tr>
                     <tr>
                     <td>Status Perkawinan<br><?= $user['status_kawin']; ?></td>
@@ -166,7 +166,9 @@ if (!isset($_SESSION["id_pegawai"])) {
         <a href="logout.php">
             <button type="button" class="btn btn-primary btn-lg">Logout</button>
         </a>
-        <button type="button" class="btn btn-primary btn-lg">Simpan</button>
+        <a href="profile_edit.php">
+            <button type="button" class="btn btn-primary btn-lg">Edit</button>
+        </a>
     </div>
     <!-- END Button Div -->
     

@@ -203,6 +203,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="agama">Agama</label>
         <select name="agama">
+            <option value="none" selected disabled hidden>Pilih</option>
             <option value="Hindu">Hindu</option>
             <option value="Islam">Islam</option>     
             <option value="Kristen Katolik">Kristen Katolik</option>    
@@ -214,6 +215,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="jenis_kelamin">Jenis Kelamin</label>
         <select name="jenis_kelamin">
+            <option value="none" selected disabled hidden>Pilih</option>
             <option value="L">Laki-laki</option>
             <option value="P">Perempuan</option>     
         </select>    
@@ -221,6 +223,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="golongan_darah">Golongan Darah</label>
         <select name="golongan_darah">
+            <option value="none" selected disabled hidden>Pilih</option>
             <option value="A">A</option>
             <option value="B">B</option> 
             <option value="AB">AB</option> 
@@ -238,6 +241,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="status_kawin">Status Kawin</label>
         <select name="status_kawin">
+            <option value="none" selected disabled hidden>Pilih</option>
             <option value="Kawin">Kawin</option>
             <option value="Belum Kawin">Belum Kawin</option> 
         </select>    
