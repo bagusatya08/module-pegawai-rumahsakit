@@ -46,6 +46,7 @@ CREATE TABLE tb_jadwal(
 	shift VARCHAR(255),
 	STATUS VARCHAR(255),
 	tgl DATE,
+	status_jadwal ENUM('Y','N'),
 	PRIMARY KEY(id_jadwal)
 );
 
@@ -62,6 +63,7 @@ CREATE TABLE tb_pengumuman(
 	tgl DATE,
 	konten TEXT,
 	media MEDIUMBLOB,
+	status_pengumuman ENUM('Y','N'),
 	PRIMARY KEY(id_pengumuman)
 );
 
@@ -78,6 +80,7 @@ CREATE TABLE tb_panduan(
 	tgl DATE,
 	konten TEXT,
 	media MEDIUMBLOB,
+	status_pengumuman ENUM('Y','N'),
 	PRIMARY KEY(id_panduan)
 );
 
@@ -94,7 +97,7 @@ CREATE TABLE tb_pengajuan(
 	judul VARCHAR(30),
 	tgl_masuk DATE,
 	tgl_konfirmasi DATE,
-	STATUS VARCHAR(255),
+	status_pengajuan VARCHAR(255),
 	konten TEXT,
 	media MEDIUMBLOB,
 	PRIMARY KEY(id_pengajuan),
