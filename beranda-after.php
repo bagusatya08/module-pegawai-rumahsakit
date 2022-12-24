@@ -6,14 +6,13 @@ session_start();
 if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     session_destroy();
     $_SESSION = array();
+
 }
 
 if (!isset($_SESSION["id_pegawai"])) { 
-
     header("location:login.php");
 
 } else { 
-
     require "./dbConnection.php";
 
     // $sql = "SELECT * FROM tb_pegawai
@@ -31,10 +30,23 @@ if (!isset($_SESSION["id_pegawai"])) {
     $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
     $statement->execute();
     $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT p.*
+            FROM tb_pengumuman AS p
+            INNER JOIN tb_pengumuman_detail AS pd
+            ON pd.id_pengumuman = p.id_pengumuman
+            INNER JOIN tb_pegawai AS pg
+            ON pg.id_pegawai = pd.id_pegawai
+            WHERE pg.id_pegawai = :id_pegawai
+            ;
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $stmt->execute();
+    // $pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
     
 }
-
-// $user["foto_profile"];
 
 ?>
 
@@ -105,18 +117,16 @@ if (!isset($_SESSION["id_pegawai"])) {
                 <h2>Pengumuman</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
-                        <tr>
-                        <th>12/12/2020</th>
-                        <td>Pengumuman Panitia Aniversary Rumah Sakit</td>
-                        </tr>
-                        <tr>
-                        <th>12/12/2020</th>
-                        <td><a href="pengumuman.php" style="text-decoration:none; color: black">Pembaruan Ketentuan Cuti Persalinan dan Cuti Tahunan</a></td>
-                        </tr>
-                        <tr>
-                        <th>12/12/2020</th>
-                        <td>Pemberitahuan Ketentuan Baru Penanganan Pasien BPJS</td>
-                        </tr>
+                        <?php while ($pengumuman = $stmt->fetch(PDO::FETCH_ASSOC)) : ?>
+                            <tr>
+                                <th>
+                                    <a href="./pengumuman.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['tgl'] ?></a>
+                                </th>
+                                <td>
+                                    <a href="./pengumuman.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['judul'] ?></a>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>

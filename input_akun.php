@@ -7,44 +7,92 @@ $sql = 'SELECT *
 $statement = $pdo->query($sql);
 
 
-if (isset($_POST['submit'])) {
-
+if (isset($_POST['submit']) 
+        && $_POST['username'] != '' 
+        && $_POST['email'] != '' 
+        && $_POST['password'] != ''
+        && $_POST['jabatan'] != 'null'
+        && $nip = $_POST['nip'] != ''
+        && $_POST['nama'] != ''
+        && $_POST['tahun_masuk'] != ''
+        && $_POST['jenis_kontrak'] != ''
+        && $_POST['bidang'] != ''
+        && $_POST['ruangan'] != ''
+    ) {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $id_jabatan = $_POST['jabatan'];
     $nip = $_POST['nip'];
     $nama = $_POST['nama'];
-    // $foto_profile = $_FILES['foto_profile'];
     $no_hp = $_POST['no_hp'];
     $alamat = $_POST['alamat'];
     $kecamatan = $_POST['kecamatan'];
     $kabupaten = $_POST['kabupaten'];
     $negara = $_POST['negara'];
-    $agama = $_POST['agama'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $golongan_darah = $_POST['golongan_darah'];
     $tempat_lahir = $_POST['tempat_lahir'];
     $tgl_lahir = $_POST['tgl_lahir'];
-    $status_kawin = $_POST['status_kawin'];
     $no_ktp = $_POST['no_ktp'];
     $tahun_masuk = $_POST['tahun_masuk'];
     $jenis_kontrak = $_POST['jenis_kontrak'];
     $bidang = $_POST['bidang'];
     $ruangan = $_POST['ruangan'];
 
-    // $name = $_FILES['foto_profile']['name'];
-    // $foto_profile = $_FILES['foto_profile']['tmp_name'];
-    // $foto_profile = base64_encode(file_get_contents(addslashes($foto_profile)));
-    $foto_profile= $_FILES['foto_profile']['tmp_name'];
-    $img_blob = fopen($foto_profile, "rb");
+    if ($_POST['agama'] != 'null') {
+        $agama = $_POST['agama'];
 
+    } else {
+        $agama = null;
 
-    //attached pdf file information
-    // $file_ktp_name = $_FILES['file_ktp']['name'];
-    $file_ktp = $_FILES['file_ktp']['tmp_name'];
-    $pdf_blob = fopen($file_ktp, "rb");
+    }
 
+    if ($_POST['jenis_kelamin'] != 'null') {
+        $jenis_kelamin = $_POST['jenis_kelamin'];
+
+    } else {
+        $jenis_kelamin = null;
+
+    }
+
+    if ($_POST['golongan_darah'] != 'null') {
+        $golongan_darah = $_POST['golongan_darah'];
+
+    } else {
+        $golongan_darah = null;
+
+    }
+
+    if ($_POST['status_kawin'] != 'null') {
+        $status_kawin = $_POST['status_kawin'];
+
+    } else {
+        $status_kawin = null;
+
+    }
+
+    if ($_FILES['foto_profile']['size'] != 0) {
+        // $name = $_FILES['foto_profile']['name'];
+        // $foto_profile = $_FILES['foto_profile']['tmp_name'];
+        // $foto_profile = base64_encode(file_get_contents(addslashes($foto_profile)));
+        $foto_profile= $_FILES['foto_profile']['tmp_name'];
+        $img_blob = fopen($foto_profile, "rb"); 
+
+    } else {
+        $img_blob = null;
+
+    }
+
+    if ($_FILES['file_ktp']['size'] != 0) {
+        //attached pdf file information
+        // $file_ktp_name = $_FILES['file_ktp']['name'];
+        $file_ktp = $_FILES['file_ktp']['tmp_name'];
+        $pdf_blob = fopen($file_ktp, "rb");
+
+    } else {
+        $pdf_blob = null;
+
+    }
+   
     try {
         $sql = "INSERT INTO tb_pegawai(
                         id_jabatan,
@@ -126,21 +174,18 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':ruangan', $ruangan);
 
         if ($stmt->execute() === FALSE) {
-
             echo 'Could not save information to the database';
-
-        } else {
-
-            echo 'Information saved';
 
         }
 
     } catch (PDOException $e) {
-
         echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
         ': '. $e->getLine(); 
 
     }   
+
+} else {
+    echo 'Could not save information to the database, data not complete';
 
 }
 
@@ -149,31 +194,32 @@ if (isset($_POST['submit'])) {
 
 <form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
     <div>
-        <label for="username">Username</label>
+        <label for="username">Username*</label>
         <input type="text" name="username"/>
     </div>
     <div>
-        <label for="email">Email</label>
+        <label for="email">Email*</label>
         <input type="email" name="email"/>
     </div>
     <div>
-        <label for="password">Password</label>
-        <input type="text" name="password"/>
+        <label for="password">Password*</label>
+        <input type="password" name="password"/>
     </div>
     <div>
-        <label for="jabatan">Jabatan</label>
+        <label for="jabatan">Jabatan*</label>
         <select name="jabatan">
+            <option value='null' selected hidden>Pilih</option>
         <?php while ($jbt = $statement->fetch(PDO::FETCH_ASSOC)) : ?>
             <option value="<?php echo $jbt['id_jabatan'] ?>"><?php echo $jbt['nama_jabatan'] ?></option>
         <?php endwhile; ?>
         </select>    
     </div>
     <div>
-        <label for="nip">NIP</label>
+        <label for="nip">NIP*</label>
         <input type="text" name="nip"/>
     </div>
     <div>
-        <label for="nama">Nama</label>
+        <label for="nama">Nama*</label>
         <input type="text" name="nama"/>
     </div>
     <div>
@@ -203,7 +249,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="agama">Agama</label>
         <select name="agama">
-            <option value="none" selected disabled hidden>Pilih</option>
+            <option value='null' selected hidden>Pilih</option>
             <option value="Hindu">Hindu</option>
             <option value="Islam">Islam</option>     
             <option value="Kristen Katolik">Kristen Katolik</option>    
@@ -215,7 +261,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="jenis_kelamin">Jenis Kelamin</label>
         <select name="jenis_kelamin">
-            <option value="none" selected disabled hidden>Pilih</option>
+            <option value='null' selected hidden>Pilih</option>
             <option value="L">Laki-laki</option>
             <option value="P">Perempuan</option>     
         </select>    
@@ -223,7 +269,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="golongan_darah">Golongan Darah</label>
         <select name="golongan_darah">
-            <option value="none" selected disabled hidden>Pilih</option>
+            <option value='null' selected hidden>Pilih</option>
             <option value="A">A</option>
             <option value="B">B</option> 
             <option value="AB">AB</option> 
@@ -241,7 +287,7 @@ if (isset($_POST['submit'])) {
     <div>
         <label for="status_kawin">Status Kawin</label>
         <select name="status_kawin">
-            <option value="none" selected disabled hidden>Pilih</option>
+            <option value='null' selected hidden>Pilih</option>
             <option value="Kawin">Kawin</option>
             <option value="Belum Kawin">Belum Kawin</option> 
         </select>    
@@ -256,19 +302,19 @@ if (isset($_POST['submit'])) {
         <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
     </div>
     <div>
-        <label for="tahun_masuk">Tahun Masuk</label>
+        <label for="tahun_masuk">Tahun Masuk*</label>
         <input type="number" name="tahun_masuk" min="1950" max="2023" step="1" value="2016"/>
     </div>
     <div>
-        <label for="jenis_kontrak">Jenis Kontrak</label>
+        <label for="jenis_kontrak">Jenis Kontrak*</label>
         <input type="text" name="jenis_kontrak"/>
     </div>
     <div>
-        <label for="bidang">Bidang</label>
+        <label for="bidang">Bidang*</label>
         <input type="text" name="bidang"/>
     </div>
     <div>
-        <label for="ruangan">Ruangan</label>
+        <label for="ruangan">Ruangan*</label>
         <input type="text" name="ruangan"/>
     </div>
     <div>

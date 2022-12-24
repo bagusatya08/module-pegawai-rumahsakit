@@ -9,11 +9,9 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 }
 
 if (!isset($_SESSION["id_pegawai"])) { 
-
     header("location:login.php");
 
 } else { 
-
     require "./dbConnection.php";
 
     // $sql = "SELECT * FROM tb_pegawai
@@ -33,7 +31,6 @@ if (!isset($_SESSION["id_pegawai"])) {
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 }
-
 
 ?>
 
@@ -153,7 +150,8 @@ if (!isset($_SESSION["id_pegawai"])) {
                     <td>File KTP<br><a download="file_ktp.PDF" href="data:application/pdf;base64, <?php echo base64_encode($user['file_ktp']) ?>">Download</a></td>
                     </tr>
                     <tr>
-                    <td colspan="2">Nomor Telepon<br><?= $user['no_hp']; ?></td>
+                    <td>Nomor Telepon<br><?= $user['no_hp']; ?></td>
+                    <td>Email<br><?= $user['email']; ?></td>
                     </tr>
                 </tbody>
             </table>

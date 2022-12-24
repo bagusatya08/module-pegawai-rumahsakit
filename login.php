@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require './dbConnection.php';
 
     // Pindahkan data dari form ke variabel
-    $username = $_POST["username"];
+    $username_email = $_POST["username_email"];
     $password = $_POST["password"];
     
     // $sql = "SELECT * FROM tb_pegawai 
@@ -39,10 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $sql = 'SELECT *
             FROM tb_pegawai
-            WHERE username = :username';
+            WHERE username = :username
+            OR email = :email
+            ;
+    ';
 
     $statement = $pdo->prepare($sql);
-    $statement->bindParam(':username', $username, PDO::PARAM_STR);
+    $statement->bindParam(':username', $username_email, PDO::PARAM_STR);
+    $statement->bindParam(':email', $username_email, PDO::PARAM_STR);
     $statement->execute();
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -92,8 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="d-flex flex-row justify-content-center">
             <form class="form" id="form" method="POST">
                     <div class="d-flex flex-column justify-content-center input">    
-                        <p>username</p>
-                        <input type="text" name="username" id="username" placeholder="Masukan Username" value="<?= htmlspecialchars($_POST["username"] ?? "") ?>">
+                        <p>username/email</p>
+                        <input type="text" name="username_email" id="username" placeholder="Masukan Username" value="<?= htmlspecialchars($_POST["username_email"] ?? "") ?>">
                     </div>
                     <div class="d-flex flex-column justify-content-center input">    
                         <p>password</p>

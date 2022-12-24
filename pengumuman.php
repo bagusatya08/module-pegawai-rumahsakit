@@ -6,13 +6,29 @@ session_start();
 if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     session_destroy();
     $_SESSION = array();
+
 }
 
 if (!isset($_SESSION["id_pegawai"])) { 
-
     header("location:login.php");
 
 } 
+
+$id_pengumuman = $_GET['id_pengumuman'];
+// echo $id_pengumuman;
+
+require "./dbConnection.php";
+
+$sql = "SELECT *
+        FROM tb_pengumuman
+        WHERE id_pengumuman = :id_pengumuman
+;
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
+$stmt->execute();
+$pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -59,23 +75,20 @@ if (!isset($_SESSION["id_pegawai"])) {
             <div class="d-lg-flex flex-row justify-content-start">
                 <div class="d-flex flex-column justify-content-start content">
                     <div class="d-flex flex-row justify-content-start">
-                        <h4>Pembaruan Ketentuan Cuti<br>Persalinan & Cuti Tahunan</h4>
+                        <h4><?= $pengumuman['judul']; ?></h4>
                     </div>
                     <div class="d-flex flex-row justify-content-start">
                         <p style="padding-right:30px;">Pengumuman</p>
-                        <p>08/09/2022</p>
+                        <p><?= $pengumuman['tgl']; ?></p>
                     </div>
                     <div class="d-flex flex-row justify-content-start main-content">
-                        <p>Pembaruan ketentuan cuti persalinan dan cuti tahunan sebagaimana yang telah terlaksana akan diperbaharui & mulai berlaku aktif
-                            pada Senin, 29 Agustus 2022. Adapun alasan diberlakukannya ketentuan baru adalah karena beberapa alasan administrasi dan
-                            juga atas hasil kesepakatan bersama melalui meeting pada bulan Juli lalu ditetapkan bahwa peraturan yang baru dinilai lebih efektif
-                            dan produktif terhadap seluruh karyawan. Poin-poin ketentuan baru telah dicantumkan pada lampiran berikut dan diharapkan
-                            seluruh pegawai dapat membaca ketentuan baru sebelum kemudian akan diterapkan di tanggal yang telah disebutkan.</p>
+                        <p><?= $pengumuman['konten']; ?></p>
                     </div>
                 </div>
-                    <div class="d-flex flex-column justify-content-center" style="margin-left: 16%;">
-                        <iframe src="img/content.pdf" frameborder="0" height="80%"></iframe>
-                    </div>
+                <div class="d-flex flex-column justify-content-center" style="margin-left: 16%;">
+                    <iframe src="data:application/pdf;base64, <?php echo base64_encode($pengumuman['media']) ?>" frameborder="0" height="80%"></iframe>
+                    <a title="Download PDF" download="<?= $pengumuman['tgl']; ?>_<?= $pengumuman['judul']; ?>.PDF" href="data:application/pdf;base64, <?php echo base64_encode($pengumuman['media']) ?>">Download</a>        
+                </div>
             </div>
         </div>
         <div class="d-flex flex-row-lg justify-content-evenly footer">

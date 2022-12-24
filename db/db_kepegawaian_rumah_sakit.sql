@@ -38,7 +38,9 @@ CREATE TABLE tb_pegawai(
 	tgl_buat TIMESTAMP,
 	PRIMARY KEY(id_pegawai),
 	FOREIGN KEY(id_jabatan) REFERENCES tb_jabatan(id_jabatan),
-	UNIQUE(username)
+	UNIQUE(username),
+	UNIQUE(nip),
+	UNIQUE(no_ktp)
 );
 
 CREATE TABLE tb_jadwal(
@@ -209,12 +211,12 @@ INSERT INTO tb_pegawai (
 	"Kec. rey", 
 	"Kab. rey", 
 	"Neg. rey", 
-	"Agama", 
-	"L", 
-	"A", 
+	NULL, 
+	NULL, 
+	NULL, 
 	"rey", 
 	"2012-12-12", 
-	"Balum Kawin", 
+	NULL, 
 	"8888", 
 	"", 
 	"2014", 

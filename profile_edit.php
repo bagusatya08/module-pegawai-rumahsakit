@@ -6,14 +6,13 @@ session_start();
 if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     session_destroy();
     $_SESSION = array();
+
 }
 
 if (!isset($_SESSION["id_pegawai"])) { 
-
     header("location:login.php");
 
 } else { 
-
     require "./dbConnection.php";
 
     $sql = 'SELECT *
@@ -27,12 +26,15 @@ if (!isset($_SESSION["id_pegawai"])) {
 
     if ($user['jenis_kelamin'] == 'L') {
         $jk = 'Laki-laki';
+
     } else {
         $jk = 'Perempuan';
+
     }
 
     if (isset($_POST['submit'])) {
 
+        $email = $_POST['email'];
         $nama = $_POST['nama'];
         $no_hp = $_POST['no_hp'];
         $alamat = $_POST['alamat'];
@@ -49,22 +51,27 @@ if (!isset($_SESSION["id_pegawai"])) {
     
         if ($_FILES['foto_profile']['size'] != 0) {
             $foto_profile= $_FILES['foto_profile']['tmp_name'];
-            $img_blob = fopen($foto_profile, "rb");    
+            $img_blob = fopen($foto_profile, "rb");  
+
         } else {
             $img_blob = $user['foto_profile'];
+
         }
 
         if ($_FILES['file_ktp']['size'] != 0) {
             $file_ktp = $_FILES['file_ktp']['tmp_name'];
             $pdf_blob = fopen($file_ktp, "rb");
+
         } else {
             $pdf_blob = $user['file_ktp'];
+
         }
        
     
         try {
             $sql = "UPDATE tb_pegawai
                     SET 
+                        email = :email,
                         nama = :nama,
                         no_hp = :no_hp,
                         alamat = :alamat,
@@ -82,9 +89,10 @@ if (!isset($_SESSION["id_pegawai"])) {
                         file_ktp = :file_ktp
                     WHERE 
                         id_pegawai = :id_pegawai;
-                    ";
+            ";
     
             $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':email', $email);
             $stmt->bindParam(':nama', $nama);
             $stmt->bindParam(':no_hp', $no_hp);
             $stmt->bindParam(':alamat', $alamat);
@@ -103,17 +111,14 @@ if (!isset($_SESSION["id_pegawai"])) {
             $stmt->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
             
             if ($stmt->execute() === FALSE) {
-    
                 echo 'Could not save information to the database';
     
             } else {
-    
                 header("Location: profile.php");
     
             }
     
         } catch (PDOException $e) {
-    
             echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
             ': '. $e->getLine(); 
     
@@ -295,8 +300,11 @@ if (!isset($_SESSION["id_pegawai"])) {
                         </td>
                         </tr>
                         <tr>
-                        <td colspan="2">Nomor Telepon<br>
+                        <td>Nomor Telepon<br>
                         <input type="tel" name="no_hp" value="<?= $user['no_hp']; ?>"/>
+                        </td>
+                        <td>Email<br>
+                        <input type="email" name="email" value="<?= $user['email']; ?>"/>
                         </td>
                         </tr>
                     </tbody>
