@@ -61,18 +61,23 @@ if (!isset($_SESSION["id_pegawai"])) {
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
                         <tr>
-                        <td>Pesyaratan</td>
+                        <td colspan="2">Pesyaratan</td>
                         </tr>
                         <tr>
-                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+                        <td colspan="2">Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
 adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
 verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
                         </td>
                         </tr>
                         <tr>
-                        <td>Isian Formulir</td>
+                        <td colspan="2">Isian Formulir</td>
                         </tr>
                         <tr>
+                        <tr>
+                        <td colspan="2">Riwayat</td>
+                        </tr>
+                        <tr>
+                        <td>22-12-2022</td>
                         <td>Status Pengujian</td>
                         </tr>
                     </tbody>
@@ -84,19 +89,24 @@ verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin
                 <h2>Pengajuan Cuti Melahirkan</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
-                        <tr>
-                        <td>Pesyaratan</td>
+                    <tr>
+                        <td colspan="2">Pesyaratan</td>
                         </tr>
                         <tr>
-                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+                        <td colspan="2">Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
 adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
 verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
                         </td>
                         </tr>
                         <tr>
-                        <td>Isian Formulir</td>
+                        <td colspan="2">Isian Formulir</td>
                         </tr>
                         <tr>
+                        <tr>
+                        <td colspan="2">Riwayat</td>
+                        </tr>
+                        <tr>
+                        <td>22-12-2022</td>
                         <td>Status Pengujian</td>
                         </tr>
                     </tbody>
@@ -108,19 +118,24 @@ verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin
                 <h2>Pengajuan Naik Tingkat</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
-                        <tr>
-                        <td>Pesyaratan</td>
+                    <tr>
+                        <td colspan="2">Pesyaratan</td>
                         </tr>
                         <tr>
-                        <td>Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
+                        <td colspan="2">Setiap pegawai memiliki hal sejumlah 2 kali cuti tahunan yang dapat diambil dengan durasi setiap cuti maksimal 3 hari dengan total jumlah hari cuti yang dapat diperoleh tiap tahun
 adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang kemudian akan diverifikasi 2 tahap dimulai dari verifikasi kepala ruangan dan dilanjutkan kepada 
 verifikasi kepala bidang yang kemudian akan dihasilkan konfirmasi pemberian izin cuti tahunan.
                         </td>
                         </tr>
                         <tr>
-                        <td>Isian Formulir</td>
+                        <td colspan="2">Isian Formulir</td>
                         </tr>
                         <tr>
+                        <tr>
+                        <td colspan="2">Riwayat</td>
+                        </tr>
+                        <tr>
+                        <td>22-12-2022</td>
                         <td>Status Pengujian</td>
                         </tr>
                     </tbody>
