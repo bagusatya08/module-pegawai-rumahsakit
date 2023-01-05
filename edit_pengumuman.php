@@ -2,7 +2,7 @@
 
 
 
-$id_pengumuman = 1;
+$id_pengumuman = $_GET['id_pengumuman'];
 
 require './dbConnection.php';
 
