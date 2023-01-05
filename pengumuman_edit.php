@@ -17,6 +17,13 @@ $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
 $stmt->execute();
 $pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($pengumuman['status_pengumuman'] == 'Y') {
+    $st = 'Aktif';
+
+} else {
+    $st = 'Tidak Aktif';
+
+}
 
 $sql = "SELECT *
         FROM tb_pengumuman_detail
@@ -45,6 +52,7 @@ if (isset($_POST['submit'])) {
     $tgl = $_POST['tgl'];
     $konten = $_POST['konten'];
     $targets = $_POST['target'];
+    $status_pengumuman = $_POST['status_pengumuman'];
 
     if ($_FILES['media']['size'] != 0) {
         $media = $_FILES['media']['tmp_name'];
@@ -62,7 +70,8 @@ if (isset($_POST['submit'])) {
                     judul = :judul,
                     tgl = :tgl,
                     konten = :konten,
-                    media = :media
+                    media = :media,
+                    status_pengumuman = :status_pengumuman
                 WHERE 
                     id_pengumuman = :id_pengumuman;
         ";
@@ -72,6 +81,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':tgl', $tgl);
         $stmt->bindParam(':konten', $konten);
         $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
+        $stmt->bindParam(':status_pengumuman', $status_pengumuman);
         $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
 
         if ($stmt->execute() === FALSE) {
@@ -86,7 +96,7 @@ if (isset($_POST['submit'])) {
                 WHERE judul = :judul
                 AND tgl = :tgl
                 AND konten = :konten
-                AND status_pengumuman = 'Y'
+                AND status_pengumuman = :status_pengumuman
                 ;
         ";
 
@@ -94,6 +104,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':judul', $judul);
         $stmt->bindParam(':tgl', $tgl);
         $stmt->bindParam(':konten', $konten);
+        $stmt->bindParam(':status_pengumuman', $status_pengumuman);
         $stmt->execute();
         $pengumuman_input = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -183,6 +194,14 @@ if (isset($_POST['submit'])) {
             <?php } ?>
         
         <?php endwhile; ?>
+    </div>
+    <div>
+        <label for="status_pengumuman">Status</label>
+        <select name="status_pengumuman">
+        <option value="<?= $pengumuman['status_pengumuman']; ?>" selected hidden><?= $st; ?></option>
+            <option value="Y">Aktif</option>
+            <option value="N">Tidak Aktif</option>     
+        </select>    
     </div>
     <div>
         <input type="submit" name="submit" value="Edit Pengumuman"/>

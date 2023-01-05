@@ -17,6 +17,14 @@ $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
 $stmt->execute();
 $panduan = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($panduan['status_panduan'] == 'Y') {
+    $st = 'Aktif';
+
+} else {
+    $st = 'Tidak Aktif';
+
+}
+
 
 $sql = "SELECT *
         FROM tb_panduan_detail
@@ -45,6 +53,7 @@ if (isset($_POST['submit'])) {
     $tgl = $_POST['tgl'];
     $konten = $_POST['konten'];
     $targets = $_POST['target'];
+    $status_panduan = $_POST['status_panduan'];
 
     if ($_FILES['media']['size'] != 0) {
         $media = $_FILES['media']['tmp_name'];
@@ -62,7 +71,8 @@ if (isset($_POST['submit'])) {
                     judul = :judul,
                     tgl = :tgl,
                     konten = :konten,
-                    media = :media
+                    media = :media,
+                    status_panduan = :status_panduan
                 WHERE 
                     id_panduan = :id_panduan;
         ";
@@ -72,6 +82,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':tgl', $tgl);
         $stmt->bindParam(':konten', $konten);
         $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
+        $stmt->bindParam(':status_panduan', $status_panduan);
         $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
 
         if ($stmt->execute() === FALSE) {
@@ -86,7 +97,7 @@ if (isset($_POST['submit'])) {
                 WHERE judul = :judul
                 AND tgl = :tgl
                 AND konten = :konten
-                AND status_panduan = 'Y'
+                AND status_panduan = :status_panduan
                 ;
         ";
 
@@ -94,6 +105,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':judul', $judul);
         $stmt->bindParam(':tgl', $tgl);
         $stmt->bindParam(':konten', $konten);
+        $stmt->bindParam(':status_panduan', $status_panduan);
         $stmt->execute();
         $panduan_input = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -183,6 +195,14 @@ if (isset($_POST['submit'])) {
             <?php } ?>
         
         <?php endwhile; ?>
+    </div>
+    <div>
+        <label for="status_panduan">Status</label>
+        <select name="status_panduan">
+        <option value="<?= $panduan['status_panduan']; ?>" selected hidden><?= $st; ?></option>
+            <option value="Y">Aktif</option>
+            <option value="N">Tidak Aktif</option>     
+        </select>    
     </div>
     <div>
         <input type="submit" name="submit" value="Edit Panduan"/>

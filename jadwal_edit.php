@@ -17,6 +17,14 @@ $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
 $stmt->execute();
 $jadwal = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($jadwal['status_jadwal'] == 'Y') {
+    $st = 'Aktif';
+
+} else {
+    $st = 'Tidak Aktif';
+
+}
+
 
 $sql = "SELECT *
         FROM tb_jadwal_detail
@@ -44,6 +52,7 @@ if (isset($_POST['submit'])) {
     $shift = $_POST['shift'];
     $tgl = $_POST['tgl'];
     $targets = $_POST['target'];
+    $status_jadwal = $_POST['status_jadwal'];
 
     if ($shift == 'Pagi') {
         $jam = '07:00-15:00';
@@ -62,7 +71,8 @@ if (isset($_POST['submit'])) {
                 SET
                     shift = :shift,
                     jam = :jam,
-                    tgl = :tgl
+                    tgl = :tgl,
+                    status_jadwal = :status_jadwal
                 WHERE 
                     id_jadwal = :id_jadwal;
         ";
@@ -71,6 +81,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':shift', $shift);
         $stmt->bindParam(':jam', $jam);
         $stmt->bindParam(':tgl', $tgl);
+        $stmt->bindParam(':status_jadwal', $status_jadwal);
         $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
 
         if ($stmt->execute() === FALSE) {
@@ -84,7 +95,7 @@ if (isset($_POST['submit'])) {
                 WHERE shift = :shift
                 AND jam = :jam
                 AND tgl = :tgl
-                AND status_jadwal = 'Y'
+                AND status_jadwal = :status_jadwal
                 ;
         ";
 
@@ -92,6 +103,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':shift', $shift);
         $stmt->bindParam(':jam', $jam);
         $stmt->bindParam(':tgl', $tgl);
+        $stmt->bindParam(':status_jadwal', $status_jadwal);
         $stmt->execute();
         $jadwal_input = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -179,7 +191,15 @@ if (isset($_POST['submit'])) {
         <?php endwhile; ?>
     </div>
     <div>
-        <input type="submit" name="submit" value="Buat Jadwal"/>
+        <label for="status_jadwal">Status</label>
+        <select name="status_jadwal">
+        <option value="<?= $jadwal['status_jadwal']; ?>" selected hidden><?= $st; ?></option>
+            <option value="Y">Aktif</option>
+            <option value="N">Tidak Aktif</option>     
+        </select>    
+    </div>
+    <div>
+        <input type="submit" name="submit" value="Edit Jadwal"/>
     </div>
 </form>
 <script src="./js/input_jadwal.js"></script>

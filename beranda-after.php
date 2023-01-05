@@ -38,6 +38,7 @@ if (!isset($_SESSION["id_pegawai"])) {
             INNER JOIN tb_pegawai AS pg
             ON pg.id_pegawai = pd.id_pegawai
             WHERE pg.id_pegawai = :id_pegawai
+            AND p.status_pengumuman = 'Y'
             ;
     ";
 
@@ -54,6 +55,7 @@ if (!isset($_SESSION["id_pegawai"])) {
             INNER JOIN tb_pegawai AS pg
             ON pg.id_pegawai = pd.id_pegawai
             WHERE pg.id_pegawai = :id_pegawai
+            AND p.status_panduan = 'Y'
             ;
     ";
 
