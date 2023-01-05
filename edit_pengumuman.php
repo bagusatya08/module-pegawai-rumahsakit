@@ -2,7 +2,7 @@
 
 
 
-$id_pengumuman = $_GET['id_pengumuman'];
+$id_pengumuman = 1;
 
 require './dbConnection.php';
 
@@ -72,11 +72,13 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':tgl', $tgl);
         $stmt->bindParam(':konten', $konten);
         $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
+        $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
 
         if ($stmt->execute() === FALSE) {
             echo 'Could not save information to the database';
 
         }
+
 
         // input tb_pengumuman_detail
         $sql = "SELECT id_pengumuman
@@ -95,16 +97,28 @@ if (isset($_POST['submit'])) {
         $stmt->execute();
         $pengumuman_input = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+        $sql = 'DELETE FROM tb_pengumuman_detail
+                WHERE id_pengumuman = :id_pengumuman';
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman'], PDO::PARAM_STR);
+        $stmt->execute();
+
+
         foreach ($targets as $target){ 
-            $sql = "UPDATE tb_pengumuman_detail
-                    SET 
-                        id_pegawai = :id_pegawai
-                    WHERE id_pengumuman = :id_pengumuman;
+            $sql = "REPLACE INTO tb_pengumuman_detail(
+                id_pengumuman,
+                id_pegawai
+            )VALUES(
+                :id_pengumuman,
+                :id_pegawai
+            );
             ";
 
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_pegawai', $target);
             $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman']);
+            $stmt->bindParam(':id_pegawai', $target);
 
             if ($stmt->execute() === FALSE) {
 

@@ -56,7 +56,8 @@ CREATE TABLE tb_jadwal_detail(
 	id_jadwal INT AUTO_INCREMENT,
 	id_pegawai INT,
 	FOREIGN KEY(id_jadwal) REFERENCES tb_jadwal(id_jadwal),
-	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+	UNIQUE(id_jadwal, id_pegawai)
 );
 
 CREATE TABLE tb_pengumuman(
@@ -73,7 +74,8 @@ CREATE TABLE tb_pengumuman_detail(
 	id_pengumuman INT AUTO_INCREMENT,
 	id_pegawai INT,
 	FOREIGN KEY(id_pengumuman) REFERENCES tb_pengumuman(id_pengumuman),
-	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+	UNIQUE(id_pengumuman, id_pegawai)
 );
 
 CREATE TABLE tb_panduan(
@@ -90,7 +92,8 @@ CREATE TABLE tb_panduan_detail(
 	id_panduan INT AUTO_INCREMENT,
 	id_pegawai INT,
 	FOREIGN KEY(id_panduan) REFERENCES tb_panduan(id_panduan),
-	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
+	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai),
+	UNIQUE(id_panduan, id_pegawai)
 );
 
 CREATE TABLE tb_pengajuan(
