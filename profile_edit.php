@@ -16,6 +16,42 @@ if (!isset($_SESSION["id_pegawai"])) {
     require "./dbConnection.php";
 
     $sql = 'SELECT *
+            FROM tb_jabatan
+            INNER JOIN tb_pegawai
+                ON tb_pegawai.id_jabatan = tb_jabatan.id_jabatan
+            WHERE id_pegawai = :id_pegawai';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $statement->execute();
+    $user_jabatan = $statement->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql = 'SELECT *
+            FROM tb_bidang
+            INNER JOIN tb_pegawai
+                ON tb_pegawai.id_bidang = tb_bidang.id_bidang
+            WHERE id_pegawai = :id_pegawai';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $statement->execute();
+    $user_bidang = $statement->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql = 'SELECT *
+            FROM tb_ruangan
+            INNER JOIN tb_pegawai
+                ON tb_pegawai.id_ruangan = tb_ruangan.id_ruangan
+            WHERE id_pegawai = :id_pegawai';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $statement->execute();
+    $user_ruangan = $statement->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql = 'SELECT *
             FROM tb_pegawai
             WHERE id_pegawai = :id_pegawai';
 
@@ -185,14 +221,15 @@ if (!isset($_SESSION["id_pegawai"])) {
                         <table class="table table-bordered" style="margin-top: 2vh; width:100%">
                             <tbody>
                                 <tr>
-                                <td colspan="2">NIP<br><?= $user['nip']; ?></td>
+                                <td>NIP<br><?= $user['nip']; ?></td>
+                                <td>Jabatan<br><?= $user_jabatan['nama_jabatan']; ?></td>
                                 </tr>
                                 <tr>
-                                <td>Bidang<br><?= $user['bidang']; ?></td>
+                                <td>Bidang<br><?= $user_bidang['nama_bidang']; ?></td>
                                 <td>Jenis Kontrak<br><?= $user['jenis_kontrak']; ?></td>
                                 </tr>
                                 <tr>
-                                <td>Ruang Kerja<br><?= $user['ruangan']; ?></td>
+                                <td>Ruang Kerja<br><?= $user_ruangan['nama_ruangan']; ?></td>
                                 <td>Tahun Masuk<br><?= $user['tahun_masuk']; ?></td>
                                 </tr>
                             </tbody>
