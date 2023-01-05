@@ -60,7 +60,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                 echo 'Could not save information to the database';
     
             } else {
-                header("Location: pengajuan_admin.php");
+                header("Location: pengajuan.php");
     
             }
         
