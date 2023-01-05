@@ -14,11 +14,9 @@ if (!isset($_SESSION["id_pegawai"])) {
 } else { 
     require "./dbConnection.php";
 
-    $sql = 'SELECT p.*, pg.*
-            FROM tb_pengajuan AS p
-            INNER JOIN tb_pegawai AS pg
-            ON pg.id_pegawai = p.id_pegawai
-            ORDER BY p.id_pengajuan
+    $sql = 'SELECT *
+            FROM tb_jadwal
+            ORDER BY id_jadwal
             ;'
     ;
 
@@ -33,7 +31,7 @@ if (!isset($_SESSION["id_pegawai"])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Data pengajuan</title>
+    <title>Data Jadwal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style/beranda-after.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -49,34 +47,16 @@ if (!isset($_SESSION["id_pegawai"])) {
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav text-center">
                                     <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="beranda-after_admin.php">Beranda</a>
+                                    <a class="nav-link" aria-current="page" href="beranda-after_kepala.php">Beranda</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jadwal_admin.php">Jadwal</a>
+                                    <a class="nav-link" href="jadwal_kepala.php">Jadwal</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="akun.php">Akun</a>
+                                    <a class="nav-link" href="pengajuan_kepala.php">Pengajuan</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jabatan.php">Jabatan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="bidang.php">Bidang</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="ruangan.php">Ruangan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="pengumuman_admin.php">Pengumuman</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="panduan_admin.php">Panduan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="pengajuan_admin.php">Pengajuan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="profile_admin.php">Profile</a>
+                                    <a class="nav-link" href="profile_kepala.php">Profile</a>
                                     </li>
                                 </ul>
                             </div>
@@ -87,54 +67,43 @@ if (!isset($_SESSION["id_pegawai"])) {
         </div>
         <div class="container" style="background-color: #ffff; margin-top: 20vh; border-radius: 26px;">
             <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
-                <h2>Data Pengajuan</h2>
+                <h2>Data Jadwal</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
                         <tr>
+                        <th colspan="6">
+                            <a href="./jadwal_input_k.php" style="text-decoration:none; color: blue">Tambah jadwal</a>
+                        </th>
+                        </tr>
+                        <tr>
                         <th>Id</th>
-                        <th>Nama Pegawai</th>
-                        <th>Jenis</th>
-                        <th>Tanggal Masuk</th>
-                        <th>Tanggal Konfirmasi</th>
+                        <th>Shift</th>
+                        <th>Jam</th>
+                        <th>Tanggal</th>
                         <th>Status</th>
-                        <th>Konten</th>
-                        <th>Media</th>
                         <th></th>
                         </tr>
                         <?php while ($user = $statement->fetch(PDO::FETCH_ASSOC)) : ?>
                             <tr>
                                 <td>
-                                    <?php echo $user['id_pengajuan'] ?>
+                                    <?php echo $user['id_jadwal'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $user['nama'] ?>
+                                    <?php echo $user['shift'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $user['jenis_pengajuan'] ?>
+                                    <?php echo $user['jam'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $user['tgl_masuk'] ?>
+                                    <?php echo $user['tgl'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $user['tgl_konfirmasi'] ?>
+                                    <?php echo $user['status_jadwal'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $user['status_pengajuan'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $user['konten'] ?>
-                                </td>
-                                <td>
-                                    <a download="media.PDF" href="data:application/pdf;base64, <?php echo base64_encode($user['media']) ?>">Download</a>
-                                </td>
-                                <td>
-                                    <a href="./pengajuan_edit_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Edit</a>
+                                    <a href="./jadwal_edit_k.php?id_jadwal=<?= $user['id_jadwal'] ?>" style="text-decoration:none; color: blue">Edit</a>
                                     |
-                                    <a href="./pengajuan_konfirmasi_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: green">Konfirmasi</a>
-                                    |
-                                    <a href="./pengajuan_tolak_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Tolak</a>
-                                    |
-                                    <a href="./pengajuan_hapus_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: red">Hapus</a>
+                                    <a href="./jadwal_hapus_k.php?id_jadwal=<?= $user['id_jadwal'] ?>" style="text-decoration:none; color: red">Hapus</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

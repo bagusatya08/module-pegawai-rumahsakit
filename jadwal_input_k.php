@@ -113,7 +113,7 @@ if (!isset($_SESSION["id_pegawai"])) {
     
         }   
 
-        header("location:jadwal_admin.php");
+        header("location:jadwal_kepala.php");
     
     }    
 

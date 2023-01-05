@@ -49,34 +49,16 @@ if (!isset($_SESSION["id_pegawai"])) {
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav text-center">
                                     <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="beranda-after_admin.php">Beranda</a>
+                                    <a class="nav-link" aria-current="page" href="beranda-after_kepala.php">Beranda</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jadwal_admin.php">Jadwal</a>
+                                    <a class="nav-link" href="jadwal_kepala.php">Jadwal</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="akun.php">Akun</a>
+                                    <a class="nav-link" href="pengajuan_kepala.php">Pengajuan</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jabatan.php">Jabatan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="bidang.php">Bidang</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="ruangan.php">Ruangan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="pengumuman_admin.php">Pengumuman</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="panduan_admin.php">Panduan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="pengajuan_admin.php">Pengajuan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link" href="profile_admin.php">Profile</a>
+                                    <a class="nav-link" href="profile_kepala.php">Profile</a>
                                     </li>
                                 </ul>
                             </div>
@@ -128,13 +110,9 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     <a download="media.PDF" href="data:application/pdf;base64, <?php echo base64_encode($user['media']) ?>">Download</a>
                                 </td>
                                 <td>
-                                    <a href="./pengajuan_edit_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Edit</a>
+                                    <a href="./pengajuan_konfirmasi_k.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: green">Konfirmasi</a>
                                     |
-                                    <a href="./pengajuan_konfirmasi_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: green">Konfirmasi</a>
-                                    |
-                                    <a href="./pengajuan_tolak_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Tolak</a>
-                                    |
-                                    <a href="./pengajuan_hapus_a.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: red">Hapus</a>
+                                    <a href="./pengajuan_tolak_k.php?id_pengajuan=<?= $user['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Tolak</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
