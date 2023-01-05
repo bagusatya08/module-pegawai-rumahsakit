@@ -12,7 +12,34 @@ if (!isset($_SESSION["id_pegawai"])) {
 
     header("location:login.php");
 
-} 
+} else { 
+    require "./dbConnection.php";
+
+    $sql = 'SELECT *
+            FROM tb_pegawai
+            WHERE id_pegawai = :id_pegawai';
+
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT j.*
+            FROM tb_jadwal AS j
+            INNER JOIN tb_jadwal_detail AS jd
+            ON jd.id_jadwal = j.id_jadwal
+            INNER JOIN tb_pegawai AS pg
+            ON pg.id_pegawai = jd.id_pegawai
+            WHERE pg.id_pegawai = :id_pegawai
+            AND j.status_jadwal = 'Y'
+            ;
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $stmt->execute();
+    
+}
 
 ?>
 
@@ -53,11 +80,32 @@ if (!isset($_SESSION["id_pegawai"])) {
                         </div>
                     </nav>
         </div>
-        <div class="container" style="margin-top: 20vh; padding-left:5vw;">
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 0px; height: 0; overflow: hidden;">
-<iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="img/kalender.png" ></iframe>
-</div>
-            <!-- <embed src="img/kalender.png" class="kalender"> -->
+        <div class="container" style="background-color: #ffff; margin-top: 20vh; border-radius: 26px;">
+            <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
+                <h2>Jadwal</h2>
+                <table class="table table-bordered" style="margin-top: 2vh;">
+                    <tbody>
+                        <tr>
+                        <th>Tanggal</th>
+                        <th>Jam</th>
+                        <th>Shift</th>
+                        </tr>
+                        <?php while ($jadwal = $stmt->fetch(PDO::FETCH_ASSOC)) : ?>
+                            <tr>
+                                <td>
+                                    <?php echo $jadwal['tgl'] ?>
+                                </td>
+                                <td>
+                                    <?php echo $jadwal['jam'] ?>
+                                </td>
+                                <td>
+                                    <?php echo $jadwal['shift'] ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="d-flex flex-row-lg justify-content-evenly footer">
             <div class="d-lg-flex flex-row justify-content-between">

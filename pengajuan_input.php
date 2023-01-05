@@ -37,7 +37,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                             CURDATE(),
                             :konten,
                             :media,
-                            'N'
+                            'Pending'
                         );
             ";
     
@@ -49,6 +49,9 @@ if (!isset($_SESSION["id_pegawai"])) {
     
             if ($stmt->execute() === FALSE) {
                 echo 'Could not save information to the database';
+    
+            } else {
+                header("Location: pengajuan.php");
     
             }
         
