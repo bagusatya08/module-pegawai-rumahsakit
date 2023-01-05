@@ -60,13 +60,43 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Bidang</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST">
-    <div>
-        <label for="nama_bidang">Nama Bidang</label>
-        <input type="text" name="nama_bidang" value="<?= $bidang['nama_bidang']; ?>"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Bidang</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST">
+                <div class="form-control">
+                    <label for="nama_bidang">Nama Bidang</label>
+                    <input type="text" name="nama_bidang" value="<?= $bidang['nama_bidang']; ?>"/>
+                </div>
+                <input type="submit" name="submit" class="submit" value="Edit Bidang"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <input type="submit" name="submit" value="Edit Bidang"/>
-    </div>
-</form>
+    <!-- Close Box -->
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

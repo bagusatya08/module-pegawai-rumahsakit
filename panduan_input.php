@@ -115,34 +115,65 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Panduan</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-    <div>
-        <label for="judul">Judul</label>
-        <input type="text" name="judul"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Buat Panduan</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                <div class="form-control">
+                    <label for="judul">Judul</label>
+                    <input type="text" name="judul"/>
+                </div>
+                <div class="form-control">
+                    <label for="tgl">Tanggal</label>
+                    <input type="date" name="tgl"/>
+                </div>
+                <div class="form-control">
+                    <label for="konten">Konten</label>
+                    <input type="text" name="konten"/>
+                </div>
+                <div class="form-control">
+                    <label for="media">File</label>
+                    <input type="file" name="media" accept=".pdf"/>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                </div>
+                <div class="form-control">
+                    <label for="target">Target</label><br>
+                    <input type="checkbox" onClick="toggle_target(this)" />Toggle All<br/>
+                    <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : ?>
+                    <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>"><?php echo $data['username'] ?><br/>
+                    <?php endwhile; ?>
+                </div>
+                <input type="submit" name="submit" class="submit" value="Buat Panduan"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <label for="tgl">Tanggal</label>
-        <input type="date" name="tgl"/>
-    </div>
-    <div>
-        <label for="konten">Konten</label>
-        <input type="text" name="konten"/>
-    </div>
-    <div>
-        <label for="media">File</label>
-        <input type="file" name="media" accept=".pdf"/>
-        <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
-    </div>
-    <div>
-        <label for="target">Target</label><br>
-        <input type="checkbox" onClick="toggle_target(this)" />Toggle All<br/>
-        <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : ?>
-        <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>"><?php echo $data['username'] ?><br/>
-        <?php endwhile; ?>
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Buat Panduan"/>
-    </div>
-</form>
-<script src="./js/input_panduan.js"></script>
+    <!-- Close Box -->
+
+    <script src="./js/input_panduan.js"></script>
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

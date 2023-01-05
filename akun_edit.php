@@ -201,143 +201,175 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Akun</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-    <div>
-        <label for="username">Username*</label>
-        <input type="text" name="username" value="<?= $user['username']; ?>"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Akun</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                <div class="form-control">
+                    <label for="username">Username*</label>
+                    <input type="text" name="username" value="<?= $user['username']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="email">Email*</label>
+                    <input type="email" name="email" value="<?= $user['email']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="password">Password*</label>
+                    <input type="password" name="password" value="<?= $user['password_pg']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="jabatan">Jabatan*</label>
+                    <select name="jabatan">
+                    <option value="<?= $user['id_jabatan']; ?>" selected hidden><?= $user['nama_jabatan']; ?></option>
+                    <?php while ($jbt = $statement_jabatan->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <option value="<?php echo $jbt['id_jabatan'] ?>"><?php echo $jbt['nama_jabatan'] ?></option>
+                    <?php endwhile; ?>
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="nip">NIP*</label>
+                    <input type="text" name="nip" value="<?= $user['nip']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="nama">Nama*</label>
+                    <input type="text" name="nama" value="<?= $user['nama']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="tahun_masuk">Tahun Masuk*</label>
+                    <input type="number" name="tahun_masuk" min="1950" max="2023" step="1" value="<?= $user['tahun_masuk']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="jenis_kontrak">Jenis Kontrak*</label>
+                    <input type="text" name="jenis_kontrak" value="<?= $user['jenis_kontrak']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="no_ktp">No.KTP*</label>
+                    <input type="text" name="no_ktp" value="<?= $user['no_ktp']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="file_ktp">File KTP</label>
+                    <input type="file" name="file_ktp" accept=".pdf"/>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                </div>
+                <div class="form-control">
+                    <label for="bidang">Bidang</label>
+                    <select name="bidang">
+                        <option value="<?= $user['id_bidang']; ?>" selected hidden><?= $user['nama_bidang']; ?></option>
+                    <?php while ($bdg = $statement_bidang->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <option value="<?php echo $bdg['id_bidang'] ?>"><?php echo $bdg['nama_bidang'] ?></option>
+                    <?php endwhile; ?>
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="ruangan">Ruangan</label>
+                    <select name="ruangan">
+                        <option value="<?= $user['id_ruangan']; ?>" selected hidden><?= $user['nama_ruangan']; ?></option>
+                    <?php while ($rgn = $statement_ruangan->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <option value="<?php echo $rgn['id_ruangan'] ?>"><?php echo $rgn['nama_ruangan'] ?></option>
+                    <?php endwhile; ?>
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="foto_profile">Foto Profile</label>
+                    <input type="file" name="foto_profile" accept="image/*">
+                </div>
+                <div class="form-control">
+                    <label for="no_hp">Telepon</label>
+                    <input type="tel" name="no_hp" value="<?= $user['no_hp']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="alamat">Alamat</label>
+                    <input type="text" name="alamat" value="<?= $user['alamat']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="kecamatan">Kecamatan</label>
+                    <input type="text" name="kecamatan" value="<?= $user['kecamatan']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="kabupaten">Kabupaten</label>
+                    <input type="text" name="kabupaten" value="<?= $user['kabupaten']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="negara">Negara</label>
+                    <input type="text" name="negara" value="<?= $user['negara']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="agama">Agama</label>
+                    <select name="agama">
+                        <option value="<?= $user['agama']; ?>" selected hidden><?= $user['agama']; ?></option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Islam">Islam</option>     
+                        <option value="Kristen Katolik">Kristen Katolik</option>    
+                        <option value="Kristen Protestan">Kristen Protestan</option>    
+                        <option value="Buddha">Buddha</option>
+                        <option value="Kong Hu Chu">Kong Hu Chu</option> 
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                    <select name="jenis_kelamin">
+                        <option value="<?= $user['jenis_kelamin']; ?>" selected hidden><?= $jk; ?></option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>     
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="golongan_darah">Golongan Darah</label>
+                    <select name="golongan_darah">
+                        <option value="<?= $user['golongan_darah']; ?>" selected hidden><?= $user['golongan_darah']; ?></option>
+                        <option value="A">A</option>
+                        <option value="B">B</option> 
+                        <option value="AB">AB</option> 
+                        <option value="O">O</option> 
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="tempat_lahir">Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir" value="<?= $user['tempat_lahir']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="tgl_lahir">Tanggal Lahir</label>
+                    <input type="date" name="tgl_lahir" value="<?= $user['tgl_lahir']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="status_kawin">Status Kawin</label>
+                    <select name="status_kawin">
+                        <option value="<?= $user['status_kawin']; ?>" selected hidden><?= $user['status_kawin']; ?></option>
+                        <option value="Kawin">Kawin</option>
+                        <option value="Belum Kawin">Belum Kawin</option> 
+                    </select>    
+                </div>
+
+                <input type="submit" name="submit" class="submit" value="Edit Akun"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <label for="email">Email*</label>
-        <input type="email" name="email" value="<?= $user['email']; ?>"/>
-    </div>
-    <div>
-        <label for="password">Password*</label>
-        <input type="password" name="password" value="<?= $user['password_pg']; ?>"/>
-    </div>
-    <div>
-        <label for="jabatan">Jabatan*</label>
-        <select name="jabatan">
-        <option value="<?= $user['id_jabatan']; ?>" selected hidden><?= $user['nama_jabatan']; ?></option>
-        <?php while ($jbt = $statement_jabatan->fetch(PDO::FETCH_ASSOC)) : ?>
-            <option value="<?php echo $jbt['id_jabatan'] ?>"><?php echo $jbt['nama_jabatan'] ?></option>
-        <?php endwhile; ?>
-        </select>    
-    </div>
-    <div>
-        <label for="nip">NIP*</label>
-        <input type="text" name="nip" value="<?= $user['nip']; ?>"/>
-    </div>
-    <div>
-        <label for="nama">Nama*</label>
-        <input type="text" name="nama" value="<?= $user['nama']; ?>"/>
-    </div>
-    <div>
-        <label for="tahun_masuk">Tahun Masuk*</label>
-        <input type="number" name="tahun_masuk" min="1950" max="2023" step="1" value="<?= $user['tahun_masuk']; ?>"/>
-    </div>
-    <div>
-        <label for="jenis_kontrak">Jenis Kontrak*</label>
-        <input type="text" name="jenis_kontrak" value="<?= $user['jenis_kontrak']; ?>"/>
-    </div>
-    <div>
-        <label for="no_ktp">No.KTP*</label>
-        <input type="text" name="no_ktp" value="<?= $user['no_ktp']; ?>"/>
-    </div>
-    <div>
-        <label for="file_ktp">File KTP</label>
-        <input type="file" name="file_ktp" accept=".pdf"/>
-        <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
-    </div>
-    <div>
-        <label for="bidang">Bidang</label>
-        <select name="bidang">
-            <option value="<?= $user['id_bidang']; ?>" selected hidden><?= $user['nama_bidang']; ?></option>
-        <?php while ($bdg = $statement_bidang->fetch(PDO::FETCH_ASSOC)) : ?>
-            <option value="<?php echo $bdg['id_bidang'] ?>"><?php echo $bdg['nama_bidang'] ?></option>
-        <?php endwhile; ?>
-        </select>    
-    </div>
-    <div>
-        <label for="ruangan">Ruangan</label>
-        <select name="ruangan">
-            <option value="<?= $user['id_ruangan']; ?>" selected hidden><?= $user['nama_ruangan']; ?></option>
-        <?php while ($rgn = $statement_ruangan->fetch(PDO::FETCH_ASSOC)) : ?>
-            <option value="<?php echo $rgn['id_ruangan'] ?>"><?php echo $rgn['nama_ruangan'] ?></option>
-        <?php endwhile; ?>
-        </select>    
-    </div>
-    <div>
-        <label for="foto_profile">Foto Profile</label>
-        <input type="file" name="foto_profile" accept="image/*">
-    </div>
-    <div>
-        <label for="no_hp">Telepon</label>
-        <input type="tel" name="no_hp" value="<?= $user['no_hp']; ?>"/>
-    </div>
-    <div>
-        <label for="alamat">Alamat</label>
-        <input type="text" name="alamat" value="<?= $user['alamat']; ?>"/>
-    </div>
-    <div>
-        <label for="kecamatan">Kecamatan</label>
-        <input type="text" name="kecamatan" value="<?= $user['kecamatan']; ?>"/>
-    </div>
-    <div>
-        <label for="kabupaten">Kabupaten</label>
-        <input type="text" name="kabupaten" value="<?= $user['kabupaten']; ?>"/>
-    </div>
-    <div>
-        <label for="negara">Negara</label>
-        <input type="text" name="negara" value="<?= $user['negara']; ?>"/>
-    </div>
-    <div>
-        <label for="agama">Agama</label>
-        <select name="agama">
-            <option value="<?= $user['agama']; ?>" selected hidden><?= $user['agama']; ?></option>
-            <option value="Hindu">Hindu</option>
-            <option value="Islam">Islam</option>     
-            <option value="Kristen Katolik">Kristen Katolik</option>    
-            <option value="Kristen Protestan">Kristen Protestan</option>    
-            <option value="Buddha">Buddha</option>
-            <option value="Kong Hu Chu">Kong Hu Chu</option> 
-        </select>    
-    </div>
-    <div>
-        <label for="jenis_kelamin">Jenis Kelamin</label>
-        <select name="jenis_kelamin">
-            <option value="<?= $user['jenis_kelamin']; ?>" selected hidden><?= $jk; ?></option>
-            <option value="L">Laki-laki</option>
-            <option value="P">Perempuan</option>     
-        </select>    
-    </div>
-    <div>
-        <label for="golongan_darah">Golongan Darah</label>
-        <select name="golongan_darah">
-            <option value="<?= $user['golongan_darah']; ?>" selected hidden><?= $user['golongan_darah']; ?></option>
-            <option value="A">A</option>
-            <option value="B">B</option> 
-            <option value="AB">AB</option> 
-            <option value="O">O</option> 
-        </select>    
-    </div>
-    <div>
-        <label for="tempat_lahir">Tempat Lahir</label>
-        <input type="text" name="tempat_lahir" value="<?= $user['tempat_lahir']; ?>"/>
-    </div>
-    <div>
-        <label for="tgl_lahir">Tanggal Lahir</label>
-        <input type="date" name="tgl_lahir" value="<?= $user['tgl_lahir']; ?>"/>
-    </div>
-    <div>
-        <label for="status_kawin">Status Kawin</label>
-        <select name="status_kawin">
-            <option value="<?= $user['status_kawin']; ?>" selected hidden><?= $user['status_kawin']; ?></option>
-            <option value="Kawin">Kawin</option>
-            <option value="Belum Kawin">Belum Kawin</option> 
-        </select>    
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Edit Akun"/>
-    </div>
-</form>
+    <!-- Close Box -->
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>
+

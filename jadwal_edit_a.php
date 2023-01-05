@@ -165,58 +165,89 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Jadwal</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-    <div>
-        <label for="shift">Shift</label>
-        <select name="shift">
-        <option value="<?= $jadwal['shift']; ?>" selected hidden><?= $jadwal['shift']; ?></option>
-            <option value="Pagi">Pagi</option>
-            <option value="Siang">Siang</option>     
-            <option value="Malam">Malam</option>    
-        </select>    
-    </div>
-    <div>
-        <label for="tgl">Tanggal</label>
-        <input type="date" name="tgl" value="<?= $jadwal['tgl']; ?>"/>
-    </div>
-    <div>
-        <label for="target">Target</label><br>
-        <input type="checkbox" onClick="toggle_target(this)" />Toggle All<br/>
-        <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : 
-            $sql = "SELECT *
-                    FROM tb_jadwal_detail
-                    WHERE id_jadwal = :id_jadwal
-                    AND id_pegawai = :id_pegawai;
-            ";
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Jadwal</h2>
+            </header>
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
-            $stmt->bindParam(':id_pegawai', $data['id_pegawai']);
-            $stmt->execute();
-            $data_target = $stmt->fetch(PDO::FETCH_ASSOC);
+            <!-- Form -->
+            <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                <div class="form-control">
+                    <label for="shift">Shift</label>
+                    <select name="shift">
+                    <option value="<?= $jadwal['shift']; ?>" selected hidden><?= $jadwal['shift']; ?></option>
+                        <option value="Pagi">Pagi</option>
+                        <option value="Siang">Siang</option>     
+                        <option value="Malam">Malam</option>    
+                    </select>    
+                </div>
+                <div class="form-control">
+                    <label for="tgl">Tanggal</label>
+                    <input type="date" name="tgl" value="<?= $jadwal['tgl']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="target">Target</label>
+                    Toggle All<input type="checkbox" onClick="toggle_target(this)" />
+                    <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : 
+                        $sql = "SELECT *
+                                FROM tb_jadwal_detail
+                                WHERE id_jadwal = :id_jadwal
+                                AND id_pegawai = :id_pegawai;
+                        ";
 
-        ?>
-            <?php if ($data_target) { ?>
-                <input type="checkbox" class="target_jadwal" name="target[]" value="<?php echo $data['id_pegawai'] ?>" checked><?php echo $data['username'] ?><br/>
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
+                        $stmt->bindParam(':id_pegawai', $data['id_pegawai']);
+                        $stmt->execute();
+                        $data_target = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            <?php } else { ?>
-                <input type="checkbox" class="target_jadwal" name="target[]" value="<?php echo $data['id_pegawai'] ?>"><?php echo $data['username'] ?><br/>
-            
-            <?php } ?>
+                    ?>
+                        <?php if ($data_target) { ?>
+                            <?php echo $data['username'] ?><input type="checkbox" class="target_jadwal" name="target[]" value="<?php echo $data['id_pegawai'] ?>" checked>
 
-        <?php endwhile; ?>
+                        <?php } else { ?>
+                            <?php echo $data['username'] ?><input type="checkbox" class="target_jadwal" name="target[]" value="<?php echo $data['id_pegawai'] ?>">
+                        
+                        <?php } ?>
+
+                    <?php endwhile; ?>
+                </div>
+                <div class="form-control">
+                    <label for="status_jadwal">Status</label>
+                    <select name="status_jadwal">
+                    <option value="<?= $jadwal['status_jadwal']; ?>" selected hidden><?= $st; ?></option>
+                        <option value="Y">Aktif</option>
+                        <option value="N">Tidak Aktif</option>     
+                    </select>    
+                </div>
+                <input type="submit" name="submit" class="submit" value="Edit Jadwal"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <label for="status_jadwal">Status</label>
-        <select name="status_jadwal">
-        <option value="<?= $jadwal['status_jadwal']; ?>" selected hidden><?= $st; ?></option>
-            <option value="Y">Aktif</option>
-            <option value="N">Tidak Aktif</option>     
-        </select>    
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Edit Jadwal"/>
-    </div>
-</form>
-<script src="./js/input_jadwal.js"></script>
+    <!-- Close Box -->
+
+    <script src="./js/input_jadwal.js"></script>
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

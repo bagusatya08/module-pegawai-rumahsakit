@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f8f8f8;
+    font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.box {
+    background-color: #bcb91a7a;
+    margin-top: 3%;
+    margin-bottom: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    width: 470px;
+}
+
+.container {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #8a880e;
+    width: 450px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+header {
+    text-align: center;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 20px 40px;
+}
+
+header h2 {
+    color: #8a880e;
+    margin: 0;
+    font-size: 26px;
+}
+
+.form,
+.container-data-akun {
+    padding: 30px 40px;
+}
+
+.form-control,
+.display-data-akun {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.form-control label,
+.display-data-akun label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.form-control input,
+.data {
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    display: block;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+}
+
+.form-control.success input {
+    border-color: #2ecc71;
+}
+
+.form-control.error input {
+    border-color: #e74c3c;
+}
+
+.form-control i {
+    visibility: hidden;
+    position: absolute;
+    top: 34px;
+    right: 10px;
+}
+
+.form-control.success i.fa-check-circle {
+    color: #2ecc71;
+    visibility: visible;
+}
+
+.form-control.error i.fa-exclamation-circle {
+    color: #e74c3c;
+    visibility: visible;
+}
+
+.form-control small {
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 2px;
+}
+
+.form-control.error small {
+    color: #e74c3c;
+    visibility: visible;
+}
+
+.form .submit {
+    background-color: #8a880e;
+    border: 2px solid #8a880e;
+    border-radius: 4px;
+    color: #ffffff;
+    display: block;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: -14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.form .submit:hover {
+    background-color: #5a5908;
+}
+
+.form .submit:active {
+    background-color: #8a880e;
+}

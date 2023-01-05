@@ -60,13 +60,45 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Ruangan</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST">
-    <div>
-        <label for="nama_ruangan">Nama Ruangan</label>
-        <input type="text" name="nama_ruangan" value="<?= $ruangan['nama_ruangan']; ?>"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Ruangan</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST">
+                <div class="form-control">
+                    <label for="nama_ruangan">Nama Ruangan</label>
+                    <input type="text" name="nama_ruangan" value="<?= $ruangan['nama_ruangan']; ?>"/>
+                </div>
+                <input type="submit" name="submit" class="submit" value="Edit Ruangan"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <input type="submit" name="submit" value="Edit ruangan"/>
-    </div>
-</form>
+    <!-- Close Box -->
+
+    <script src="./js/input_pengumuman.js"></script>
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

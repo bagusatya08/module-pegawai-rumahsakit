@@ -77,18 +77,48 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pengajuan</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-    <div>
-        <label for="konten">Konten</label>
-        <input type="text" name="konten" value="<?= $pengajuan['konten']; ?>"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Pengajuan</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                <div class="form-control">
+                    <label for="konten">Konten</label>
+                    <input type="text" name="konten" value="<?= $pengajuan['konten']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="media">File</label>
+                    <input type="file" name="media" accept=".pdf"/>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                </div>
+                <input type="submit" name="submit" class="submit" value="Edit Pengajuan"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <label for="media">File</label>
-        <input type="file" name="media" accept=".pdf"/>
-        <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Edit pengajuan"/>
-    </div>
-</form>
+    <!-- Close Box -->
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

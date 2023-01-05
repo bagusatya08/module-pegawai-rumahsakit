@@ -1,3 +1,23 @@
+<?php
+
+session_start();
+
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+
+    session_destroy();
+    $_SESSION = array();
+    
+}
+
+if (isset($_SESSION["id_pegawai"])) { 
+
+    header("location:beranda-after.php");
+
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -57,38 +77,13 @@
         </div>
         <div class="container" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
             <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
-                <h2>Pengumuman</h2>
+                <h2>Selamat Datang di Website Kepegawaian Rumah Sakit Teknologi Informasi</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
                         <tr>
-                        <th>12/12/2020</th>
-                        <td><a href="pengumuman.php" style="text-decoration:none; color: black">Pengumuman Panitia Aniversary Rumah Sakit</a></td>
-                        </tr>
-                        <tr>
-                        <th>12/12/2020</th>
-                        <td>Pembaruan Ketentuan Cuti Persalinan dan Cuti Tahunan</td>
-                        </tr>
-                        <tr>
-                        <th>12/12/2020</th>
-                        <td>Pemberitahuan Ketentuan Baru Penanganan Pasien BPJS</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="container panduan" style="background-color: #ffff; margin-top: 5vh; border-radius: 26px;">
-            <div class="d-flex flex-column justify-content-evenly" style="margin-top: 3vh; margin-left: 3vw; margin-right: 3vw; margin-bottom: 5vh;">
-                <h2>Panduan</h2>
-                <table class="table table-bordered" style="margin-top: 2vh;">
-                    <tbody>
-                        <tr>
-                        <td>Melengkapi Data Diri</td>
-                        </tr>
-                        <tr>
-                        <td>Pengajuan Cuti Tahunan</td>
-                        </tr>
-                        <tr>
-                        <td>Pengajuan Pengunduran Diri</td>
+                        <td><a href="./login.php" style="text-decoration:none; color: black">Silahkan login terlebih dahulu menggunakan username/email yang telah dibagikan oleh admin. <br></a>
+                            Jika terdapat kendala saat login, silahkan hubungi admin melalui kontak pengaduan yang tertera.
+                        </td>
                         </tr>
                     </tbody>
                 </table>

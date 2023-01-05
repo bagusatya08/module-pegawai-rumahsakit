@@ -165,62 +165,93 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Panduan</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-    <div>
-        <label for="judul">Judul</label>
-        <input type="text" name="judul" value="<?= $panduan['judul']; ?>"/>
-    </div>
-    <div>
-        <label for="tgl">Tanggal</label>
-        <input type="date" name="tgl" value="<?= $panduan['tgl']; ?>"/>
-    </div>
-    <div>
-        <label for="konten">Konten</label>
-        <input type="text" name="konten" value="<?= $panduan['konten']; ?>"/>
-    </div>
-    <div>
-        <label for="media">File</label>
-        <input type="file" name="media" accept=".pdf"/>
-        <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
-    </div>
-    <div>
-        <label for="target">Target</label><br>
-        <input type="checkbox" onClick="toggle_target(this)" />Toggle All<br/>
-        <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : 
-            $sql = "SELECT *
-                    FROM tb_panduan_detail
-                    WHERE id_panduan = :id_panduan
-                    AND id_pegawai = :id_pegawai;
-            ";
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Edit Panduan</h2>
+            </header>
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
-            $stmt->bindParam(':id_pegawai', $data['id_pegawai']);
-            $stmt->execute();
-            $data_target = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        ?>
-            <?php if ($data_target) { ?>
-                <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>" checked><?php echo $data['username'] ?><br/>
+            <!-- Form -->
+            <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                <div class="form-control">
+                    <label for="judul">Judul</label>
+                    <input type="text" name="judul" value="<?= $panduan['judul']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="tgl">Tanggal</label>
+                    <input type="date" name="tgl" value="<?= $panduan['tgl']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="konten">Konten</label>
+                    <input type="text" name="konten" value="<?= $panduan['konten']; ?>"/>
+                </div>
+                <div class="form-control">
+                    <label for="media">File</label>
+                    <input type="file" name="media" accept=".pdf"/>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                </div>
+                <div class="form-control">
+                    <label for="target">Target</label><br>
+                    <input type="checkbox" onClick="toggle_target(this)" />Toggle All<br/>
+                    <?php while ($data = $statement->fetch(PDO::FETCH_ASSOC)) : 
+                        $sql = "SELECT *
+                                FROM tb_panduan_detail
+                                WHERE id_panduan = :id_panduan
+                                AND id_pegawai = :id_pegawai;
+                        ";
 
-            <?php } else { ?>
-                <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>"><?php echo $data['username'] ?><br/>
-            
-            <?php } ?>
-        
-        <?php endwhile; ?>
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
+                        $stmt->bindParam(':id_pegawai', $data['id_pegawai']);
+                        $stmt->execute();
+                        $data_target = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    ?>
+                        <?php if ($data_target) { ?>
+                            <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>" checked><?php echo $data['username'] ?><br/>
+
+                        <?php } else { ?>
+                            <input type="checkbox" class="target_panduan" name="target[]" value="<?php echo $data['id_pegawai'] ?>"><?php echo $data['username'] ?><br/>
+                        
+                        <?php } ?>
+                    
+                    <?php endwhile; ?>
+                </div>
+                <div class="form-control">
+                    <label for="status_panduan">Status</label>
+                    <select name="status_panduan">
+                    <option value="<?= $panduan['status_panduan']; ?>" selected hidden><?= $st; ?></option>
+                        <option value="Y">Aktif</option>
+                        <option value="N">Tidak Aktif</option>     
+                    </select>    
+                </div>
+                <input type="submit" name="submit" class="submit" value="Edit Panduan"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <label for="status_panduan">Status</label>
-        <select name="status_panduan">
-        <option value="<?= $panduan['status_panduan']; ?>" selected hidden><?= $st; ?></option>
-            <option value="Y">Aktif</option>
-            <option value="N">Tidak Aktif</option>     
-        </select>    
-    </div>
-    <div>
-        <input type="submit" name="submit" value="Edit Panduan"/>
-    </div>
-</form>
-<script src="./js/input_panduan.js"></script>
+    <!-- Close Box -->
+
+    <script src="./js/input_panduan.js"></script>
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>

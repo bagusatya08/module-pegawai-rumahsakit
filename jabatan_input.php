@@ -48,13 +48,43 @@ if (!isset($_SESSION["id_pegawai"])) {
 
 ?>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Jabatan</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="./style/styleForm.css">
 
-<form method="POST">
-    <div>
-        <label for="nama_jabatan">Nama Jabatan</label>
-        <input type="text" name="nama_jabatan"/>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/2e95bf0c1a.js"></script>
+</head>
+<body>
+    <!-- Box -->
+    <div class="box">
+        <!-- Container -->
+        <div class="container">
+            <header>
+                <h2>Buat Jabatan</h2>
+            </header>
+
+            <!-- Form -->
+            <form class="form" id="form" method="POST">
+                <div class="form-control">
+                    <label for="nama_jabatan">Nama Jabatan</label>
+                    <input type="text" name="nama_jabatan"/>
+                </div>
+                <input type="submit" name="submit" class="submit" value="Buat Jabatan"/>
+            </form>
+            <!-- Close Form -->
+        </div>
+        <!-- Close Container -->
     </div>
-    <div>
-        <input type="submit" name="submit" value="Buat Jabatan"/>
-    </div>
-</form>
+    <!-- Close Box -->
+
+    <!-- Validasi -->
+    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+</body>
+</html>
