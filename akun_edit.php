@@ -1,5 +1,7 @@
 <?php 
 
+
+
 $id_pegawai = $_GET['id_pegawai'];
 
 require './dbConnection.php';
