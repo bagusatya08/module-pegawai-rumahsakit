@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
         <?php endwhile; ?>
     </div>
     <div>
-        <input type="submit" name="submit" value="Buat Akun"/>
+        <input type="submit" name="submit" value="Buat Pengumuman"/>
     </div>
 </form>
 <script src="./js/input_pengumuman.js"></script>
