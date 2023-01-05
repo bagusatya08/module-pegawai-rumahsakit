@@ -38,7 +38,9 @@ if (!isset($_SESSION["id_pegawai"])) {
             echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
             ': '. $e->getLine(); 
     
-        }   
+        }  
+        
+        header("location:bidang.php");
     
     }    
 

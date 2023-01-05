@@ -51,6 +51,8 @@ if (!isset($_SESSION["id_pegawai"])) {
             ': '. $e->getLine(); 
     
         }   
+
+        header("location:bidang.php");
     
     }    
 

@@ -37,8 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // $user = mysqli_fetch_array($result);
 
 
-    $sql = 'SELECT *
-            FROM tb_pegawai
+    $sql = 'SELECT pg.*, j.*
+            FROM tb_pegawai AS pg
+            INNER JOIN tb_jabatan AS j
+            ON j.id_jabatan = pg.id_jabatan
             WHERE username = :username
             OR email = :email
             ;
@@ -64,9 +66,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // session expired
             $_SESSION['EXPIRES'] = time() + 1800; //second
+
+            if ($user["nama_jabatan"] == 'Admin') {
+                header("Location: beranda-after_admin.php");
+                exit;
+
+            } else if ($user["nama_jabatan"] == 'Kepala Bidang' || $user["nama_jabatan"] == 'Kepala Ruangan') {
+                header("Location: beranda-after_kepala.php");
+                exit;    
+
+            } else if ($user["nama_jabatan"] == 'Pegawai') {
+                header("Location: beranda-after.php");
+                exit;    
+
+            }
             
-            header("Location: beranda-after.php");
-            exit;
         }
     }
 

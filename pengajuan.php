@@ -154,6 +154,8 @@ adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang k
                                 </td>
                                 <td>
                                     <a href="./pengajuan_edit.php?id_pengajuan=<?= $pengajuan1['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Edit</a>
+                                    |
+                                    <a href="./pengajuan_hapus.php?id_pengajuan=<?= $pengajuan1['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Hapus</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -202,6 +204,8 @@ adalah sebanyak 6 hari. Cuti dapat diajukan dengan mengisi formulir isian yang k
                                 </td>
                                 <td>
                                     <a href="./pengajuan_edit.php?id_pengajuan=<?= $pengajuan2['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Edit</a>
+                                    |
+                                    <a href="./pengajuan_hapus.php?id_pengajuan=<?= $pengajuan2['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Hapus</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -250,6 +254,8 @@ adalah sebanyak 6 hari. Pengajuan dapat diajukan dengan mengisi formulir isian y
                                 </td>
                                 <td>
                                     <a href="./pengajuan_edit.php?id_pengajuan=<?= $pengajuan3['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Edit</a>
+                                    |
+                                    <a href="./pengajuan_hapus.php?id_pengajuan=<?= $pengajuan3['id_pengajuan'] ?>" style="text-decoration:none; color: blue">Hapus</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

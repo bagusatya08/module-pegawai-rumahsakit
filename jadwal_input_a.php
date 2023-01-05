@@ -110,6 +110,8 @@ if (!isset($_SESSION["id_pegawai"])) {
             ': '. $e->getLine(); 
     
         }   
+
+        header("location:jadwal_admin.php");
     
     }    
 

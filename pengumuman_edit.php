@@ -155,6 +155,8 @@ if (!isset($_SESSION["id_pegawai"])) {
             ': '. $e->getLine(); 
     
         }   
+
+        header("location:pengumuman_admin.php");
     
     }    
 

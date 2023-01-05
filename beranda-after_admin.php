@@ -88,19 +88,34 @@ if (!isset($_SESSION["id_pegawai"])) {
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="beranda-after.php">Beranda</a>
+                                    <a class="nav-link" aria-current="page" href="beranda-after_admin.php">Beranda</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jadwal.php">Jadwal</a>
+                                    <a class="nav-link" href="jadwal_admin.php">Jadwal</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="pengajuan.php">Pengajuan</a>
+                                    <a class="nav-link" href="akun.php">Akun</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="profile.php">
-                                        <!-- <img class="foto-profile" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($user['foto_profile']); ?>" height="30px"/> -->
-                                        Profile
-                                    </a>
+                                    <a class="nav-link" href="jabatan.php">Jabatan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="bidang.php">Bidang</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="ruangan.php">Ruangan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="pengumuman_admin.php">Pengumuman</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="panduan_admin.php">Panduan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="pengajuan_admin.php">Pengajuan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="profile_admin.php">Profile</a>
                                     </li>
                                 </ul>
                             </div>

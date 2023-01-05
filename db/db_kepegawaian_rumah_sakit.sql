@@ -6,12 +6,29 @@ USE db_kepegawaian_rumah_sakit;
 CREATE TABLE tb_jabatan(
 	id_jabatan INT AUTO_INCREMENT,
 	nama_jabatan VARCHAR(255),
-	PRIMARY KEY(id_jabatan)
+	PRIMARY KEY(id_jabatan),
+	UNIQUE(nama_jabatan)
+);
+
+CREATE TABLE tb_bidang(
+	id_bidang INT AUTO_INCREMENT,
+	nama_bidang VARCHAR(255),
+	PRIMARY KEY(id_bidang),
+	UNIQUE(nama_bidang)
+);
+
+CREATE TABLE tb_ruangan(
+	id_ruangan INT AUTO_INCREMENT,
+	nama_ruangan VARCHAR(255),
+	PRIMARY KEY(id_ruangan),
+	UNIQUE(nama_ruangan)
 );
 
 CREATE TABLE tb_pegawai(
 	id_pegawai INT AUTO_INCREMENT,
 	id_jabatan INT,
+	id_bidang INT,
+	id_ruangan INT,
 	username VARCHAR(255),
 	email VARCHAR(255),
 	password_pg VARCHAR(255),
@@ -33,11 +50,11 @@ CREATE TABLE tb_pegawai(
 	file_ktp MEDIUMBLOB,
 	tahun_masuk YEAR,
 	jenis_kontrak VARCHAR(255),
-	bidang VARCHAR(255),
-	ruangan VARCHAR(255),
 	tgl_buat TIMESTAMP,
 	PRIMARY KEY(id_pegawai),
 	FOREIGN KEY(id_jabatan) REFERENCES tb_jabatan(id_jabatan),
+	FOREIGN KEY(id_bidang) REFERENCES tb_bidang(id_bidang),
+	FOREIGN KEY(id_ruangan) REFERENCES tb_ruangan(id_ruangan),
 	UNIQUE(username),
 	UNIQUE(nip),
 	UNIQUE(no_ktp)
@@ -45,8 +62,8 @@ CREATE TABLE tb_pegawai(
 
 CREATE TABLE tb_jadwal(
 	id_jadwal INT AUTO_INCREMENT,
-	shift VARCHAR(255),
-	STATUS VARCHAR(255),
+	shift ENUM('Pagi','Siang','Malam'),
+	jam ENUM('07:00-15:00','15:00-21:00','21:00-07:00'),
 	tgl DATE,
 	status_jadwal ENUM('Y','N'),
 	PRIMARY KEY(id_jadwal)
@@ -84,7 +101,7 @@ CREATE TABLE tb_panduan(
 	tgl DATE,
 	konten TEXT,
 	media MEDIUMBLOB,
-	status_pengumuman ENUM('Y','N'),
+	status_panduan ENUM('Y','N'),
 	PRIMARY KEY(id_panduan)
 );
 
@@ -99,10 +116,10 @@ CREATE TABLE tb_panduan_detail(
 CREATE TABLE tb_pengajuan(
 	id_pengajuan INT AUTO_INCREMENT,
 	id_pegawai INT,
-	judul VARCHAR(30),
+	jenis_pengajuan ENUM('Pengajuan Cuti Tahunan','Pengajuan Cuti Melahirkan','Pengajuan Naik Tingkat'),
 	tgl_masuk DATE,
 	tgl_konfirmasi DATE,
-	status_pengajuan VARCHAR(255),
+	status_pengajuan ENUM('Diterima','Pending','Ditolak'),
 	konten TEXT,
 	media MEDIUMBLOB,
 	PRIMARY KEY(id_pengajuan),
@@ -123,6 +140,16 @@ INSERT INTO tb_jabatan (nama_jabatan) VALUES
 ("Kepala Bidang"),
 ("Kepala Ruangan"),
 ("Pegawai");
+
+INSERT INTO tb_bidang (nama_bidang) VALUES 
+("Kesehatan"),
+("Kebershian"),
+("Pengendali Api");
+
+INSERT INTO tb_ruangan (nama_ruangan) VALUES 
+("Anggrek"),
+("Melati"),
+("Ratna");
 
 INSERT INTO tb_pegawai (
 	id_jabatan,
@@ -146,9 +173,7 @@ INSERT INTO tb_pegawai (
 	no_ktp,
 	file_ktp,
 	tahun_masuk,
-	jenis_kontrak,
-	bidang,
-	ruangan
+	jenis_kontrak
 ) VALUES (
 	"1", 
 	"admin", 
@@ -171,9 +196,7 @@ INSERT INTO tb_pegawai (
 	"5555", 
 	"", 
 	"2012", 
-	"Pegawai Tetap", 
-	"Bd. Test", 
-	"R. Test"
+	"Pegawai Tetap"
 );
 
 INSERT INTO tb_pegawai (

@@ -18,23 +18,32 @@ if (!isset($_SESSION["id_pegawai"])) {
     require './dbConnection.php';
     
     $sql = 'SELECT *
-            FROM tb_jabatan';
+            FROM tb_jabatan;';
     $statement_jabatan = $pdo->query($sql);
     
     
     $sql = 'SELECT *
-            FROM tb_ruangan';
+            FROM tb_ruangan;';
     $statement_ruangan = $pdo->query($sql);
     
     
     $sql = 'SELECT *
-            FROM tb_bidang';
+            FROM tb_bidang;';
     $statement_bidang = $pdo->query($sql);
     
     
-    $sql = 'SELECT *
-    FROM tb_pegawai
-    WHERE id_pegawai = :id_pegawai';
+    $sql = 'SELECT pg.*, j.*, b.*, r.*
+            FROM tb_pegawai AS pg
+            LEFT JOIN tb_jabatan AS j
+            ON j.id_jabatan = pg.id_jabatan
+            LEFT JOIN tb_bidang AS b
+            ON b.id_bidang = pg.id_bidang
+            LEFT JOIN tb_ruangan AS r
+            ON r.id_ruangan = pg.id_ruangan
+            WHERE pg.id_pegawai = :id_pegawai
+            ORDER BY pg.id_pegawai
+            ;'
+    ;
     
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_pegawai', $id_pegawai, PDO::PARAM_STR);
@@ -85,8 +94,8 @@ if (!isset($_SESSION["id_pegawai"])) {
         $jenis_kontrak = $_POST['jenis_kontrak'];
         
     
-        if ($_POST['password'] == $user['password']) {
-            $password = $user['password'];
+        if ($_POST['password'] == $user['password_pg']) {
+            $password = $user['password_pg'];
     
         } else {
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -94,11 +103,7 @@ if (!isset($_SESSION["id_pegawai"])) {
         }
     
     
-        if ($_FILES['foto_profile']['size'] != 0) {
-            // $name = $_FILES['foto_profile']['name'];
-            // $foto_profile = $_FILES['foto_profile']['tmp_name'];
-            // $foto_profile = base64_encode(file_get_contents(addslashes($foto_profile)));
-            
+        if ($_FILES['foto_profile']['size'] != 0) {            
             $foto_profile= $_FILES['foto_profile']['tmp_name'];
             $img_blob = fopen($foto_profile, "rb"); 
     
@@ -109,9 +114,6 @@ if (!isset($_SESSION["id_pegawai"])) {
     
     
         if ($_FILES['file_ktp']['size'] != 0) {
-            //attached pdf file information
-            // $file_ktp_name = $_FILES['file_ktp']['name'];
-            
             $file_ktp = $_FILES['file_ktp']['tmp_name'];
             $pdf_blob = fopen($file_ktp, "rb");
     
@@ -177,6 +179,7 @@ if (!isset($_SESSION["id_pegawai"])) {
             $stmt->bindParam(':file_ktp', $pdf_blob, PDO::PARAM_LOB);
             $stmt->bindParam(':tahun_masuk', $tahun_masuk);
             $stmt->bindParam(':jenis_kontrak', $jenis_kontrak);
+            $stmt->bindParam(':id_pegawai', $id_pegawai);
     
             if ($stmt->execute() === FALSE) {
                 echo 'Could not save information to the database';
@@ -188,6 +191,8 @@ if (!isset($_SESSION["id_pegawai"])) {
             ': '. $e->getLine(); 
     
         }   
+
+        header("location:akun.php");
     
     }    
     
@@ -208,12 +213,12 @@ if (!isset($_SESSION["id_pegawai"])) {
     </div>
     <div>
         <label for="password">Password*</label>
-        <input type="password" name="password" value="<?= $user['password']; ?>"/>
+        <input type="password" name="password" value="<?= $user['password_pg']; ?>"/>
     </div>
     <div>
         <label for="jabatan">Jabatan*</label>
         <select name="jabatan">
-        <option value="<?= $user['id_jabatan']; ?>" selected hidden><?= $user['jabatan']; ?></option>
+        <option value="<?= $user['id_jabatan']; ?>" selected hidden><?= $user['nama_jabatan']; ?></option>
         <?php while ($jbt = $statement_jabatan->fetch(PDO::FETCH_ASSOC)) : ?>
             <option value="<?php echo $jbt['id_jabatan'] ?>"><?php echo $jbt['nama_jabatan'] ?></option>
         <?php endwhile; ?>
