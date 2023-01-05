@@ -41,10 +41,25 @@ if (!isset($_SESSION["id_pegawai"])) {
             ;
     ";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
-    $stmt->execute();
-    // $pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt_pngm = $pdo->prepare($sql);
+    $stmt_pngm->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $stmt_pngm->execute();
+    // $pengumuman = $stmt_pngm->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql = "SELECT p.*
+            FROM tb_panduan AS p
+            INNER JOIN tb_panduan_detail AS pd
+            ON pd.id_panduan = p.id_panduan
+            INNER JOIN tb_pegawai AS pg
+            ON pg.id_pegawai = pd.id_pegawai
+            WHERE pg.id_pegawai = :id_pegawai
+            ;
+    ";
+
+    $stmt_pdn = $pdo->prepare($sql);
+    $stmt_pdn->bindParam(':id_pegawai', $_SESSION["id_pegawai"], PDO::PARAM_STR);
+    $stmt_pdn->execute();
     
 }
 
@@ -117,7 +132,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                 <h2>Pengumuman</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
-                        <?php while ($pengumuman = $stmt->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <?php while ($pengumuman = $stmt_pngm->fetch(PDO::FETCH_ASSOC)) : ?>
                             <tr>
                                 <th>
                                     <a href="./pengumuman.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['tgl'] ?></a>
@@ -136,15 +151,13 @@ if (!isset($_SESSION["id_pegawai"])) {
                 <h2>Panduan</h2>
                 <table class="table table-bordered" style="margin-top: 2vh;">
                     <tbody>
-                        <tr>
-                        <td>Melengkapi Data Diri</td>
-                        </tr>
-                        <tr>
-                        <td>Pengajuan Cuti Tahunan</td>
-                        </tr>
-                        <tr>
-                        <td>Pengajuan Pengunduran Diri</td>
-                        </tr>
+                    <?php while ($panduan = $stmt_pdn->fetch(PDO::FETCH_ASSOC)) : ?>
+                            <tr>
+                                <td>
+                                    <a href="./panduan.php?id_panduan=<?= $panduan['id_panduan'] ?>" style="text-decoration:none; color: black"><?php echo $panduan['judul'] ?></a>
+                                </td>
+                            </tr>
+                    <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
