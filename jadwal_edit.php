@@ -1,148 +1,161 @@
 <?php 
 
+session_start();
 
-
-$id_jadwal = $_GET['id_jadwal'];
-
-require './dbConnection.php';
-
-$sql = "SELECT *
-        FROM tb_jadwal
-        WHERE id_jadwal = :id_jadwal
-;
-";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
-$stmt->execute();
-$jadwal = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($jadwal['status_jadwal'] == 'Y') {
-    $st = 'Aktif';
-
-} else {
-    $st = 'Tidak Aktif';
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+    session_destroy();
+    $_SESSION = array();
 
 }
 
+if (!isset($_SESSION["id_pegawai"])) { 
+    header("location:login.php");
 
-$sql = "SELECT *
-        FROM tb_jadwal_detail
-        WHERE id_jadwal = :id_jadwal
-;
-";
+} else {
+    $id_jadwal = $_GET['id_jadwal'];
 
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
-$stmt->execute();
-$jadwal_detail = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-$sql = 'SELECT pg.id_pegawai, 
-        pg.username, 
-        pg.id_jabatan, 
-        j.nama_jabatan
-        FROM tb_pegawai AS pg
-        INNER JOIN tb_jabatan AS j
-        ON j.id_jabatan = pg.id_jabatan;
-';
-$statement = $pdo->query($sql);
-
-if (isset($_POST['submit'])) {
-    $shift = $_POST['shift'];
-    $tgl = $_POST['tgl'];
-    $targets = $_POST['target'];
-    $status_jadwal = $_POST['status_jadwal'];
-
-    if ($shift == 'Pagi') {
-        $jam = '07:00-15:00';
-
-    } else if ($shift == 'Siang') {
-        $jam = '15:00-21:00';
-
-    } else if ($shift == 'Malam') {
-        $jam = '21:00-07:00';
-
+    require './dbConnection.php';
+    
+    $sql = "SELECT *
+            FROM tb_jadwal
+            WHERE id_jadwal = :id_jadwal
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
+    $stmt->execute();
+    $jadwal = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($jadwal['status_jadwal'] == 'Y') {
+        $st = 'Aktif';
+    
+    } else {
+        $st = 'Tidak Aktif';
+    
     }
-
-    try {
-        // input tb_jadwal
-        $sql = "UPDATE tb_jadwal
-                SET
-                    shift = :shift,
-                    jam = :jam,
-                    tgl = :tgl,
-                    status_jadwal = :status_jadwal
-                WHERE 
-                    id_jadwal = :id_jadwal;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':shift', $shift);
-        $stmt->bindParam(':jam', $jam);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':status_jadwal', $status_jadwal);
-        $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
-
-        if ($stmt->execute() === FALSE) {
-            echo 'Could not save information to the database';
-
+    
+    
+    $sql = "SELECT *
+            FROM tb_jadwal_detail
+            WHERE id_jadwal = :id_jadwal
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
+    $stmt->execute();
+    $jadwal_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+    $sql = 'SELECT pg.id_pegawai, 
+            pg.username, 
+            pg.id_jabatan, 
+            j.nama_jabatan
+            FROM tb_pegawai AS pg
+            INNER JOIN tb_jabatan AS j
+            ON j.id_jabatan = pg.id_jabatan;
+    ';
+    $statement = $pdo->query($sql);
+    
+    if (isset($_POST['submit'])) {
+        $shift = $_POST['shift'];
+        $tgl = $_POST['tgl'];
+        $targets = $_POST['target'];
+        $status_jadwal = $_POST['status_jadwal'];
+    
+        if ($shift == 'Pagi') {
+            $jam = '07:00-15:00';
+    
+        } else if ($shift == 'Siang') {
+            $jam = '15:00-21:00';
+    
+        } else if ($shift == 'Malam') {
+            $jam = '21:00-07:00';
+    
         }
-
-        // input tb_jadwal_detail
-        $sql = "SELECT id_jadwal
-                FROM tb_jadwal
-                WHERE shift = :shift
-                AND jam = :jam
-                AND tgl = :tgl
-                AND status_jadwal = :status_jadwal
-                ;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':shift', $shift);
-        $stmt->bindParam(':jam', $jam);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':status_jadwal', $status_jadwal);
-        $stmt->execute();
-        $jadwal_input = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        $sql = 'DELETE FROM tb_jadwal_detail
-                WHERE id_jadwal = :id_jadwal';
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_jadwal', $jadwal_input['id_jadwal'], PDO::PARAM_STR);
-        $stmt->execute();
-
-
-        foreach ($targets as $target){ 
-            $sql = "REPLACE INTO tb_jadwal_detail(
-                id_jadwal,
-                id_pegawai
-            )VALUES(
-                :id_jadwal,
-                :id_pegawai
-            );
+    
+        try {
+            // input tb_jadwal
+            $sql = "UPDATE tb_jadwal
+                    SET
+                        shift = :shift,
+                        jam = :jam,
+                        tgl = :tgl,
+                        status_jadwal = :status_jadwal
+                    WHERE 
+                        id_jadwal = :id_jadwal;
             ";
-
+    
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_jadwal', $jadwal_input['id_jadwal']);
-            $stmt->bindParam(':id_pegawai', $target);
-
+            $stmt->bindParam(':shift', $shift);
+            $stmt->bindParam(':jam', $jam);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':status_jadwal', $status_jadwal);
+            $stmt->bindParam(':id_jadwal', $id_jadwal, PDO::PARAM_STR);
+    
             if ($stmt->execute() === FALSE) {
-
                 echo 'Could not save information to the database';
-
+    
             }
-
-        }
-
-    } catch (PDOException $e) {
-        echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
-        ': '. $e->getLine(); 
-
-    }   
+    
+            // input tb_jadwal_detail
+            $sql = "SELECT id_jadwal
+                    FROM tb_jadwal
+                    WHERE shift = :shift
+                    AND jam = :jam
+                    AND tgl = :tgl
+                    AND status_jadwal = :status_jadwal
+                    ;
+            ";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':shift', $shift);
+            $stmt->bindParam(':jam', $jam);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':status_jadwal', $status_jadwal);
+            $stmt->execute();
+            $jadwal_input = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+            $sql = 'DELETE FROM tb_jadwal_detail
+                    WHERE id_jadwal = :id_jadwal';
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id_jadwal', $jadwal_input['id_jadwal'], PDO::PARAM_STR);
+            $stmt->execute();
+    
+    
+            foreach ($targets as $target){ 
+                $sql = "REPLACE INTO tb_jadwal_detail(
+                    id_jadwal,
+                    id_pegawai
+                )VALUES(
+                    :id_jadwal,
+                    :id_pegawai
+                );
+                ";
+    
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':id_jadwal', $jadwal_input['id_jadwal']);
+                $stmt->bindParam(':id_pegawai', $target);
+    
+                if ($stmt->execute() === FALSE) {
+    
+                    echo 'Could not save information to the database';
+    
+                }
+    
+            }
+    
+        } catch (PDOException $e) {
+            echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
+            ': '. $e->getLine(); 
+    
+        }   
+    
+    }    
 
 }
 

@@ -1,31 +1,46 @@
 <?php 
 
-require './dbConnection.php';
+session_start();
 
-if (isset($_POST['submit'])) {
-    $nama_jabatan = $_POST['nama_jabatan'];
-   
-    try {
-        $sql = "INSERT INTO tb_jabatan(
-                        nama_jabatan
-                    )VALUES(
-                        :nama_jabatan
-                        );
-                    ";
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+    session_destroy();
+    $_SESSION = array();
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':nama_jabatan', $nama_jabatan);
+}
 
-        if ($stmt->execute() === FALSE) {
-            echo 'Could not save information to the database';
+if (!isset($_SESSION["id_pegawai"])) { 
+    header("location:login.php");
 
-        }
+} else {
+    require './dbConnection.php';
 
-    } catch (PDOException $e) {
-        echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
-        ': '. $e->getLine(); 
-
-    }   
+    if (isset($_POST['submit'])) {
+        $nama_jabatan = $_POST['nama_jabatan'];
+       
+        try {
+            $sql = "INSERT INTO tb_jabatan(
+                            nama_jabatan
+                        )VALUES(
+                            :nama_jabatan
+                            );
+                        ";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':nama_jabatan', $nama_jabatan);
+    
+            if ($stmt->execute() === FALSE) {
+                echo 'Could not save information to the database';
+    
+            }
+    
+        } catch (PDOException $e) {
+            echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
+            ': '. $e->getLine(); 
+    
+        }   
+    
+    }    
 
 }
 

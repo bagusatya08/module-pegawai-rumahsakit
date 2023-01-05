@@ -1,150 +1,163 @@
 <?php 
 
+session_start();
 
-
-$id_panduan = $_GET['id_panduan'];
-
-require './dbConnection.php';
-
-$sql = "SELECT *
-        FROM tb_panduan
-        WHERE id_panduan = :id_panduan
-;
-";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
-$stmt->execute();
-$panduan = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($panduan['status_panduan'] == 'Y') {
-    $st = 'Aktif';
-
-} else {
-    $st = 'Tidak Aktif';
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+    session_destroy();
+    $_SESSION = array();
 
 }
 
+if (!isset($_SESSION["id_pegawai"])) { 
+    header("location:login.php");
 
-$sql = "SELECT *
-        FROM tb_panduan_detail
-        WHERE id_panduan = :id_panduan
-;
-";
+} else {
+    $id_panduan = $_GET['id_panduan'];
 
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
-$stmt->execute();
-$panduan_detail = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-$sql = 'SELECT pg.id_pegawai, 
-        pg.username, 
-        pg.id_jabatan, 
-        j.nama_jabatan
-        FROM tb_pegawai AS pg
-        INNER JOIN tb_jabatan AS j
-        ON j.id_jabatan = pg.id_jabatan;
-';
-$statement = $pdo->query($sql);
-
-if (isset($_POST['submit'])) {
-    $judul = $_POST['judul'];
-    $tgl = $_POST['tgl'];
-    $konten = $_POST['konten'];
-    $targets = $_POST['target'];
-    $status_panduan = $_POST['status_panduan'];
-
-    if ($_FILES['media']['size'] != 0) {
-        $media = $_FILES['media']['tmp_name'];
-        $pdf_blob = fopen($media, "rb");
+    require './dbConnection.php';
+    
+    $sql = "SELECT *
+            FROM tb_panduan
+            WHERE id_panduan = :id_panduan
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
+    $stmt->execute();
+    $panduan = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($panduan['status_panduan'] == 'Y') {
+        $st = 'Aktif';
     
     } else {
-        $pdf_blob = $panduan['media'];
-
+        $st = 'Tidak Aktif';
+    
     }
-
-    try {
-        // input tb_panduan
-        $sql = "UPDATE tb_panduan
-                SET
-                    judul = :judul,
-                    tgl = :tgl,
-                    konten = :konten,
-                    media = :media,
-                    status_panduan = :status_panduan
-                WHERE 
-                    id_panduan = :id_panduan;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':judul', $judul);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':konten', $konten);
-        $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
-        $stmt->bindParam(':status_panduan', $status_panduan);
-        $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
-
-        if ($stmt->execute() === FALSE) {
-            echo 'Could not save information to the database';
-
+    
+    
+    $sql = "SELECT *
+            FROM tb_panduan_detail
+            WHERE id_panduan = :id_panduan
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
+    $stmt->execute();
+    $panduan_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+    $sql = 'SELECT pg.id_pegawai, 
+            pg.username, 
+            pg.id_jabatan, 
+            j.nama_jabatan
+            FROM tb_pegawai AS pg
+            INNER JOIN tb_jabatan AS j
+            ON j.id_jabatan = pg.id_jabatan;
+    ';
+    $statement = $pdo->query($sql);
+    
+    if (isset($_POST['submit'])) {
+        $judul = $_POST['judul'];
+        $tgl = $_POST['tgl'];
+        $konten = $_POST['konten'];
+        $targets = $_POST['target'];
+        $status_panduan = $_POST['status_panduan'];
+    
+        if ($_FILES['media']['size'] != 0) {
+            $media = $_FILES['media']['tmp_name'];
+            $pdf_blob = fopen($media, "rb");
+        
+        } else {
+            $pdf_blob = $panduan['media'];
+    
         }
-
-
-        // input tb_panduan_detail
-        $sql = "SELECT id_panduan
-                FROM tb_panduan
-                WHERE judul = :judul
-                AND tgl = :tgl
-                AND konten = :konten
-                AND status_panduan = :status_panduan
-                ;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':judul', $judul);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':konten', $konten);
-        $stmt->bindParam(':status_panduan', $status_panduan);
-        $stmt->execute();
-        $panduan_input = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        $sql = 'DELETE FROM tb_panduan_detail
-                WHERE id_panduan = :id_panduan';
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_panduan', $panduan_input['id_panduan'], PDO::PARAM_STR);
-        $stmt->execute();
-
-
-        foreach ($targets as $target){ 
-            $sql = "REPLACE INTO tb_panduan_detail(
-                id_panduan,
-                id_pegawai
-            )VALUES(
-                :id_panduan,
-                :id_pegawai
-            );
+    
+        try {
+            // input tb_panduan
+            $sql = "UPDATE tb_panduan
+                    SET
+                        judul = :judul,
+                        tgl = :tgl,
+                        konten = :konten,
+                        media = :media,
+                        status_panduan = :status_panduan
+                    WHERE 
+                        id_panduan = :id_panduan;
             ";
-
+    
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_panduan', $panduan_input['id_panduan']);
-            $stmt->bindParam(':id_pegawai', $target);
-
+            $stmt->bindParam(':judul', $judul);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':konten', $konten);
+            $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
+            $stmt->bindParam(':status_panduan', $status_panduan);
+            $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
+    
             if ($stmt->execute() === FALSE) {
-
                 echo 'Could not save information to the database';
-
+    
             }
-
-        }
-
-    } catch (PDOException $e) {
-        echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
-        ': '. $e->getLine(); 
-
-    }   
+    
+    
+            // input tb_panduan_detail
+            $sql = "SELECT id_panduan
+                    FROM tb_panduan
+                    WHERE judul = :judul
+                    AND tgl = :tgl
+                    AND konten = :konten
+                    AND status_panduan = :status_panduan
+                    ;
+            ";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':judul', $judul);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':konten', $konten);
+            $stmt->bindParam(':status_panduan', $status_panduan);
+            $stmt->execute();
+            $panduan_input = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+            $sql = 'DELETE FROM tb_panduan_detail
+                    WHERE id_panduan = :id_panduan';
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id_panduan', $panduan_input['id_panduan'], PDO::PARAM_STR);
+            $stmt->execute();
+    
+    
+            foreach ($targets as $target){ 
+                $sql = "REPLACE INTO tb_panduan_detail(
+                    id_panduan,
+                    id_pegawai
+                )VALUES(
+                    :id_panduan,
+                    :id_pegawai
+                );
+                ";
+    
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':id_panduan', $panduan_input['id_panduan']);
+                $stmt->bindParam(':id_pegawai', $target);
+    
+                if ($stmt->execute() === FALSE) {
+    
+                    echo 'Could not save information to the database';
+    
+                }
+    
+            }
+    
+        } catch (PDOException $e) {
+            echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
+            ': '. $e->getLine(); 
+    
+        }   
+    
+    }    
 
 }
 

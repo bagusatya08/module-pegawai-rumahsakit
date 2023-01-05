@@ -1,149 +1,162 @@
 <?php 
 
+session_start();
 
-
-$id_pengumuman = $_GET['id_pengumuman'];
-
-require './dbConnection.php';
-
-$sql = "SELECT *
-        FROM tb_pengumuman
-        WHERE id_pengumuman = :id_pengumuman
-;
-";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
-$stmt->execute();
-$pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($pengumuman['status_pengumuman'] == 'Y') {
-    $st = 'Aktif';
-
-} else {
-    $st = 'Tidak Aktif';
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+    session_destroy();
+    $_SESSION = array();
 
 }
 
-$sql = "SELECT *
-        FROM tb_pengumuman_detail
-        WHERE id_pengumuman = :id_pengumuman
-;
-";
+if (!isset($_SESSION["id_pegawai"])) { 
+    header("location:login.php");
 
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
-$stmt->execute();
-$pengumuman_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $id_pengumuman = $_GET['id_pengumuman'];
 
-
-$sql = 'SELECT pg.id_pegawai, 
-        pg.username, 
-        pg.id_jabatan, 
-        j.nama_jabatan
-        FROM tb_pegawai AS pg
-        INNER JOIN tb_jabatan AS j
-        ON j.id_jabatan = pg.id_jabatan;
-';
-$statement = $pdo->query($sql);
-
-if (isset($_POST['submit'])) {
-    $judul = $_POST['judul'];
-    $tgl = $_POST['tgl'];
-    $konten = $_POST['konten'];
-    $targets = $_POST['target'];
-    $status_pengumuman = $_POST['status_pengumuman'];
-
-    if ($_FILES['media']['size'] != 0) {
-        $media = $_FILES['media']['tmp_name'];
-        $pdf_blob = fopen($media, "rb");
+    require './dbConnection.php';
+    
+    $sql = "SELECT *
+            FROM tb_pengumuman
+            WHERE id_pengumuman = :id_pengumuman
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
+    $stmt->execute();
+    $pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($pengumuman['status_pengumuman'] == 'Y') {
+        $st = 'Aktif';
     
     } else {
-        $pdf_blob = $pengumuman['media'];
-
+        $st = 'Tidak Aktif';
+    
     }
-
-    try {
-        // input tb_pengumuman
-        $sql = "UPDATE tb_pengumuman
-                SET
-                    judul = :judul,
-                    tgl = :tgl,
-                    konten = :konten,
-                    media = :media,
-                    status_pengumuman = :status_pengumuman
-                WHERE 
-                    id_pengumuman = :id_pengumuman;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':judul', $judul);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':konten', $konten);
-        $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
-        $stmt->bindParam(':status_pengumuman', $status_pengumuman);
-        $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
-
-        if ($stmt->execute() === FALSE) {
-            echo 'Could not save information to the database';
-
+    
+    $sql = "SELECT *
+            FROM tb_pengumuman_detail
+            WHERE id_pengumuman = :id_pengumuman
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
+    $stmt->execute();
+    $pengumuman_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+    $sql = 'SELECT pg.id_pegawai, 
+            pg.username, 
+            pg.id_jabatan, 
+            j.nama_jabatan
+            FROM tb_pegawai AS pg
+            INNER JOIN tb_jabatan AS j
+            ON j.id_jabatan = pg.id_jabatan;
+    ';
+    $statement = $pdo->query($sql);
+    
+    if (isset($_POST['submit'])) {
+        $judul = $_POST['judul'];
+        $tgl = $_POST['tgl'];
+        $konten = $_POST['konten'];
+        $targets = $_POST['target'];
+        $status_pengumuman = $_POST['status_pengumuman'];
+    
+        if ($_FILES['media']['size'] != 0) {
+            $media = $_FILES['media']['tmp_name'];
+            $pdf_blob = fopen($media, "rb");
+        
+        } else {
+            $pdf_blob = $pengumuman['media'];
+    
         }
-
-
-        // input tb_pengumuman_detail
-        $sql = "SELECT id_pengumuman
-                FROM tb_pengumuman
-                WHERE judul = :judul
-                AND tgl = :tgl
-                AND konten = :konten
-                AND status_pengumuman = :status_pengumuman
-                ;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':judul', $judul);
-        $stmt->bindParam(':tgl', $tgl);
-        $stmt->bindParam(':konten', $konten);
-        $stmt->bindParam(':status_pengumuman', $status_pengumuman);
-        $stmt->execute();
-        $pengumuman_input = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        $sql = 'DELETE FROM tb_pengumuman_detail
-                WHERE id_pengumuman = :id_pengumuman';
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman'], PDO::PARAM_STR);
-        $stmt->execute();
-
-
-        foreach ($targets as $target){ 
-            $sql = "REPLACE INTO tb_pengumuman_detail(
-                id_pengumuman,
-                id_pegawai
-            )VALUES(
-                :id_pengumuman,
-                :id_pegawai
-            );
+    
+        try {
+            // input tb_pengumuman
+            $sql = "UPDATE tb_pengumuman
+                    SET
+                        judul = :judul,
+                        tgl = :tgl,
+                        konten = :konten,
+                        media = :media,
+                        status_pengumuman = :status_pengumuman
+                    WHERE 
+                        id_pengumuman = :id_pengumuman;
             ";
-
+    
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman']);
-            $stmt->bindParam(':id_pegawai', $target);
-
+            $stmt->bindParam(':judul', $judul);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':konten', $konten);
+            $stmt->bindParam(':media', $pdf_blob, PDO::PARAM_LOB);
+            $stmt->bindParam(':status_pengumuman', $status_pengumuman);
+            $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
+    
             if ($stmt->execute() === FALSE) {
-
                 echo 'Could not save information to the database';
-
+    
             }
-
-        }
-
-    } catch (PDOException $e) {
-        echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
-        ': '. $e->getLine(); 
-
-    }   
+    
+    
+            // input tb_pengumuman_detail
+            $sql = "SELECT id_pengumuman
+                    FROM tb_pengumuman
+                    WHERE judul = :judul
+                    AND tgl = :tgl
+                    AND konten = :konten
+                    AND status_pengumuman = :status_pengumuman
+                    ;
+            ";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':judul', $judul);
+            $stmt->bindParam(':tgl', $tgl);
+            $stmt->bindParam(':konten', $konten);
+            $stmt->bindParam(':status_pengumuman', $status_pengumuman);
+            $stmt->execute();
+            $pengumuman_input = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+            $sql = 'DELETE FROM tb_pengumuman_detail
+                    WHERE id_pengumuman = :id_pengumuman';
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman'], PDO::PARAM_STR);
+            $stmt->execute();
+    
+    
+            foreach ($targets as $target){ 
+                $sql = "REPLACE INTO tb_pengumuman_detail(
+                    id_pengumuman,
+                    id_pegawai
+                )VALUES(
+                    :id_pengumuman,
+                    :id_pegawai
+                );
+                ";
+    
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':id_pengumuman', $pengumuman_input['id_pengumuman']);
+                $stmt->bindParam(':id_pegawai', $target);
+    
+                if ($stmt->execute() === FALSE) {
+    
+                    echo 'Could not save information to the database';
+    
+                }
+    
+            }
+    
+        } catch (PDOException $e) {
+            echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
+            ': '. $e->getLine(); 
+    
+        }   
+    
+    }    
 
 }
 

@@ -1,184 +1,198 @@
 <?php 
 
+session_start();
 
+// jika waktu session habis (tak set 30m)
+if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+    session_destroy();
+    $_SESSION = array();
 
-$id_pegawai = $_GET['id_pegawai'];
+}
 
-require './dbConnection.php';
-
-$sql = 'SELECT *
-        FROM tb_jabatan';
-$statement_jabatan = $pdo->query($sql);
-
-
-$sql = 'SELECT *
-        FROM tb_ruangan';
-$statement_ruangan = $pdo->query($sql);
-
-
-$sql = 'SELECT *
-        FROM tb_bidang';
-$statement_bidang = $pdo->query($sql);
-
-
-$sql = 'SELECT *
-FROM tb_pegawai
-WHERE id_pegawai = :id_pegawai';
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_pegawai', $id_pegawai, PDO::PARAM_STR);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-if ($user['jenis_kelamin'] == 'L') {
-    $jk = 'Laki-laki';
+if (!isset($_SESSION["id_pegawai"])) { 
+    header("location:login.php");
 
 } else {
-    $jk = 'Perempuan';
+    $id_pegawai = $_GET['id_pegawai'];
 
-}
-
-
-if (isset($_POST['submit']) 
-        && $_POST['username'] != '' 
-        && $_POST['email'] != '' 
-        && $_POST['password'] != ''
-        && $_POST['jabatan'] != 'null'
-        && $nip = $_POST['nip'] != ''
-        && $_POST['nama'] != ''
-        && $_POST['tahun_masuk'] != ''
-        && $_POST['jenis_kontrak'] != ''
-        && $_POST['no_ktp'] != ''
-    ) {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $id_jabatan = $_POST['jabatan'];
-    $id_bidang = $_POST['bidang'];
-    $id_ruangan = $_POST['ruangan'];
-    $nip = $_POST['nip'];
-    $nama = $_POST['nama'];
-    $no_hp = $_POST['no_hp'];
-    $alamat = $_POST['alamat'];
-    $kecamatan = $_POST['kecamatan'];
-    $kabupaten = $_POST['kabupaten'];
-    $negara = $_POST['negara'];
-    $agama = $_POST['agama'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $golongan_darah = $_POST['golongan_darah'];
-    $tempat_lahir = $_POST['tempat_lahir'];
-    $tgl_lahir = $_POST['tgl_lahir'];
-    $status_kawin = $_POST['status_kawin'];
-    $no_ktp = $_POST['no_ktp'];
-    $tahun_masuk = $_POST['tahun_masuk'];
-    $jenis_kontrak = $_POST['jenis_kontrak'];
+    require './dbConnection.php';
     
-
-    if ($_POST['password'] == $user['password']) {
-        $password = $user['password'];
-
+    $sql = 'SELECT *
+            FROM tb_jabatan';
+    $statement_jabatan = $pdo->query($sql);
+    
+    
+    $sql = 'SELECT *
+            FROM tb_ruangan';
+    $statement_ruangan = $pdo->query($sql);
+    
+    
+    $sql = 'SELECT *
+            FROM tb_bidang';
+    $statement_bidang = $pdo->query($sql);
+    
+    
+    $sql = 'SELECT *
+    FROM tb_pegawai
+    WHERE id_pegawai = :id_pegawai';
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pegawai', $id_pegawai, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    
+    if ($user['jenis_kelamin'] == 'L') {
+        $jk = 'Laki-laki';
+    
     } else {
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    }
-
-
-    if ($_FILES['foto_profile']['size'] != 0) {
-        // $name = $_FILES['foto_profile']['name'];
-        // $foto_profile = $_FILES['foto_profile']['tmp_name'];
-        // $foto_profile = base64_encode(file_get_contents(addslashes($foto_profile)));
-        
-        $foto_profile= $_FILES['foto_profile']['tmp_name'];
-        $img_blob = fopen($foto_profile, "rb"); 
-
-    } else {
-        $img_blob = $user['foto_profile'];
-
-    }
-
-
-    if ($_FILES['file_ktp']['size'] != 0) {
-        //attached pdf file information
-        // $file_ktp_name = $_FILES['file_ktp']['name'];
-        
-        $file_ktp = $_FILES['file_ktp']['tmp_name'];
-        $pdf_blob = fopen($file_ktp, "rb");
-
-    } else {
-        $pdf_blob = $user['file_ktp'];
-
+        $jk = 'Perempuan';
+    
     }
     
-   
-    try {
-        $sql = "UPDATE tb_pegawai
-                SET
-                    id_jabatan = :id_jabatan,
-                    id_bidang = :id_bidang,
-                    id_ruangan = :id_ruangan,
-                    username = :username,
-                    email = :email,
-                    password_pg = :password_pg,
-                    nip = :nip,
-                    nama = :nama,
-                    foto_profile = :foto_profile,
-                    no_hp = :no_hp,
-                    alamat = :alamat,
-                    kecamatan = :kecamatan,
-                    kabupaten = :kabupaten,
-                    negara = :negara,
-                    agama = :agama,
-                    jenis_kelamin = :jenis_kelamin,
-                    golongan_darah = :golongan_darah,
-                    tempat_lahir = :tempat_lahir,
-                    tgl_lahir = :tgl_lahir,
-                    status_kawin = :status_kawin,
-                    no_ktp = :no_ktp,
-                    file_ktp = :file_ktp,
-                    tahun_masuk = :tahun_masuk,
-                    jenis_kontrak = :jenis_kontrak
-                WHERE 
-                    id_pegawai = :id_pegawai;
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_jabatan', $id_jabatan);
-        $stmt->bindParam(':id_bidang', $id_bidang);
-        $stmt->bindParam(':id_ruangan', $id_ruangan);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password_pg', $password);
-        $stmt->bindParam(':nip', $nip);
-        $stmt->bindParam(':nama', $nama);
-        $stmt->bindParam(':foto_profile', $img_blob, PDO::PARAM_LOB);
-        $stmt->bindParam(':no_hp', $no_hp);
-        $stmt->bindParam(':alamat', $alamat);
-        $stmt->bindParam(':kecamatan', $kecamatan);
-        $stmt->bindParam(':kabupaten', $kabupaten);
-        $stmt->bindParam(':negara', $negara);
-        $stmt->bindParam(':agama', $agama);
-        $stmt->bindParam(':jenis_kelamin', $jenis_kelamin);
-        $stmt->bindParam(':golongan_darah', $golongan_darah);
-        $stmt->bindParam(':tempat_lahir', $tempat_lahir);
-        $stmt->bindParam(':tgl_lahir', $tgl_lahir);
-        $stmt->bindParam(':status_kawin', $status_kawin);
-        $stmt->bindParam(':no_ktp', $no_ktp);
-        $stmt->bindParam(':file_ktp', $pdf_blob, PDO::PARAM_LOB);
-        $stmt->bindParam(':tahun_masuk', $tahun_masuk);
-        $stmt->bindParam(':jenis_kontrak', $jenis_kontrak);
-
-        if ($stmt->execute() === FALSE) {
-            echo 'Could not save information to the database';
-
+    
+    if (isset($_POST['submit']) 
+            && $_POST['username'] != '' 
+            && $_POST['email'] != '' 
+            && $_POST['password'] != ''
+            && $_POST['jabatan'] != 'null'
+            && $nip = $_POST['nip'] != ''
+            && $_POST['nama'] != ''
+            && $_POST['tahun_masuk'] != ''
+            && $_POST['jenis_kontrak'] != ''
+            && $_POST['no_ktp'] != ''
+        ) {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $id_jabatan = $_POST['jabatan'];
+        $id_bidang = $_POST['bidang'];
+        $id_ruangan = $_POST['ruangan'];
+        $nip = $_POST['nip'];
+        $nama = $_POST['nama'];
+        $no_hp = $_POST['no_hp'];
+        $alamat = $_POST['alamat'];
+        $kecamatan = $_POST['kecamatan'];
+        $kabupaten = $_POST['kabupaten'];
+        $negara = $_POST['negara'];
+        $agama = $_POST['agama'];
+        $jenis_kelamin = $_POST['jenis_kelamin'];
+        $golongan_darah = $_POST['golongan_darah'];
+        $tempat_lahir = $_POST['tempat_lahir'];
+        $tgl_lahir = $_POST['tgl_lahir'];
+        $status_kawin = $_POST['status_kawin'];
+        $no_ktp = $_POST['no_ktp'];
+        $tahun_masuk = $_POST['tahun_masuk'];
+        $jenis_kontrak = $_POST['jenis_kontrak'];
+        
+    
+        if ($_POST['password'] == $user['password']) {
+            $password = $user['password'];
+    
+        } else {
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    
         }
-
-    } catch (PDOException $e) {
-        echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
-        ': '. $e->getLine(); 
-
-    }   
-
+    
+    
+        if ($_FILES['foto_profile']['size'] != 0) {
+            // $name = $_FILES['foto_profile']['name'];
+            // $foto_profile = $_FILES['foto_profile']['tmp_name'];
+            // $foto_profile = base64_encode(file_get_contents(addslashes($foto_profile)));
+            
+            $foto_profile= $_FILES['foto_profile']['tmp_name'];
+            $img_blob = fopen($foto_profile, "rb"); 
+    
+        } else {
+            $img_blob = $user['foto_profile'];
+    
+        }
+    
+    
+        if ($_FILES['file_ktp']['size'] != 0) {
+            //attached pdf file information
+            // $file_ktp_name = $_FILES['file_ktp']['name'];
+            
+            $file_ktp = $_FILES['file_ktp']['tmp_name'];
+            $pdf_blob = fopen($file_ktp, "rb");
+    
+        } else {
+            $pdf_blob = $user['file_ktp'];
+    
+        }
+        
+       
+        try {
+            $sql = "UPDATE tb_pegawai
+                    SET
+                        id_jabatan = :id_jabatan,
+                        id_bidang = :id_bidang,
+                        id_ruangan = :id_ruangan,
+                        username = :username,
+                        email = :email,
+                        password_pg = :password_pg,
+                        nip = :nip,
+                        nama = :nama,
+                        foto_profile = :foto_profile,
+                        no_hp = :no_hp,
+                        alamat = :alamat,
+                        kecamatan = :kecamatan,
+                        kabupaten = :kabupaten,
+                        negara = :negara,
+                        agama = :agama,
+                        jenis_kelamin = :jenis_kelamin,
+                        golongan_darah = :golongan_darah,
+                        tempat_lahir = :tempat_lahir,
+                        tgl_lahir = :tgl_lahir,
+                        status_kawin = :status_kawin,
+                        no_ktp = :no_ktp,
+                        file_ktp = :file_ktp,
+                        tahun_masuk = :tahun_masuk,
+                        jenis_kontrak = :jenis_kontrak
+                    WHERE 
+                        id_pegawai = :id_pegawai;
+            ";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id_jabatan', $id_jabatan);
+            $stmt->bindParam(':id_bidang', $id_bidang);
+            $stmt->bindParam(':id_ruangan', $id_ruangan);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password_pg', $password);
+            $stmt->bindParam(':nip', $nip);
+            $stmt->bindParam(':nama', $nama);
+            $stmt->bindParam(':foto_profile', $img_blob, PDO::PARAM_LOB);
+            $stmt->bindParam(':no_hp', $no_hp);
+            $stmt->bindParam(':alamat', $alamat);
+            $stmt->bindParam(':kecamatan', $kecamatan);
+            $stmt->bindParam(':kabupaten', $kabupaten);
+            $stmt->bindParam(':negara', $negara);
+            $stmt->bindParam(':agama', $agama);
+            $stmt->bindParam(':jenis_kelamin', $jenis_kelamin);
+            $stmt->bindParam(':golongan_darah', $golongan_darah);
+            $stmt->bindParam(':tempat_lahir', $tempat_lahir);
+            $stmt->bindParam(':tgl_lahir', $tgl_lahir);
+            $stmt->bindParam(':status_kawin', $status_kawin);
+            $stmt->bindParam(':no_ktp', $no_ktp);
+            $stmt->bindParam(':file_ktp', $pdf_blob, PDO::PARAM_LOB);
+            $stmt->bindParam(':tahun_masuk', $tahun_masuk);
+            $stmt->bindParam(':jenis_kontrak', $jenis_kontrak);
+    
+            if ($stmt->execute() === FALSE) {
+                echo 'Could not save information to the database';
+    
+            }
+    
+        } catch (PDOException $e) {
+            echo 'Database Error '. $e->getMessage(). ' in '. $e->getFile().
+            ': '. $e->getLine(); 
+    
+        }   
+    
+    }    
+    
 }
+
 
 ?>
 

@@ -12,23 +12,38 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 if (!isset($_SESSION["id_pegawai"])) { 
     header("location:login.php");
 
-} 
+} else {
+    session_start();
 
-$id_pengumuman = $_GET['id_pengumuman'];
-// echo $id_pengumuman;
+    // jika waktu session habis (tak set 30m)
+    if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
+        session_destroy();
+        $_SESSION = array();
+    
+    }
+    
+    if (!isset($_SESSION["id_pegawai"])) { 
+        header("location:login.php");
+    
+    } 
+    
+    $id_pengumuman = $_GET['id_pengumuman'];
+    // echo $id_pengumuman;
+    
+    require "./dbConnection.php";
+    
+    $sql = "SELECT *
+            FROM tb_pengumuman
+            WHERE id_pengumuman = :id_pengumuman
+    ;
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
+    $stmt->execute();
+    $pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);    
 
-require "./dbConnection.php";
-
-$sql = "SELECT *
-        FROM tb_pengumuman
-        WHERE id_pengumuman = :id_pengumuman
-;
-";
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_pengumuman', $id_pengumuman, PDO::PARAM_STR);
-$stmt->execute();
-$pengumuman = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 ?>
 
