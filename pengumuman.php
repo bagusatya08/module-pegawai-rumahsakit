@@ -9,24 +9,10 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 }
 
-if (!isset($_SESSION["id_pegawai"])) { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') { 
     header("location:login.php");
 
-} else {
-    session_start();
-
-    // jika waktu session habis (tak set 30m)
-    if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
-        session_destroy();
-        $_SESSION = array();
-    
-    }
-    
-    if (!isset($_SESSION["id_pegawai"])) { 
-        header("location:login.php");
-    
-    } 
-    
+} else { 
     $id_pengumuman = $_GET['id_pengumuman'];
     // echo $id_pengumuman;
     

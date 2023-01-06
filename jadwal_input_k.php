@@ -9,10 +9,10 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 }
 
-if (!isset($_SESSION["id_pegawai"])) { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bidang' || $_SESSION['nama_jabatan'] != 'Kepala Ruangan') { 
     header("location:login.php");
 
-} else {
+} else { 
     require './dbConnection.php';
 
     $sql = 'SELECT pg.id_pegawai, 

@@ -12,7 +12,17 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 if (isset($_SESSION["id_pegawai"])) { 
 
-    header("location:beranda-after.php");
+    if ($_SESSION['nama_jabatan'] == 'Pegawai') {
+        header("location:beranda-after.php");
+
+    } else if ($_SESSION['nama_jabatan'] == 'Admin') {
+        header("location:beranda-after_admin.php");
+
+    } else if ($_SESSION['nama_jabatan'] == 'Kepala Bidang' || $_SESSION['nama_jabatan'] == 'Kepala Ruangan') {
+        header("location:beranda-after_kepala.php");
+
+    }
+
 
 }
 
@@ -66,6 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // session expired
             $_SESSION['EXPIRES'] = time() + 1800; //second
+
+            $_SESSION['nama_jabatan'] = $user["nama_jabatan"];
 
             if ($user["nama_jabatan"] == 'Admin') {
                 header("Location: beranda-after_admin.php");

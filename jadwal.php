@@ -8,8 +8,7 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     $_SESSION = array();
 }
 
-if (!isset($_SESSION["id_pegawai"])) { 
-
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') { 
     header("location:login.php");
 
 } else { 

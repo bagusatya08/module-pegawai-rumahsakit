@@ -9,26 +9,27 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 }
 
-if (!isset($_SESSION["id_pegawai"])) { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') { 
     header("location:login.php");
 
-} 
+} else {
+    $id_panduan = $_GET['id_panduan'];
+    // echo $id_panduan;
 
-$id_panduan = $_GET['id_panduan'];
-// echo $id_panduan;
+    require "./dbConnection.php";
 
-require "./dbConnection.php";
-
-$sql = "SELECT *
+    $sql = "SELECT *
         FROM tb_panduan
         WHERE id_panduan = :id_panduan
-;
-";
+        ;
+    ";
 
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
-$stmt->execute();
-$panduan = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_panduan', $id_panduan, PDO::PARAM_STR);
+    $stmt->execute();
+    $panduan = $stmt->fetch(PDO::FETCH_ASSOC);
+
+}
 
 ?>
 

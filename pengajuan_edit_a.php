@@ -8,10 +8,10 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     $_SESSION = array();
 }
 
-if (!isset($_SESSION["id_pegawai"])) { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') { 
     header("location:login.php");
 
-} else {
+} else { 
     $id_pengajuan = $_GET['id_pengajuan'];
 
     require './dbConnection.php';
