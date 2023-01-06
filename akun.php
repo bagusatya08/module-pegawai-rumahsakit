@@ -22,7 +22,7 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
             ON b.id_bidang = pg.id_bidang
             LEFT JOIN tb_ruangan AS r
             ON r.id_ruangan = pg.id_ruangan
-            ORDER BY pg.id_jabatan
+            ORDER BY pg.id_pegawai
             ;'
     ;
 

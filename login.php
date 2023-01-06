@@ -12,14 +12,14 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 if (isset($_SESSION["id_pegawai"])) { 
 
-    if ($_SESSION['nama_jabatan'] == 'Pegawai') {
-        header("location:beranda-after.php");
-
-    } else if ($_SESSION['nama_jabatan'] == 'Admin') {
+    if ($_SESSION['nama_jabatan'] == 'Admin') {
         header("location:beranda-after_admin.php");
 
     } else if ($_SESSION['nama_jabatan'] == 'Kepala Bidang' || $_SESSION['nama_jabatan'] == 'Kepala Ruangan') {
         header("location:beranda-after_kepala.php");
+
+    } else {
+        header("location:beranda-after.php");
 
     }
 
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 header("Location: beranda-after_kepala.php");
                 exit;    
 
-            } else if ($user["nama_jabatan"] == 'Pegawai') {
+            } else {
                 header("Location: beranda-after.php");
                 exit;    
 
