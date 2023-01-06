@@ -126,12 +126,6 @@ CREATE TABLE tb_pengajuan(
 	FOREIGN KEY(id_pegawai) REFERENCES tb_pegawai(id_pegawai)
 );
 
-CREATE TABLE project_pdf(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	project_name TEXT,
-	pdf_doc MEDIUMBLOB
-);
-
 
 -- dml
 INSERT INTO tb_jabatan (nama_jabatan) VALUES 
@@ -197,56 +191,4 @@ INSERT INTO tb_pegawai (
 	"", 
 	"2012", 
 	"Pegawai Tetap"
-);
-
-INSERT INTO tb_pegawai (
-	id_jabatan,
-	username,
-	email,
-	password_pg,
-	nip,
-	nama,
-	foto_profile,
-	no_hp,
-	alamat,
-	kecamatan,
-	kabupaten,
-	negara,
-	agama,
-	jenis_kelamin,
-	golongan_darah,
-	tempat_lahir,
-	tgl_lahir,
-	status_kawin,
-	no_ktp,
-	file_ktp,
-	tahun_masuk,
-	jenis_kontrak,
-	bidang,
-	ruangan
-) VALUES (
-	"5", 
-	"rey", 
-	"rey@gmail.com", 
-	"$2y$10$muK9xltRI5MxRJwcfozGjepKNMElNZLoArpDumW9tjyv3NeAyEdUy", 
-	"123",
-	"rey",
-	"", 
-	"081", 
-	"Jl. rey", 
-	"Kec. rey", 
-	"Kab. rey", 
-	"Neg. rey", 
-	NULL, 
-	NULL, 
-	NULL, 
-	"rey", 
-	"2012-12-12", 
-	NULL, 
-	"8888", 
-	"", 
-	"2014", 
-	"Pegawai Tetap", 
-	"Bd. rey", 
-	"R. rey"
 );
