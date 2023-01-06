@@ -8,7 +8,7 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
     $_SESSION = array();
 }
 
-if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bidang' || $_SESSION['nama_jabatan'] != 'Kepala Ruangan') { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bidang' && $_SESSION['nama_jabatan'] != 'Kepala Ruangan') { 
     header("location:login.php");
 
 } else { 
