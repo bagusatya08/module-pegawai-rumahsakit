@@ -94,7 +94,10 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') {
             <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
                 <div class="form-control">
                     <label for="konten">Konten</label>
-                    <input type="text" name="konten"/>
+                    <input type="text" name="konten" id="konten"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="media">File</label>
@@ -110,6 +113,6 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') {
     <!-- Close Box -->
 
     <!-- Validasi -->
-    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+    <script type="text/javascript" src="./js/validation_pengajuan_input.js"></script>
 </body>
 </html>

@@ -253,95 +253,149 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
             <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
                 <div class="form-control">
                     <label for="username">Username*</label>
-                    <input type="text" name="username"/>
+                    <input type="text" name="username" id="username"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="email">Email*</label>
-                    <input type="email" name="email"/>
+                    <input type="email" name="email" id="email"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="password">Password*</label>
-                    <input type="password" name="password"/>
+                    <input type="password" name="password" id="password"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="jabatan">Jabatan*</label><br>
-                    <select name="jabatan">
+                    <select name="jabatan" id="jabatan">
                         <option value='null' selected hidden>Pilih</option>
                     <?php while ($jbt = $statement_jabatan->fetch(PDO::FETCH_ASSOC)) : ?>
                         <option value="<?php echo $jbt['id_jabatan'] ?>"><?php echo $jbt['nama_jabatan'] ?></option>
                     <?php endwhile; ?>
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="nip">NIP*</label>
-                    <input type="text" name="nip"/>
+                    <input type="text" name="nip" id="nip"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="nama">Nama*</label>
-                    <input type="text" name="nama"/>
+                    <input type="text" name="nama" id="nama"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="tahun_masuk">Tahun Masuk*</label>
-                    <input type="number" name="tahun_masuk" min="1950" max="2023" step="1" value="2016"/>
+                    <input type="number" name="tahun_masuk" id="tahun_masuk" min="1950" max="2023" step="1" value="2016"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="jenis_kontrak">Jenis Kontrak*</label>
-                    <input type="text" name="jenis_kontrak"/>
+                    <input type="text" name="jenis_kontrak" id="jenis_kontrak"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="no_ktp">No.KTP*</label>
-                    <input type="text" name="no_ktp"/>
+                    <input type="text" name="no_ktp" id="no_ktp"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="file_ktp">File KTP</label>
-                    <input type="file" name="file_ktp" accept=".pdf"/>
+                    <input type="file" name="file_ktp" id="file_ktp" accept=".pdf"/>
                     <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="bidang">Bidang</label><br>
-                    <select name="bidang">
+                    <select name="bidang" id="bidang">
                         <option value='null' selected hidden>Pilih</option>
                     <?php while ($bdg = $statement_bidang->fetch(PDO::FETCH_ASSOC)) : ?>
                         <option value="<?php echo $bdg['id_bidang'] ?>"><?php echo $bdg['nama_bidang'] ?></option>
                     <?php endwhile; ?>
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="ruangan">Ruangan</label><br>
-                    <select name="ruangan">
+                    <select name="ruangan" id="ruangan">
                         <option value='null' selected hidden>Pilih</option>
                     <?php while ($rgn = $statement_ruangan->fetch(PDO::FETCH_ASSOC)) : ?>
                         <option value="<?php echo $rgn['id_ruangan'] ?>"><?php echo $rgn['nama_ruangan'] ?></option>
                     <?php endwhile; ?>
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="foto_profile">Foto Profile</label>
-                    <input type="file" name="foto_profile" accept="image/*">
+                    <input type="file" name="foto_profile" id="foto_profile" accept="image/*">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="no_hp">Telepon</label>
-                    <input type="tel" name="no_hp"/>
+                    <input type="tel" name="no_hp" id="no_hp"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="alamat">Alamat</label>
-                    <input type="text" name="alamat"/>
+                    <input type="text" name="alamat" id="alamat"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="kecamatan">Kecamatan</label>
-                    <input type="text" name="kecamatan"/>
+                    <input type="text" name="kecamatan" id="kecamatan"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="kabupaten">Kabupaten</label>
-                    <input type="text" name="kabupaten"/>
+                    <input type="text" name="kabupaten" id="kabupaten"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="negara">Negara</label>
-                    <input type="text" name="negara"/>
+                    <input type="text" name="negara" id="negara"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="agama">Agama</label><br>
-                    <select name="agama">
+                    <select name="agama" id="agama">
                         <option value='null' selected hidden>Pilih</option>
                         <option value="Hindu">Hindu</option>
                         <option value="Islam">Islam</option>     
@@ -350,40 +404,58 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
                         <option value="Buddha">Buddha</option>
                         <option value="Kong Hu Chu">Kong Hu Chu</option> 
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="jenis_kelamin">Jenis Kelamin</label><br>
-                    <select name="jenis_kelamin">
+                    <select name="jenis_kelamin" id="jenis_kelamin">
                         <option value='null' selected hidden>Pilih</option>
                         <option value="L">Laki-laki</option>
                         <option value="P">Perempuan</option>     
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="golongan_darah">Golongan Darah</label><br>
-                    <select name="golongan_darah">
+                    <select name="golongan_darah" id="golongan_darah">
                         <option value='null' selected hidden>Pilih</option>
                         <option value="A">A</option>
                         <option value="B">B</option> 
                         <option value="AB">AB</option> 
                         <option value="O">O</option> 
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="tempat_lahir">Tempat Lahir</label>
-                    <input type="text" name="tempat_lahir"/>
+                    <input type="text" name="tempat_lahir" id="tempat_lahir"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="tgl_lahir">Tanggal Lahir</label>
-                    <input type="date" name="tgl_lahir"/>
+                    <input type="date" name="tgl_lahir" id="tgl_lahir"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="status_kawin">Status Kawin</label><br>
-                    <select name="status_kawin">
+                    <select name="status_kawin" id="status_kawin">
                         <option value='null' selected hidden>Pilih</option>
                         <option value="Kawin">Kawin</option>
                         <option value="Belum Kawin">Belum Kawin</option> 
                     </select>    
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
 
                 <input type="submit" name="submit" class="submit" value="Buat Akun"/>
@@ -395,7 +467,7 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
     <!-- Close Box -->
 
     <!-- Validasi -->
-    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+    <script type="text/javascript" src="./js/validation_akun_input.js"></script>
 </body>
 </html>
 

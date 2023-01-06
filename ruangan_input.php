@@ -74,7 +74,10 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
             <form class="form" id="form" method="POST">
                 <div class="form-control">
                     <label for="nama_ruangan">Nama Ruangan</label>
-                    <input type="text" name="nama_ruangan"/>
+                    <input type="text" name="nama_ruangan" id="nama_ruangan"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <input type="submit" name="submit" class="submit" value="Buat Ruangan"/>
             </form>
@@ -87,6 +90,6 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
     <script src="./js/input_pengumuman.js"></script>
 
     <!-- Validasi -->
-    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+    <script type="text/javascript" src="./js/validation_ruangan_input.js"></script>
 </body>
 </html>

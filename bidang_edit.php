@@ -86,7 +86,10 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
             <form class="form" id="form" method="POST">
                 <div class="form-control">
                     <label for="nama_bidang">Nama Bidang</label>
-                    <input type="text" name="nama_bidang" value="<?= $bidang['nama_bidang']; ?>"/>
+                    <input type="text" name="nama_bidang" id="nama_bidang" value="<?= $bidang['nama_bidang']; ?>"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <input type="submit" name="submit" class="submit" value="Edit Bidang"/>
             </form>
@@ -97,6 +100,6 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
     <!-- Close Box -->
 
     <!-- Validasi -->
-    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+    <script type="text/javascript" src="./js/validation_bidang_edit.js"></script>
 </body>
 </html>

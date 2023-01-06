@@ -191,20 +191,32 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
             <form class="form" id="form" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
                 <div class="form-control">
                     <label for="judul">Judul</label>
-                    <input type="text" name="judul" value="<?= $panduan['judul']; ?>"/>
+                    <input type="text" name="judul" id="judul" value="<?= $panduan['judul']; ?>"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="tgl">Tanggal</label>
-                    <input type="date" name="tgl" value="<?= $panduan['tgl']; ?>"/>
+                    <input type="date" name="tgl" id="tgl" value="<?= $panduan['tgl']; ?>"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="konten">Konten</label>
-                    <input type="text" name="konten" value="<?= $panduan['konten']; ?>"/>
+                    <input type="text" name="konten" id="konten" value="<?= $panduan['konten']; ?>"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="media">File</label>
-                    <input type="file" name="media" accept=".pdf"/>
+                    <input type="file" name="media" id="media" accept=".pdf"/>
                     <input type="hidden" name="MAX_FILE_SIZE" value="67108864"/>
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="target">Target</label><br>
@@ -235,7 +247,7 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
                 </div>
                 <div class="form-control">
                     <label for="status_panduan">Status</label>
-                    <select name="status_panduan">
+                    <select name="status_panduan" id="status_panduan">
                     <option value="<?= $panduan['status_panduan']; ?>" selected hidden><?= $st; ?></option>
                         <option value="Y">Aktif</option>
                         <option value="N">Tidak Aktif</option>     
@@ -252,6 +264,6 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Admin') {
     <script src="./js/input_panduan.js"></script>
 
     <!-- Validasi -->
-    <!-- <script type="text/javascript" src="../js/validationAdd.js"></script> -->
+    <script type="text/javascript" src="./js/validation_panduan_edit.js"></script>
 </body>
 </html>
