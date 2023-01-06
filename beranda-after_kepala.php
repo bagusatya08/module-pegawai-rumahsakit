@@ -134,10 +134,10 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bida
                         <?php while ($pengumuman = $stmt_pngm->fetch(PDO::FETCH_ASSOC)) : ?>
                             <tr>
                                 <th>
-                                    <a href="./pengumuman.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['tgl'] ?></a>
+                                    <a href="./pengumuman_k.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['tgl'] ?></a>
                                 </th>
                                 <td>
-                                    <a href="./pengumuman.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['judul'] ?></a>
+                                    <a href="./pengumuman_k.php?id_pengumuman=<?= $pengumuman['id_pengumuman'] ?>" style="text-decoration:none; color: black"><?php echo $pengumuman['judul'] ?></a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -153,7 +153,7 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bida
                     <?php while ($panduan = $stmt_pdn->fetch(PDO::FETCH_ASSOC)) : ?>
                             <tr>
                                 <td>
-                                    <a href="./panduan.php?id_panduan=<?= $panduan['id_panduan'] ?>" style="text-decoration:none; color: black"><?php echo $panduan['judul'] ?></a>
+                                    <a href="./panduan_k.php?id_panduan=<?= $panduan['id_panduan'] ?>" style="text-decoration:none; color: black"><?php echo $panduan['judul'] ?></a>
                                 </td>
                             </tr>
                     <?php endwhile; ?>

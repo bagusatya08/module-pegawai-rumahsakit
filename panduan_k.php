@@ -9,7 +9,7 @@ if (!isset($_SESSION['EXPIRES']) || time() >= $_SESSION['EXPIRES']) {
 
 }
 
-if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') { 
+if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Kepala Bidang' && $_SESSION['nama_jabatan'] != 'Kepala Ruangan') { 
     header("location:login.php");
 
 } else { 
@@ -56,17 +56,17 @@ if (!isset($_SESSION["id_pegawai"]) || $_SESSION['nama_jabatan'] != 'Pegawai') {
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav text-center">
                                     <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="beranda-after.php">Beranda</a>
+                                    <a class="nav-link" aria-current="page" href="beranda-after_kepala.php">Beranda</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="jadwal.php">Jadwal</a>
+                                    <a class="nav-link" href="jadwal_kepala.php">Jadwal</a>
                                     </li>
                                     <li class="nav-item">
-                                    <a class="nav-link" href="pengajuan.php">Pengajuan</a>
+                                    <a class="nav-link" href="pengajuan_kepala.php">Pengajuan</a>
                                     </li>
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="profile.php">Profile</a>
-                                    </li>  
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="profile_kepala.php">Profile</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
